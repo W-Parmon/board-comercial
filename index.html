@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root{
     --red:#C21A2B; --gold:#F8B133; --bg:#FFFFFF; --text:#000000;
@@ -173,6 +172,14 @@
   .card-login h1{text-transform:uppercase;letter-spacing:.3px}
   @media (max-width:900px){header.brand-header h1{font-size:30px}header.brand-header .user{align-items:center;width:100%}}
   @media (max-width:600px){header.brand-header{padding:14px 16px}header.brand-header img.logo{height:56px}header.brand-header h1{font-size:24px}nav.abas{padding:0 8px}footer.brand-footer{padding:14px 16px}footer.brand-footer .txt{grid-template-columns:1fr}}
+  .hist-ctrls{display:flex;gap:12px;align-items:flex-end;padding-left:16px;border-left:1px solid #eee}
+  .hist-ctrls.hidden{display:none!important}
+  .hist-ctrls select{min-width:170px}
+  .hist-ctrls .ano-fixo{padding:7px 14px}
+  .filtro-bar .dir{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .filtro-bar .dir .upd{margin-left:0;padding-bottom:0}
+  .filtro-bar .dir .legenda{margin-left:0;padding-bottom:0}
+  @media (max-width:700px){.hist-ctrls{padding-left:0;border-left:none;flex-wrap:wrap}.filtro-bar .dir{margin-left:0;align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -254,7 +261,16 @@
           <option value="DIRETORIA">Diretoria (Diretoria, Ana Paula e Adriana)</option>
         </select>
       </div>
-      <div class="upd" id="upd">Carregando…</div>
+      <div class="hist-ctrls hidden" id="histCtrls">
+        <div class="field"><label>Ano</label><div class="ano-fixo" id="anoAtualLbl"></div></div>
+        <div class="field"><label for="fComparar">Comparar com</label>
+          <select id="fComparar"><option value="">Sem comparação</option></select></div>
+        <button class="btn" id="btnAplicar" type="button">Aplicar</button>
+      </div>
+      <div class="dir">
+        <div class="legenda hidden" id="legenda"></div>
+        <div class="upd" id="upd">Carregando…</div>
+      </div>
     </div>
 
 
@@ -293,23 +309,9 @@
 
     <!-- ===== ABA HISTÓRICO ===== -->
     <section id="abaHist" class="hidden">
-      <div class="bar filtro-bar hist-bar">
-        <div class="field"><label>Ano</label><div class="ano-fixo" id="anoAtualLbl"></div></div>
-        <div class="field"><label for="fComparar">Comparar com</label>
-          <select id="fComparar"><option value="">Sem comparação</option></select></div>
-        <button class="btn" id="btnAplicar" type="button" style="margin-bottom:1px">Aplicar</button>
-        <div class="legenda" id="legenda"></div>
-      </div>
       <div class="gridH" id="gridHist"></div>
     </section>
 
-    <div class="panel hidden" id="painelCarga">
-      <h2>Atualizar dados</h2>
-      <p>Selecione as planilhas exportadas do UXComex: "Propostas Criadas" (as propostas do arquivo substituem as versões anteriores) e/ou "Lista Clientes" (substitui a lista inteira).</p>
-      <input type="file" id="arquivos" accept=".xlsx,.xls" multiple>
-      <button class="btn" id="btnCarregar" type="button" style="margin-left:8px">Carregar</button>
-      <div class="log hidden" id="log"></div>
-    </div>
   </main>
   <footer class="brand-footer">
     <div class="txt">
@@ -514,13 +516,12 @@ $('formLogin').addEventListener('submit', async e=>{
 $('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrarLogin(); };
 
 async function abrirApp(){
-  const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave,pode_carregar').maybeSingle();
+  const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave').maybeSingle();
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
   acesso = data;
   $('uNome').textContent = data.nome;
   $('uPerfil').textContent = data.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
   $('boxFiltro').classList.toggle('hidden', data.perfil !== 'diretoria');
-  $('painelCarga').classList.toggle('hidden', !data.pode_carregar);
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
@@ -629,6 +630,8 @@ document.querySelectorAll('.aba').forEach(b => b.onclick = () => {
   document.querySelectorAll('.aba').forEach(x => x.classList.toggle('ativa', x === b));
   $('abaMes').classList.toggle('hidden', b.dataset.aba !== 'abaMes');
   $('abaHist').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
+  $('histCtrls').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
+  $('legenda').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
   if (b.dataset.aba === 'abaHist') renderHistorico();
 });
 
@@ -765,105 +768,6 @@ $('formSenha').addEventListener('submit', async e=>{
   m.className='msg ok'; m.textContent='Senha alterada.';
   setTimeout(()=>$('modalSenha').classList.add('hidden'), 1200);
 });
-
-/* ---------- Carga de planilhas (somente quem tem permissão) ---------- */
-const MAPA = {
-  'Número Proposta':'numero_proposta','Tipo Embarque':'tipo_embarque','Produto':'produto',
-  'Data Solicitação Cliente':'data_solicitacao_cliente','Tipo de Carga':'tipo_carga','Data de Emissão':'data_emissao',
-  'Data de Validade':'data_validade','Status':'status','Motivo':'motivo','Complemento Motivo Proposta':'complemento_motivo',
-  'Data de Aprovação':'data_aprovacao','Cliente':'cliente','Ref. Cliente':'ref_cliente','Cia / Armador / Coloader':'cia_armador_coloader',
-  'Frete Master':'frete_master','Frete House':'frete_house','Vendedor':'vendedor','País':'pais','Origem':'origem','Destino':'destino',
-  'Incoterm':'incoterm','Profit BRL':'profit_brl','Data Criação':'data_criacao','Emissor':'emissor','Inside Sales':'inside_sales',
-  'Rota':'rota','Agente Internacional':'agente_internacional','Peso Bruto':'peso_bruto','Peso Taxado/Cubado':'peso_taxado',
-  'qtd. containers':'qtd_containers','Custo BRL':'custo_brl','Venda BRL':'venda_brl','Observações da Rota':'observacoes_rota'
-};
-const DATAS = new Set(['data_solicitacao_cliente','data_emissao','data_validade','data_aprovacao','data_criacao',
-                       'data_ativacao_prospecto','data_ultima_proposta','ultimo_embarque']);
-const NUMS  = new Set(['profit_brl','peso_bruto','peso_taxado','qtd_containers','custo_brl','venda_brl','ativo_em_dias','dias_sem_embarcar']);
-const MAPA_CLI = {
-  'Nome Completo':'nome_completo','Apelido':'apelido','CNPJ / CPF':'cnpj','Segmento':'segmento','Vendedor':'vendedor',
-  'Inside':'inside','Cidade':'cidade','UF':'uf','Data Ativação Prospecto':'data_ativacao_prospecto',
-  'Ativo em (dias)':'ativo_em_dias','Dias sem embarcar':'dias_sem_embarcar',
-  'Data de Emissão Última Proposta':'data_ultima_proposta','Último Embarque':'ultimo_embarque','Data de Criação':'data_criacao'
-};
-const p2 = n => String(n).padStart(2,'0');
-
-function dataISO(v){
-  if (v === null || v === undefined || v === '' || v === 0 || v === '0') return null;
-  if (typeof v === 'number'){                       // número serial do Excel
-    const d = new Date(Math.round((v - 25569) * 86400000));
-    return `${d.getUTCFullYear()}-${p2(d.getUTCMonth()+1)}-${p2(d.getUTCDate())}T${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}:00`;
-  }
-  const m = String(v).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
-  if (!m) return null;
-  return `${m[3]}-${p2(m[2])}-${p2(m[1])}T${p2(m[4]||0)}:${m[5]||'00'}:00`;
-}
-function numero(v){
-  if (v === null || v === undefined || v === '') return null;
-  if (typeof v === 'number') return v;
-  let s = String(v).trim();
-  if (s.includes(',')) s = s.replace(/\./g,'').replace(',', '.');   // formato 1.234,56
-  const n = Number(s); return isNaN(n) ? null : n;
-}
-function texto(v){
-  if (v === null || v === undefined) return null;
-  const s = String(v).trim();
-  return (s === '' || s === '0') ? null : s;
-}
-function converter(bruto, mapa){
-  return bruto.map(r=>{
-    const o = {};
-    for (const [col, campo] of Object.entries(mapa)){
-      const v = r[col];
-      o[campo] = DATAS.has(campo) ? dataISO(v) : NUMS.has(campo) ? numero(v) : texto(v);
-    }
-    if (o.data_validade) o.data_validade = o.data_validade.slice(0,10);
-    if (o.ativo_em_dias != null) o.ativo_em_dias = Math.round(o.ativo_em_dias);
-    if (o.dias_sem_embarcar != null) o.dias_sem_embarcar = Math.round(o.dias_sem_embarcar);
-    return o;
-  });
-}
-function log(t){ const l=$('log'); l.classList.remove('hidden'); l.textContent += t + '\n'; l.scrollTop = l.scrollHeight; }
-
-$('btnCarregar').onclick = async ()=>{
-  const arquivos = [...$('arquivos').files];
-  $('log').textContent = '';
-  if (!arquivos.length){ log('Selecione ao menos uma planilha.'); return; }
-  $('btnCarregar').disabled = true;
-  try{
-    for (const arq of arquivos){
-      log(`▶ ${arq.name}`);
-      const wb = XLSX.read(await arq.arrayBuffer(), { type:'array' });
-      const bruto = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:null, raw:true });
-      const cab = bruto.length ? Object.keys(bruto[0]) : [];
-
-      if (cab.includes('Número Proposta')){
-        const linhas = converter(bruto, MAPA).filter(o => o.numero_proposta);
-        const grupos = {};
-        linhas.forEach(l => (grupos[l.numero_proposta] ||= []).push(l));
-        const chaves = Object.keys(grupos);
-        const LOTE = 250; let total = 0;
-        for (let i=0; i<chaves.length; i+=LOTE){
-          const lote = chaves.slice(i, i+LOTE).flatMap(k => grupos[k]);
-          const { data, error } = await sb.rpc('com_carregar', { p_arquivo: arq.name, p_linhas: lote });
-          if (error) throw new Error(error.message);
-          total += data;
-        }
-        log(`  ✔ Propostas: ${fmt(chaves.length)} propostas / ${fmt(total)} rotas`);
-      } else if (cab.includes('Nome Completo') && cab.includes('Data Ativação Prospecto')){
-        const linhas = converter(bruto, MAPA_CLI).filter(o => o.nome_completo);
-        const { data, error } = await sb.rpc('com_carregar_clientes', { p_arquivo: arq.name, p_linhas: linhas });
-        if (error) throw new Error(error.message);
-        log(`  ✔ Clientes: ${fmt(data)} registros (lista substituída)`);
-      } else {
-        log('  ⚠ Planilha não reconhecida (esperado "Propostas Criadas" ou "Lista Clientes") — ignorada');
-      }
-    }
-    log('Concluído.');
-    await Promise.all([carregarDados(), mostrarAtualizacao()]);
-  }catch(e){ log('✖ Erro: ' + e.message); }
-  $('btnCarregar').disabled = false;
-};
 
 sb.auth.onAuthStateChange((evento)=>{
   if (evento === 'SIGNED_OUT' && !emRecuperacao && $('telaExpirado').classList.contains('hidden')) mostrarLogin();

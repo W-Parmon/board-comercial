@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Board Comercial – Carga de dados</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAxCAYAAABqF6+6AAAU7klEQVR42uWaeZifVZXnP+fe931/a1WlUqklCUkkCYIgm7gQphUUXNBWFHvo1oamRRl1cJSnwaZ1FJvWwR5BHbtdeHzABWFUaAUaEJQlEUkgIU0IJBCW7LUkVantt7/LvWf+eCvp1mnHZ8ZuAec+Tz1vVf2q3nvPud+zfM858P/5kn+vF98EpXK53ONE+mwpKKZAluIDYzIvMj3MVO1jU9R+bxRwX3//ioLIKmvMyQorPXo4yAKBLhGxCjq3o8dr04vMivd7O6Kbkixd12i0153T6ex5USlgdbW6oFQpvgOx71ExJ4fWVA25pBmgCqgHERTBiGABETBASP6D845O5mdV/C+amV7/2MTEHZdA+wWrgAf7+haF1r5fjXwgtHapV0hRvKIqYBQRI2pFxKriFNrqaXhP6n3soS0iqReyQLHWa7kU2OpAYAnFUHdua5xmX7h3YuIHV0DyglHAOigxMPChwJhLIiOL20Cmc1eev0kDETFAUz170tQfyNLtE1m2aVr9+hnVrbOpH27ZtFa0lXjE2qzLubA7a5aX2fL8pYXgiAEJThqw9g39gT0+8vpoR+TSU/fte+B5V8D63t5VJoq+aKxdlQDOezxoDmgIRMhQ9qQJ25Nk2y6X3faMT29d284eB1r/t+f6TKVyzGsqlbO7A3tmB7l7nupVrxwbaz0vCnh4YOBiEwSfs2ilqbkzE1XxczfugeeSmEfi9hO7s+yLd3bSHwGNf4sDfmbhwvLJ3p+TYob2q/v2hePj+39nCrgJoqUDA/8jCMMPxyjeebxIrgJVMSI67jN5sNmsbU+Tq9Z2ZV+ZnKT+7wHVG5cu7W2Fvu/C7cPP/U4UcBNES/sHrytGwbl1UO89qIpHVASsIhviNg93WvcdEL1kdSvd/GJMhIJfI7xdNjDwjUIUnNtURTUPZgFgUGKn3NNqpA/GnS/9PHWf4GCM/31RwLL+/k8XC9EFTa/qFbxCgLAtS3VtIWI2srInqK7r9B720+O8O2FmeioWda3d+2db5GGreTAVeNGlwo/0LnhrUC7clhgC51UzVQxGh5NYvtFuy/RRKzQ0lmqphMWKseJRkwUBcZJpxxgTV6vRDGg7y/xMlmVtY+z+JEnqqn4mTrNZC+OddlxT6+oTE1OzzalGY3x2tgHEcxHjd6a8X1LAo9WhfrrkYQK7vKM59gGGO7HenqayRpGov1ezVPnSJSUZnG+54d6QC9+t/OCnRV62LKWTBNz+iy6KpYggCLDWYo3BWEtgLTYwBDbAGosxBvCpdz4WY2IxpoVSAxqZc5PtVntydrY2lTo3Enc6tdS7ffXp2QPTk7OzM5OT01Ptdn0u2vh/ExPwXXpZKQyWNzSX3Iow0mqxYdEQXScdq/Wb75TezFGrNbl9tWdJv/DcDsva9arDI7H0V72GQUSjYUS9UxtYMUYwubCaf2/EGKM2fyLGhMZIGNigGoRBX7FQoFCICMMQ0zePZcsWY8RgDWRZRpykJJlLszRtxHFSrzfrk09sffLDjz/+7PrfCgEP9vevKBWiRxHpzlRVRWgkKbd0Et55/dV65dVfl02bnpGe3m513iOmIKhoGIh0EiWwSpo69d4ThSoIaowR4CACNAws1loJw1DDMJAoCikVixpFoZRKRS0UIqy1GDGEQZBzBoHMC69buI/XLJhi9Y5uOaW3ybqxbpYUPD9JD2Pj41suWL9+87d/KwQUQvv+orXdLe9gjqzcOznNSZd/RGf3bdDHHtkmUaWIGMO87i56e3soFgqEYZjD3FqsNRiTfx0kP8bkZMc7j/cqaZZqmmZ458iyjGarzWytrtPTs+K8o1CMqFYCjaL8vUFgSRJLfcyxtZKxr93QiVLM1v0xy7o8O10qB8bHT160qNKcbSBJ22lP1YIF70WdcwrIwSfW4pzzFkwQhE8LwE8HByvzI/tYaIOVmXMYEd1Sq/Poy16un/zOu+XSd1yhd4wFEgQqpWpJi8Ui5VJJgsCoGCtGJBdejIoRwjCQQhSAGMRYClFIIQq0p7tKd0+XWBvMoSGQNM203e7Irt3DrHlgPT3zq3ztiqoefYQhcyAheutdiXzxuhgbKqJCK1E596yQc95e0NB5ihUrt98f85VrZ7j6r3o47siQLM39l3eAA0HxiSdLFKPCX183xb1r6+8NAHpVV4XGrsgUFURi51mXOP78igtl7x3XsGW3R8pzUFEQZI4B5E8ROfSh88JQpcUnLypo71AoO/d6rv66U/UhWZoxW2uoMQHWCjawOUU2VlVVUGV6qs31P4Ibrq5iQgOCfPjcIvc/FMvDmxItF+HKv6jygT8pgagQBtz4wxZf+eaMnn1miT89pyzEqhgBi+BRUoVMhdhDrLp9t5et29PNaZreFgAYw+mhiGSqGgg8UW/QveoUPfHYKfnmp7YwHhawh0RUvHryIKGoV9R4skzwOTvCtTv0ZLMs7Surb1lJ0yrOK17BiDK/x9DJIolrQqkYUioVyTKHiGBx/GR1i+/eYuV9f1JS3xGKJZXLPljkosvbcvV/nadvPK0AqSfJhM9dNat/962aDPYHfOJDVeh4RYTNW1Ie2tjWQigI+b6aKcVA5Ma7m+zZm14JtHIfIHL8QUbrFR5vx7zpgrNo77iTndshDgSTXz0oudCqByseeA+LejOWryyQeWH/TqHd9ELsyRLIXCaaqa5a2eAPXpGSRsIrT5inax7rkZtvjwmsBRSR3G+41HPl12q87lWBrFgSqrY9pxwfcu/3FtDfZyBVJqaVi6+Y1jvvj8UrXHR+lcOWWGgrzczz0b+ZZO3GRMIgZ246dwHO+Rqql0LnJoBgHZSMMS9xgBFhKu7QWrKU15w2JGPf38KBZoCvgJmTdw7uoqqHMhXn4LWHz/AXH+ulmQp/+TnwTjX3Qp5OnFG205x5XItjFlm55Ql08JWe97wlIbTz+f6tiah6hPz9YWgY3Zfx8c/XuOGLvZQLRsUj/d2ieJVtuxwfvGyKzdsyosjoimWhnH92CdoePEgGV13Wi4AKoA7EOdJUuebmRvTDOxsaH4wCs+XyvFCkzwAGYU+rzeIz3sy8efvZurVGPFfa0l9OzFQViRNF8QTW4NOMZLZJmlicN3jnIHVKKtLpJJx3SptnditPD6f65Jjw7KjKkWGD046DH99Vpd7I8F4R+ed99h1w1JueciQHay4yMqGc8+FJhscc5ZKI86qf/lg3PYMmT8BRyhG8+hVhXq1pekiBOM/pw3dVi7etaV8cx3wXSIOoO4pECBRFEHYniR518klKuovOhBcvAqgIgqK58xPwmeNNq+DoY7u4Z63TJFN86vGpiMuUNFEhVXySC9VjHC/tg9EWbI8E671qLGJaDbLEaByLOJ/7gXaivP2MAl/5VDeDXSY3UlXI0L55wsuOCGXvaIb30F01sm5jzPpHE0RzsmatoF4phsoFby7RZSFteQqBsvGphFbTzeSxAYJAC3nQVsGhHBDD0qNXQOsxaCsFYwDROTTlZoCRLM14w1Et3vY22Dtipb03h73PvGapEZ8CiaKZB7FsHrEMVlK27VM+cmbIgqqKtBz/9IQyPmVExONcLsFHzyvymQ9UNCrkG+7Y6+jtEXq7LUUDn724i/WPdpiaUe3ETq66pj6X0eUOD1HSVFk8aHjvqUUqIWim7G8q19zaQNHvH0yfg1a93inN700Dgdg5klJJFgzNh84s5dAwaOZC3r+wABEIjEDqhQNtXDvCI6gHTZU09SSpgsv/KQxgza4qjea0nHaCaAlHZ1ZZPwJf+EEBVYg7MWEIf3txWT7w9mLuscSw+pGE918+o3/01rJ84RPd0PG8dKXls5d284/3xRJY5i4nt3jV3OyzTPmj1xcY6haaM55SBH//D022PBs/Oa+7fP1knBedA9PVVcP7WUMw4BQII6JSEbyj1BewTJRA/zlvNkbwqCZxIknc1ixTSTpOiTuSJZBmhk6sJEmsWSaStB2duIAQ8OC+ft2xLpY7tqSaqGHnRJFMC1RKSpIqhw0Kf3paAddWbNFw7S1t+dRX69puI9/9hybvfmNRXnNiBC3PeWeVOO+syiHChpu7pINxP1WIPWnDUykZbnigzdd/3HCF0F06OTl5qGoVvHn//tbGhUMjRjiCuUhgjVEcUlke0E9KFajl5W68V6yxvPb009kuhu9tMhr1G0xvpj96SnDesPwE0SfTjNGtVhttkde+rqCtZpOnnnyC6aTAgYm5fQIlVMV7fyin8JniQ8Nnv9WUL3+vgbVCFECr5bnkb2e47ZoF9HXb3LGhOZBF5wi05Kib8z0uhtFZlWvvavK1m2tksb+81Unu+lUuoA62WjjNimDUk3kjmB56jhIGCoYjPTykeSNDNXeEYRSyZ6bEzknyWAtseg5FILDItlFVN4xYIxjxkqWJusxjrGhoBFWPKnjvyQDnPIVQqMXCJ/5ulpvuibUU5S0V5yEKhc1bU970Z+M6MN+ICojJzY45B55HirkelEKSKjv2ZoyMuySM3DeK5c5XSxW6SiWy4eG88RLM+YzVmepFkTWEnY42phswuIx5KwIqi72esVdZ/y+cgMsy1qz5OXNh+xARssYSBFbCMCQMAzHGYK0hCAKCIGDZssVYa0VV1BrwqrRabUbH9uF9xr4px1mXTeoTzzqqRYNTr96rVsOAVuYwxrN3l+G57SmZ83igaC1zYSo/oULiHV5Vq2EgqaqWIijb8A9bsTnLqQ/iWK+A+NpDCmg25OcmdPtLYTjYFcc6tmMHL19+PFFXQPepKq+8IdOjRPVJr1Ka2yQIQkQMYiTn61ZyFqiizokEgZA5yDJPkjpUHdMzHXq6RHt7LFMzOUtptRJUwWUp0zVlspbKip6yntw3n+/s3MUHVyynZAO6rGW43aK3UGDT1LQur1YwIiwuV3ho4gDFINA3DPVz98g+GSxGOcrE6o56XU4f6A+2N5sr7hobYzpJ6tbq/b9Eh1/fGDvwcPeif4xCLhw0RnZu2qycfSHs7mHxmTUad2Tyxw3DX8dzsFUomITektcocBIWDBIYZmc9S5dXCaMCE9OJdlWEatlIdzkhDJVyyfH6VV0MDVhuunVap2pGnt7uqTXyRos1ggq8vn8BXpWju7o4oaeL+/ZNcNL8Xl41v5damrGkWGRhsci2ep1X9PbSG4XMpinrJw5IK0tZEFZYUinz5Week4IYytayslLR6TgRI3rT7Gy846ACDnIc3lcoDBPYPw8h2JKmvPbPzleZ3ijFnhFqU8rAFmXUwg5rKAQGESvGgImQSrfl8KWGd54hfPzCbk48JqDZSeguZSI+pdNKmJzMGB5Rtmyus/ahGg9sKsqeMUO9bUC9tJptWu021hiCPN+WjvOyL47FGCN3ju2TunOyvdGULbW6PNtoSqIqo522bJyaFi8iW2Zrgog8VW9IzTkpBoHE3slEmsqGqUmZ6HS81+xDWeZH/9Wa4MOLF36nx9rz/2ec6gXr7taXdG0T9nySVjvQJ/9LTaZHPR8Xo9PFgswrGXnXqzJdfrjyulWR/ORhx5NbVRd2KRt3h7J7cp4WC2FeErNmzk5lDkFKYFWcc6RJqpnLmJyciqemazMCaeJ95lQ1QEym6hTVUAypegx4KyKqeTPWoRrm+lKRHJ2gmnrFCMYimqrTQAyB5Y5mM/7LX1sU/UXPwPKu7nD91tn6gsrnP+3P+s/ni3v0PdjKmI492JaRy+vylFr974UicWBFHRpaz/xuYXw2FGuNKkohCqUQGc2cEyNy0H3qHJsip+D5B169GmMk7rTu2713/I+DIMiCIHAHz2SM0XD/fg8wfKgi8UvrX6se66/IdrCFm/7Gsvjawf6LishXH1y5XC+8/zYKE3eio/8NOzDIrm/tlqlvpLqhFPL3YSSZNTnN9CrWgIio5NUhUfKcYa6+ivo56qx5i03V56cUwXuH9+4ne4f3v+133Rewv/qLtzRbj/Z2dx8ZjI2/fHbFMpauegdueI3ipqX35H6Zmaox+FjGSnWyJk5pJIm4JKbTiWm323Q6scw96XQ6dDod4jgmTuKkE8czcZyMJ0m8Pe4kW9IsXe9ddq9z7jaf6nWNVmvsBTEhsn7Roj6NO/fsX7H8xFN/drN2JU+rf/I/STC0TJx1uu1Lu+ncFMuWwOhVKOOKRCjOezLnmiL8E0aeQv0u79ibejduHfti1YlWq9Wc6xx5Xsjr0cWLj1hd7X56w+WXqmrNJZsv837NgLpn3uLdnjP8s3+zUh9ZNOBv6x/QVT3dWVQqrq6Uoo9Wo+io35sRsg0v6Tvyrv4FT+y5/UZVN+qzB9+k2eoh7559l9fxs3X0xhN1w/GL9MG+/uSewcG/khehjL/xzPfCYnfMUd895eZvn149LMStPx8bzKCLXoH0zdfmyLRs//I+anfsIomTn9Yj+6l3Tk5ufLEowP6mP7ge6ismDvw4Gh4eOuytZ53oykt/riN3VGwyUXG+QmHxcuk/c6Xalx8l8XBzpRmdOvdcGx5+ThTu/H6ajv8+DUrK2is+etnyPzxja2Xbe6cr/fNuNqEOufJSzJITkPlLNWl1M/6z7TL5w41MPrytmU01bsvi+Ds7cQ995LccmdG8aKzPpwIODU+cA65x07ITClV/fVB0x3oto0PHI0PHqOkewmdFmX1inOmfPcX4vY9Te2bsuXiqvjrptNe08Fv3w9gGqN/8v88CykIonQ2lN37oPy5YcvKJR/YfHr66UBoZG3jVy74p8sH0BTUoWbtuZX9xIL7SWP8+GzibmXkwcLSahS8V0zWkhCV8S6S9s0Zryyi15/ZRH51OOzOtGZ/qdBDITIxNwnLog775UlwyUCgsG5hfXdJfrXRngwVTE9fYdZ1v7P9k13+4Zfz5NoFfu9q3LjrDWPtpa9zrrPWoKeK6liDzliG9CzHVPogqig0AIzgBb/MOrDf5KSSBZAqaY+jIdrKZPXdntZ2fL7+z8cALxQf8n8dmP3Nq8Opjd5wZRv59qP5BaF0/FjAhBFV81AVRGbEBiOT1W0khiyFro60mWac+QhLfHTdbN3SdF695wY7K/qbV+N7ShUE5PdmGcqpXPU68LvGqVRFvVBFEnWCaqJ9QsTs1y3a4TNa6JNrQc/7o5As1Cvw/r4lrj+wqlqfLhoIF8MQudt3tBec9V3++B6n+F+AGsKlLDXz1AAAAAElFTkSuQmCC">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  body{margin:0;font-family:'Century Gothic','Poppins',Arial,sans-serif;background:#F5F5F5;color:#000}
+  header{background:linear-gradient(90deg,#931825,#F8B133);border-bottom:4px solid #F8B133;padding:14px 24px;color:#fff;font-weight:700;font-size:20px;text-transform:uppercase}
+  main{max-width:760px;margin:24px auto;padding:0 16px}
+  .card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  h2{color:#C21A2B;font-size:15px;margin:0 0 6px} p{font-size:13px;color:#919191;margin:0 0 14px}
+  .btn{background:#C21A2B;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;margin-left:8px}
+  .btn:disabled{opacity:.6}
+  .log{font-size:12px;background:#fafafa;border-radius:8px;padding:12px;margin-top:12px;white-space:pre-wrap;font-family:Consolas,monospace;min-height:20px}
+  .hidden{display:none}
+  #aviso{color:#C21A2B;font-size:14px}
+</style>
+</head>
+<body>
+<header>Board Comercial · Carga de dados</header>
+<main>
+  <div class="card">
+    <div id="aviso" class="hidden"></div>
+    <div id="area" class="hidden">
+      <h2>Atualizar dados</h2>
+      <p>Planilhas do UXComex: "Propostas Criadas" (substituem as versões anteriores das propostas) e/ou "Lista Clientes" (substitui a lista inteira).</p>
+      <input type="file" id="arquivos" accept=".xlsx,.xls" multiple>
+      <button class="btn" id="btnCarregar" type="button">Carregar</button>
+      <div class="log" id="log"></div>
+      <p id="ultima" style="margin-top:12px"></p>
+    </div>
+  </div>
+</main>
+<script>
+const sb = supabase.createClient('https://ldoskdmbjwegfytypgfu.supabase.co', 'sb_publishable_zyTWrGpf61rXpapK5fN_zg_zDsZWPeO', { auth: { flowType: 'implicit' } });
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString('pt-BR');
+async function mostrarUltimaCarga(){
+  const { data } = await sb.from('com_cargas').select('carregado_em').order('carregado_em',{ascending:false}).limit(1);
+  $('ultima').textContent = data && data.length ? 'Última carga: ' + new Date(data[0].carregado_em).toLocaleString('pt-BR') : '';
+}
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  const aviso = t => { $('aviso').innerHTML = t; $('aviso').classList.remove('hidden'); };
+  if (!session) return aviso('Faça login no <a href="./">Board Comercial</a> e depois volte a esta página.');
+  const { data } = await sb.from('com_acessos').select('pode_carregar').maybeSingle();
+  if (!data || !data.pode_carregar) return aviso('Seu usuário não tem permissão para carregar dados.');
+  $('area').classList.remove('hidden'); mostrarUltimaCarga();
+})();
+/* ---------- Carga de planilhas (somente quem tem permissão) ---------- */
+const MAPA = {
+  'Número Proposta':'numero_proposta','Tipo Embarque':'tipo_embarque','Produto':'produto',
+  'Data Solicitação Cliente':'data_solicitacao_cliente','Tipo de Carga':'tipo_carga','Data de Emissão':'data_emissao',
+  'Data de Validade':'data_validade','Status':'status','Motivo':'motivo','Complemento Motivo Proposta':'complemento_motivo',
+  'Data de Aprovação':'data_aprovacao','Cliente':'cliente','Ref. Cliente':'ref_cliente','Cia / Armador / Coloader':'cia_armador_coloader',
+  'Frete Master':'frete_master','Frete House':'frete_house','Vendedor':'vendedor','País':'pais','Origem':'origem','Destino':'destino',
+  'Incoterm':'incoterm','Profit BRL':'profit_brl','Data Criação':'data_criacao','Emissor':'emissor','Inside Sales':'inside_sales',
+  'Rota':'rota','Agente Internacional':'agente_internacional','Peso Bruto':'peso_bruto','Peso Taxado/Cubado':'peso_taxado',
+  'qtd. containers':'qtd_containers','Custo BRL':'custo_brl','Venda BRL':'venda_brl','Observações da Rota':'observacoes_rota'
+};
+const DATAS = new Set(['data_solicitacao_cliente','data_emissao','data_validade','data_aprovacao','data_criacao',
+                       'data_ativacao_prospecto','data_ultima_proposta','ultimo_embarque']);
+const NUMS  = new Set(['profit_brl','peso_bruto','peso_taxado','qtd_containers','custo_brl','venda_brl','ativo_em_dias','dias_sem_embarcar']);
+const MAPA_CLI = {
+  'Nome Completo':'nome_completo','Apelido':'apelido','CNPJ / CPF':'cnpj','Segmento':'segmento','Vendedor':'vendedor',
+  'Inside':'inside','Cidade':'cidade','UF':'uf','Data Ativação Prospecto':'data_ativacao_prospecto',
+  'Ativo em (dias)':'ativo_em_dias','Dias sem embarcar':'dias_sem_embarcar',
+  'Data de Emissão Última Proposta':'data_ultima_proposta','Último Embarque':'ultimo_embarque','Data de Criação':'data_criacao'
+};
+const p2 = n => String(n).padStart(2,'0');
+
+function dataISO(v){
+  if (v === null || v === undefined || v === '' || v === 0 || v === '0') return null;
+  if (typeof v === 'number'){                       // número serial do Excel
+    const d = new Date(Math.round((v - 25569) * 86400000));
+    return `${d.getUTCFullYear()}-${p2(d.getUTCMonth()+1)}-${p2(d.getUTCDate())}T${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}:00`;
+  }
+  const m = String(v).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if (!m) return null;
+  return `${m[3]}-${p2(m[2])}-${p2(m[1])}T${p2(m[4]||0)}:${m[5]||'00'}:00`;
+}
+function numero(v){
+  if (v === null || v === undefined || v === '') return null;
+  if (typeof v === 'number') return v;
+  let s = String(v).trim();
+  if (s.includes(',')) s = s.replace(/\./g,'').replace(',', '.');   // formato 1.234,56
+  const n = Number(s); return isNaN(n) ? null : n;
+}
+function texto(v){
+  if (v === null || v === undefined) return null;
+  const s = String(v).trim();
+  return (s === '' || s === '0') ? null : s;
+}
+function converter(bruto, mapa){
+  return bruto.map(r=>{
+    const o = {};
+    for (const [col, campo] of Object.entries(mapa)){
+      const v = r[col];
+      o[campo] = DATAS.has(campo) ? dataISO(v) : NUMS.has(campo) ? numero(v) : texto(v);
+    }
+    if (o.data_validade) o.data_validade = o.data_validade.slice(0,10);
+    if (o.ativo_em_dias != null) o.ativo_em_dias = Math.round(o.ativo_em_dias);
+    if (o.dias_sem_embarcar != null) o.dias_sem_embarcar = Math.round(o.dias_sem_embarcar);
+    return o;
+  });
+}
+function log(t){ const l=$('log'); l.classList.remove('hidden'); l.textContent += t + '\n'; l.scrollTop = l.scrollHeight; }
+
+$('btnCarregar').onclick = async ()=>{
+  const arquivos = [...$('arquivos').files];
+  $('log').textContent = '';
+  if (!arquivos.length){ log('Selecione ao menos uma planilha.'); return; }
+  $('btnCarregar').disabled = true;
+  try{
+    for (const arq of arquivos){
+      log(`▶ ${arq.name}`);
+      const wb = XLSX.read(await arq.arrayBuffer(), { type:'array' });
+      const bruto = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:null, raw:true });
+      const cab = bruto.length ? Object.keys(bruto[0]) : [];
+
+      if (cab.includes('Número Proposta')){
+        const linhas = converter(bruto, MAPA).filter(o => o.numero_proposta);
+        const grupos = {};
+        linhas.forEach(l => (grupos[l.numero_proposta] ||= []).push(l));
+        const chaves = Object.keys(grupos);
+        const LOTE = 250; let total = 0;
+        for (let i=0; i<chaves.length; i+=LOTE){
+          const lote = chaves.slice(i, i+LOTE).flatMap(k => grupos[k]);
+          const { data, error } = await sb.rpc('com_carregar', { p_arquivo: arq.name, p_linhas: lote });
+          if (error) throw new Error(error.message);
+          total += data;
+        }
+        log(`  ✔ Propostas: ${fmt(chaves.length)} propostas / ${fmt(total)} rotas`);
+      } else if (cab.includes('Nome Completo') && cab.includes('Data Ativação Prospecto')){
+        const linhas = converter(bruto, MAPA_CLI).filter(o => o.nome_completo);
+        const { data, error } = await sb.rpc('com_carregar_clientes', { p_arquivo: arq.name, p_linhas: linhas });
+        if (error) throw new Error(error.message);
+        log(`  ✔ Clientes: ${fmt(data)} registros (lista substituída)`);
+      } else {
+        log('  ⚠ Planilha não reconhecida (esperado "Propostas Criadas" ou "Lista Clientes") — ignorada');
+      }
+    }
+    log('Concluído.');
+    await mostrarUltimaCarga();
+  }catch(e){ log('✖ Erro: ' + e.message); }
+  $('btnCarregar').disabled = false;
+};
+
+</script>
+</body>
+</html>
