@@ -641,11 +641,14 @@ const COR_ATUAL = '#C21A2B', COR_COMP = '#F8B133';
 const ANO_ATUAL = new Date().getFullYear(), MES_ATUAL = new Date().getMonth();
 let anoComp = '', cacheAnos = {};
 const selecaoDim = {};   // valor escolhido no seletor de cada gráfico
+const TODOS = '__todos__';
+// valor de um mês para a dimensão escolhida ('Todos' = total de rotas no status, total de propostas nos demais)
+const valorDim = (def, m) => selecaoDim[def.id] === TODOS ? (def.dim === 'porStatusRota' ? m.totalRotas : m.totalPropostas) : (m[def.dim + 'Map'].get(selecaoDim[def.id]) || 0);
 
 const HIST = [
   { id:'prop',   titulo:'Propostas criadas',          val: m => m.totalPropostas },
   { id:'multi',  titulo:'Propostas com 2+ rotas',     val: m => m.multiRota },
-  { id:'status', titulo:'Rotas por status',           dim:'porStatusRota', padrao:'Aprovada' },
+  { id:'status', titulo:'Rotas por status',           dim:'porStatusRota' },
   { id:'vend',   titulo:'Propostas por vendedor',     dim:'porVendedor' },
   { id:'inside', titulo:'Propostas por inside sales', dim:'porEmissor' },
   { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente' },
@@ -681,7 +684,7 @@ $('btnAplicar').onclick = () => { anoComp = $('fComparar').value; renderHistoric
 
 function valoresDe(def, serie){
   if (!serie) return MESES.map(() => null);
-  if (def.dim){ const v = selecaoDim[def.id]; return serie.map(m => m ? (m[def.dim + 'Map'].get(v) || 0) : null); }
+  if (def.dim) return serie.map(m => m ? valorDim(def, m) : null);
   return serie.map(m => m ? def.val(m) : null);
 }
 function acumulado(def, serie, ateMes){
@@ -689,7 +692,7 @@ function acumulado(def, serie, ateMes){
   for (let i = 0; i <= ateMes; i++){
     const m = serie && serie[i]; if (!m) continue;
     if (def.media){ if (m.leadTimeBase){ soma += m.leadTimeMedio * m.leadTimeBase; peso += m.leadTimeBase; } }
-    else soma += def.dim ? (m[def.dim + 'Map'].get(selecaoDim[def.id]) || 0) : def.val(m);
+    else soma += def.dim ? valorDim(def, m) : def.val(m);
   }
   return def.media ? (peso ? soma / peso : null) : soma;
 }
@@ -705,8 +708,8 @@ function renderHistorico(){
       const tot = new Map();
       [sA, sC].forEach(s => s && s.forEach(m => m && m[def.dim].forEach(([k, v]) => tot.set(k, (tot.get(k) || 0) + v))));
       const opcoes = [...tot.entries()].sort((a,b) => b[1] - a[1]).slice(0, 40).map(e => e[0]);
-      if (!opcoes.includes(selecaoDim[def.id])) selecaoDim[def.id] = opcoes.includes(def.padrao) ? def.padrao : opcoes[0];
-      seletor = `<select data-dim="${def.id}">${opcoes.map(o => `<option${o === selecaoDim[def.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+      if (selecaoDim[def.id] !== TODOS && !opcoes.includes(selecaoDim[def.id])) selecaoDim[def.id] = TODOS;
+      seletor = `<select data-dim="${def.id}"><option value="${TODOS}"${selecaoDim[def.id] === TODOS ? ' selected' : ''}>Todos</option>${opcoes.map(o => `<option value="${esc(o)}"${o === selecaoDim[def.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
     }
     const a = valoresDe(def, sA), c = sC ? valoresDe(def, sC) : null;
     const accA = acumulado(def, sA, MES_ATUAL), accC = sC ? acumulado(def, sC, MES_ATUAL) : null;
