@@ -120,7 +120,12 @@ $('btnCarregar').onclick = async ()=>{
     for (const arq of arquivos){
       log(`▶ ${arq.name}`);
       const wb = XLSX.read(await arq.arrayBuffer(), { type:'array' });
-      const bruto = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:null, raw:true });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      // o export do UXComex vem com uma linha de título antes do cabeçalho: localizar a linha do cabeçalho
+      const linhasBrutas = XLSX.utils.sheet_to_json(ws, { header:1, defval:null, raw:true });
+      let ini = linhasBrutas.findIndex(l => l.some(v => v === 'Número Proposta' || v === 'Nome Completo'));
+      if (ini < 0) ini = 0;
+      const bruto = XLSX.utils.sheet_to_json(ws, { range: ini, defval:null, raw:true });
       const cab = bruto.length ? Object.keys(bruto[0]) : [];
 
       if (cab.includes('Número Proposta')){
