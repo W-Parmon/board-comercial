@@ -180,6 +180,7 @@
   .filtro-bar .dir .upd{margin-left:0;padding-bottom:0}
   .filtro-bar .dir .legenda{margin-left:0;padding-bottom:0}
   @media (max-width:700px){.hist-ctrls{padding-left:0;border-left:none;flex-wrap:wrap}.filtro-bar .dir{margin-left:0;align-items:flex-start}}
+  th.c,td.c{text-align:center}
 </style>
 </head>
 <body>
@@ -302,7 +303,7 @@
       <div class="card">
         <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
-        <div class="tbl-wrap"><table><thead><tr><th>Nome Cliente</th><th>Vendedor</th><th>Início Prospecção</th><th>Convertido em Cliente</th></tr></thead><tbody id="tNovos"></tbody></table></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Nome Cliente</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Convertido em Cliente</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
     </div>
     </section>
@@ -619,7 +620,7 @@ function tabelaNovos(){
   const linhas = M.novosClientes.filter(c => !q || (c.nome||'').toUpperCase().includes(q));
   $('notaNovos').textContent = `${fmt(M.novosClientes.length)} prospectos ativados no mês`;
   $('tNovos').innerHTML = linhas.length ? linhas.map(c =>
-    `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td>${fmtData(c.inicio)}</td><td class="n">${c.ativoDias == null ? '–' : fmt(c.ativoDias) + ' dias'}</td></tr>`).join('')
+    `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td class="c">${fmtData(c.inicio)}</td><td class="c">${c.ativoDias == null ? '–' : fmt(c.ativoDias) + ' dias'}</td></tr>`).join('')
     : '<tr><td colspan="4" class="vazio">Nenhum novo cliente no mês.</td></tr>';
 }
 $('buscaVenc').oninput = ()=> M && tabelaVencidas();
