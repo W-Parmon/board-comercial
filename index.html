@@ -54,7 +54,7 @@
   .bar select{min-width:220px}
   .upd{font-size:12px;color:var(--muted);margin-left:auto;padding-bottom:8px}
 
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:16px}
   .kpi{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:16px}
   .kpi .lbl{font-size:12px;color:var(--muted)}
   .kpi .val{font-size:30px;font-weight:700;color:var(--red);margin-top:4px;line-height:1.1}
@@ -72,8 +72,43 @@
   .hb .rot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#000}
   .hb .trk{height:14px;background:var(--track);border-radius:0 4px 4px 0}
   .hb .fill{height:100%;background:var(--red);border-radius:0 4px 4px 0;min-width:2px}
+  #gInside .hb .fill{background:#F8B133}
+  #gVend .vb .fill{background:#2563EB}
+  #gCliente .hb .fill{background:#16A34A}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
+  /* barras verticais */
+  .grid2>.card{min-width:0}
+  .vbars{display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding-bottom:4px}
+  .vb{flex:1 0 56px;display:flex;flex-direction:column;align-items:center;border-radius:4px;padding-top:2px}
+  .vb:hover{background:var(--soft)}
+  .vb .num{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;margin-bottom:4px}
+  .vb .col{width:62%;max-width:44px;height:180px;display:flex;align-items:flex-end;background:var(--track);border-radius:4px 4px 0 0}
+  .vb .fill{width:100%;background:var(--red);border-radius:4px 4px 0 0;min-height:2px}
+  .vb .rot{font-size:10.5px;line-height:1.25;text-align:center;margin-top:6px;height:2.5em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:break-word}
+  /* pizza status */
+  .pizza{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .pizza svg{width:190px;height:190px;flex:0 0 auto}
+  .pizza path,.pizza circle{stroke:#fff;stroke-width:1.5}
+  .pizza path:hover,.pizza circle:hover{opacity:.85}
+  .leg-pz{flex:1;min-width:200px;display:flex;flex-direction:column;gap:6px;font-size:12px}
+  .leg-pz div{display:grid;grid-template-columns:12px 1fr auto 52px;gap:8px;align-items:center;padding:2px 4px;border-radius:4px}
+  .leg-pz div:hover{background:var(--soft)}
+  .leg-pz i{width:12px;height:12px;border-radius:3px;display:block}
+  .leg-pz b{font-variant-numeric:tabular-nums}
+  .leg-pz em{font-style:normal;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
   .mais{margin-top:10px}
+  /* clientes sem embarque */
+  .faixas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .faixa{background:#fff;border:1px solid var(--line);border-radius:18px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;color:#000;cursor:pointer}
+  .faixa span{color:var(--muted);font-weight:400;margin-left:4px}
+  .faixa:hover{border-color:var(--gold)}
+  .faixa.ativa{background:var(--red);border-color:var(--red);color:#fff}
+  .faixa.ativa span{color:#fff}
+  #gEmb .hb{grid-template-columns:minmax(90px,34%) 1fr 190px}
+  @media (max-width:640px){
+    #gEmb .hb{grid-template-columns:1fr auto;grid-template-areas:"rot num" "trk trk";row-gap:4px;padding:4px 0}
+    #gEmb .hb .rot{grid-area:rot} #gEmb .hb .num{grid-area:num} #gEmb .hb .trk{grid-area:trk}
+  }
 
   /* tabelas */
   .tbl-wrap{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:8px}
@@ -123,6 +158,7 @@
   .modal{background:#fff;border-radius:12px;padding:24px;width:100%;max-width:360px;border-top:4px solid var(--gold)}
   .modal h3{color:var(--red);margin-bottom:16px}
   .row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+  @media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
   @media (max-width:900px){.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
   @media (max-width:600px){header{padding:12px 16px}main{padding:16px}.upd{margin-left:0}.kpis{grid-template-columns:1fr}}
 
@@ -181,6 +217,38 @@
   .filtro-bar .dir .legenda{margin-left:0;padding-bottom:0}
   @media (max-width:700px){.hist-ctrls{padding-left:0;border-left:none;flex-wrap:wrap}.filtro-bar .dir{margin-left:0;align-items:flex-start}}
   th.c,td.c{text-align:center}
+  /* lupa + detalhamento */
+  .kpi,.card,.cardH{position:relative}
+  .lupa{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;border:1.5px solid var(--dourado);background:#fff;display:flex;align-items:center;justify-content:center;padding:0;z-index:2}
+  .lupa svg{width:15px;height:15px;fill:none;stroke:var(--vermelho);stroke-width:2.4;stroke-linecap:round}
+  .lupa:hover{background:#fff8ec}
+  .card h2,.cardH h2,.kpi .lbl{padding-right:36px}
+  .det{background:#fff;border-radius:12px;width:100%;max-width:1100px;max-height:88vh;display:flex;flex-direction:column;border-top:4px solid var(--dourado);box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  .det-top{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 22px 8px}
+  .det-top h3{color:var(--vermelho);font-size:17px;margin:0}
+  .det-sub{font-size:12px;color:var(--cinza);margin-top:3px}
+  .det-fechar{background:none;border:none;font-size:18px;color:var(--cinza);padding:4px 8px}
+  .det-fechar:hover{color:var(--vermelho)}
+  .det-ctrl{display:flex;gap:10px;padding:4px 22px 10px;flex-wrap:wrap}
+  .det-ctrl select{padding:7px 10px;border:1px solid #d8d8d8;border-radius:8px;font-size:13px;max-width:320px;background:#fff}
+  .det-ctrl .busca{flex:1;min-width:200px;margin:0}
+  .det-tbl{margin:0 22px;max-height:none;flex:1;overflow:auto}
+  .modal-bg{z-index:100}
+  #tip{z-index:120}
+  .det-tbl td:first-child{white-space:nowrap}
+  .det-tbl td.c{white-space:nowrap}
+  .det-tbl table{min-width:860px}
+  .com-filtro thead{position:sticky;top:0;z-index:2;background:#fff}
+  .com-filtro thead th{position:static;border-bottom:none;text-align:center}
+  .com-filtro tr.filtros th{padding:0 6px 8px;border-bottom:none;box-shadow:inset 0 -2px 0 var(--dourado)}
+  .fcol{display:flex;align-items:center;border:1px solid #d8d8d8;border-radius:6px;background:#fff}
+  .fcol:focus-within{border-color:var(--dourado);box-shadow:0 0 0 2px rgba(248,177,51,.2)}
+  .fcol input{flex:1;min-width:0;width:100%;border:none;outline:none;padding:5px 6px;font:inherit;font-size:12px;text-transform:none;background:transparent}
+  .fcol button{border:none;background:none;color:var(--cinza);font:inherit;font-size:12px;padding:0 7px;cursor:pointer;line-height:1}
+  .fcol button:hover{color:var(--vermelho)}
+  .det-ctrl:not(:has(select:not(.hidden))){display:none}
+  .det-rodape{font-size:12px;color:var(--cinza);padding:10px 22px 16px}
+  @media (max-width:600px){.det{max-height:94vh}.det-tbl{margin:0 10px}.det-top,.det-ctrl,.det-rodape{padding-left:12px;padding-right:12px}}
 </style>
 </head>
 <body>
@@ -279,32 +347,37 @@
     <section id="abaMes">
     <div class="titulo-mes" id="tituloMes"></div>
     <div class="kpis">
-      <div class="kpi"><div class="lbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub">cada referência contada uma vez</div></div>
-      <div class="kpi"><div class="lbl">Rotas cotadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kMulti">–</div></div>
-      <div class="kpi"><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">da criação até a aprovação</div></div>
-      <div class="kpi"><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
+      <div class="kpi"><div class="lbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="aprovadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas aprovadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">com pelo menos 1 rota aprovada</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="lead" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
 
     <div class="grid2">
-      <div class="card"><h2>Status das rotas</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="hbars" id="gStatus"></div></div>
-      <div class="card"><h2>Propostas por vendedor</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gVend"></div></div>
+      <div class="card"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Status das rotas</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
+      <div class="card"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
     </div>
     <div class="grid2">
-      <div class="card"><h2>Propostas por inside sales</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
-      <div class="card"><h2>Propostas por cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
+      <div class="card"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por inside sales</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
+      <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
 
     <div class="grid2">
       <div class="card">
         <div class="card-head"><div><h2>Propostas vencidas</h2><div class="nota" id="notaVenc"></div></div></div>
-        <input class="busca" id="buscaVenc" placeholder="Buscar cliente ou referência…">
-        <div class="tbl-wrap"><table><thead><tr><th>Referência</th><th>Cliente</th><th>Vendedor</th><th>Validade</th><th>Status das rotas</th></tr></thead><tbody id="tVenc"></tbody></table></div>
+        <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Cliente</th><th>Vendedor</th><th>Validade</th><th>Status das rotas</th></tr><tr class="filtros" id="vencFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="validade" aria-label="Filtrar Validade" autocomplete="off"><button type="button" data-limpa="validade" aria-label="Limpar filtro Validade">x</button></div></th><th class="flt"><div class="fcol"><input data-col="status" aria-label="Filtrar Status das rotas" autocomplete="off"><button type="button" data-limpa="status" aria-label="Limpar filtro Status das rotas">x</button></div></th></tr></thead><tbody id="tVenc"></tbody></table></div>
       </div>
       <div class="card">
         <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
         <div class="tbl-wrap"><table><thead><tr><th>Nome Cliente</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Convertido em Cliente</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div>
+      <div class="faixas" id="faixasEmb"></div>
+      <div class="hbars" id="gEmb"></div><button class="btn ghost small mais hidden" id="maisEmb" type="button"></button>
     </div>
     </section>
 
@@ -325,6 +398,22 @@
 
 <div id="tip" class="hidden"></div>
 <div class="carregando hidden" id="carregando">Carregando dados…</div>
+
+<!-- MODAL DETALHAMENTO -->
+<div class="modal-bg hidden" id="modalDet">
+  <div class="det" role="dialog" aria-modal="true" aria-labelledby="detTitulo">
+    <div class="det-top">
+      <div><h3 id="detTitulo"></h3><div class="det-sub" id="detSub"></div></div>
+      <button class="det-fechar" id="detFechar" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="det-ctrl">
+      <select id="detAno" class="hidden"></select>
+      <select id="detFiltro" class="hidden"></select>
+    </div>
+    <div class="tbl-wrap det-tbl com-filtro"><table><thead><tr><th>Número da Proposta</th><th>Cliente</th><th>Vendedor</th><th>Inside</th><th>Status</th><th class="c">Data Criação</th><th class="c">Data Vencimento</th></tr><tr class="filtros" id="detFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Número da Proposta" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Número da Proposta">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="inside" aria-label="Filtrar Inside" autocomplete="off"><button type="button" data-limpa="inside" aria-label="Limpar filtro Inside">x</button></div></th><th class="flt"><div class="fcol"><input data-col="status" aria-label="Filtrar Status" autocomplete="off"><button type="button" data-limpa="status" aria-label="Limpar filtro Status">x</button></div></th><th class="flt"><div class="fcol"><input data-col="criacao" aria-label="Filtrar Data Criação" autocomplete="off"><button type="button" data-limpa="criacao" aria-label="Limpar filtro Data Criação">x</button></div></th><th class="flt"><div class="fcol"><input data-col="validade" aria-label="Filtrar Data Vencimento" autocomplete="off"><button type="button" data-limpa="validade" aria-label="Limpar filtro Data Vencimento">x</button></div></th></tr></thead><tbody id="detCorpo"></tbody></table></div>
+    <div class="det-rodape" id="detRodape"></div>
+  </div>
+</div>
 
 <!-- MODAL TROCAR SENHA -->
 <div class="modal-bg hidden" id="modalSenha">
@@ -363,7 +452,8 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   const lista = [...props.values()].filter(p => p.criacao && (!de || p.criacao >= de) && (!ate || p.criacao <= ate));
 
   const porCliente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map();
-  let multiRota = 0, totalRotas = 0;
+  let multiRota = 0, totalRotas = 0, aprovadasN = 0;
+  const detalhe = [];   // uma linha por proposta, para as telas de detalhamento
   const leadTimes = []; let leadIgnorados = 0;
   const vencidas = [];
 
@@ -376,12 +466,18 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     for (const r of p.rotas) contar(porStatusRota, r.status || 'Sem status');
 
     const aprovadas = p.rotas.filter(r => norm(r.status) === 'APROVADA');
+    if (aprovadas.length) aprovadasN++;
+    const vals = p.rotas.map(r => dia(r.data_validade)).filter(Boolean).sort();
+    const det = { num: p.num, cliente: p.cliente || 'Sem cliente', vendedor: p.vendedor || 'Sem vendedor', inside: p.emissor || 'Sem emissor',
+      statusLista: [...new Set(p.rotas.map(r => r.status || 'Sem status'))], criacao: p.criacao, validade: vals.length ? vals[vals.length - 1] : null,
+      rotas: p.rotas.length, aprovada: aprovadas.length > 0, lead: null, vencida: false };
+    detalhe.push(det);
 
     // 6) lead time: criação → primeira aprovação (em dias corridos)
     const datasAprov = aprovadas.map(r => dia(r.data_aprovacao)).filter(Boolean).sort();
     if (datasAprov.length) {
       const d = diasEntre(p.criacao, datasAprov[0]);
-      if (d >= 0) leadTimes.push(d); else leadIgnorados++;
+      if (d >= 0) { leadTimes.push(d); det.lead = d; } else leadIgnorados++;
     }
 
     // 7) vencidas: tem validade, validade já passou, nenhuma rota aprovada,
@@ -390,6 +486,7 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     if (validades.length && !aprovadas.length) {
       const validade = validades[validades.length - 1];
       const unicaEncerrada = p.rotas.length === 1 && STATUS_FINAIS_NEG.has(norm(p.rotas[0].status));
+      if (validade < hoje && !unicaEncerrada) det.vencida = true;
       if (validade < hoje && !unicaEncerrada) vencidas.push({ num: p.num, cliente: p.cliente, vendedor: p.vendedor, validade, status: p.rotas.map(r => r.status || 'Sem status').join(' / ') });
     }
   }
@@ -404,6 +501,8 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   return {
     totalPropostas: lista.length,
     totalRotas,
+    aprovadas: aprovadasN,
+    detalhe: detalhe.sort((a, b) => (a.criacao < b.criacao ? 1 : a.criacao > b.criacao ? -1 : 0)),
     multiRota,
     porCliente: ordenar(porCliente),
     porVendedor: ordenar(porVendedor),
@@ -439,7 +538,7 @@ const $ = id => document.getElementById(id);
 const limparURL = () => history.replaceState(null, '', location.pathname);
 const fmt = n => Number(n).toLocaleString('pt-BR');
 const fmtData = iso => iso ? iso.slice(8,10)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4) : '–';
-const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = s => String(s ?? '').replace(/&amp;/g, '&').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MESES_LONGOS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const limitesMes = (ano, m) => { const ult = new Date(ano, m + 1, 0).getDate(), mm = String(m + 1).padStart(2,'0'); return [`${ano}-${mm}-01`, `${ano}-${mm}-${ult}`]; };
 const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
@@ -547,7 +646,7 @@ async function carregarDados(){
     const filtro = acesso.perfil === 'diretoria' ? $('fVendedor').value : '';
     [ROTAS, CLIENTES] = await Promise.all([
       buscarTudo('com_propostas_rotas','numero_proposta,status,cliente,vendedor,emissor,data_criacao,data_aprovacao,data_validade', filtro),
-      buscarTudo('com_clientes','nome_completo,vendedor,data_ativacao_prospecto,ativo_em_dias', filtro)
+      buscarTudo('com_clientes','nome_completo,vendedor,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro)
     ]);
     renderizar(); prepararHistorico();
   }catch(e){ console.error(e); $('kProp').textContent = 'erro'; }
@@ -564,6 +663,34 @@ async function mostrarAtualizacao(){
 
 /* ---------- Visualização ---------- */
 const tip = $('tip');
+function colunas(el, pares, total){
+  if (!pares.length){ el.innerHTML = '<div class="vazio">Sem dados no mês.</div>'; return; }
+  const max = Math.max(1, ...pares.map(p=>p[1]));
+  el.innerHTML = pares.map(([rot, v]) =>
+    `<div class="vb" data-t="${esc(rot)}: ${fmt(v)} (${(100*v/total).toFixed(1).replace('.',',')}%)">
+       <div class="num">${fmt(v)}</div>
+       <div class="col"><div class="fill" style="height:${(100*v/max).toFixed(2)}%"></div></div>
+       <div class="rot">${esc(rot)}</div></div>`).join('');
+}
+function pizza(el, pares, total){
+  if (!pares.length || !total){ el.innerHTML = '<div class="vazio">Sem dados no mês.</div>'; return; }
+  const pct = v => (100*v/total).toFixed(1).replace('.',',') + '%';
+  const R = 95, C = 100; let ang = -Math.PI/2, fatias = '';
+  pares.forEach(([rot, v], i) => {
+    const cor = corStatus(rot, i), t = `${esc(rot)}: ${fmt(v)} (${pct(v)})`;
+    if (v === total){ fatias += `<circle cx="${C}" cy="${C}" r="${R}" fill="${cor}" data-t="${t}"/>`; return; }
+    const a2 = ang + 2*Math.PI*v/total;
+    const x1 = C + R*Math.cos(ang), y1 = C + R*Math.sin(ang), x2 = C + R*Math.cos(a2), y2 = C + R*Math.sin(a2);
+    fatias += `<path d="M${C} ${C}L${x1.toFixed(2)} ${y1.toFixed(2)}A${R} ${R} 0 ${a2-ang > Math.PI ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}Z" fill="${cor}" data-t="${t}"/>`;
+    ang = a2;
+  });
+  el.innerHTML = `<svg viewBox="0 0 200 200" role="img" aria-label="Status das rotas">${fatias}</svg>
+    <div class="leg-pz">${pares.map(([rot, v], i) => `<div data-t="${esc(rot)}: ${fmt(v)} (${pct(v)})"><i style="background:${corStatus(rot, i)}"></i><span>${esc(rot)}</span><b>${fmt(v)}</b><em>${pct(v)}</em></div>`).join('')}</div>`;
+}
+const CORES_STATUS = { 'ENVIADO AO CLIENTE':'#2563EB', 'APROVADA':'#16A34A', 'CANCELADA':'#DC2626', 'SEM STATUS':'#4B5563',
+  'EM ANDAMENTO':'#F8B133', 'REPROVADA':'#F97316', 'ESTUDO DE VIABILIDADE':'#7C3AED' };
+const CORES_EXTRAS = ['#0D9488','#A3A3A3','#DB2777','#0EA5E9','#78350F'];
+function corStatus(rot, i){ return CORES_STATUS[String(rot).trim().toUpperCase()] || CORES_EXTRAS[i % CORES_EXTRAS.length]; }
 function barras(el, pares, total, limite, botao){
   const mostrar = limite && pares.length > limite && !el.dataset.tudo ? pares.slice(0, limite) : pares;
   const max = Math.max(1, ...pares.map(p=>p[1]));
@@ -588,32 +715,101 @@ document.addEventListener('mousemove', e=>{
 function alternar(elId, botao){ const el=$(elId); if (el.dataset.tudo) delete el.dataset.tudo; else el.dataset.tudo='1'; renderizar(); }
 $('maisInside').onclick = ()=>alternar('gInside');
 $('maisCliente').onclick = ()=>alternar('gCliente');
+$('maisEmb').onclick = ()=>{ const el=$('gEmb'); if (el.dataset.tudo) delete el.dataset.tudo; else el.dataset.tudo='1'; quadroEmbarque(); };
+
+/* ---------- Clientes sem embarque ---------- */
+const FAIXAS_EMB = [
+  { id:'30',    rot:'Até 30 Dias',  teste:c => c.dias != null && c.dias <= 30 },
+  { id:'60',    rot:'Até 60 Dias',      teste:c => c.dias != null && c.dias >= 31 && c.dias <= 60 },
+  { id:'90',    rot:'Até 90 Dias',      teste:c => c.dias != null && c.dias >= 61 && c.dias <= 90 },
+  { id:'180',   rot:'Até 180 Dias',     teste:c => c.dias != null && c.dias >= 91 && c.dias <= 180 },
+  { id:'180+',  rot:'Mais de 180 Dias',  teste:c => c.dias != null && c.dias >= 181 },
+  { id:'nunca', rot:'Nunca Embarcou', teste:c => c.dias == null },
+];
+let faixaEmb = '30';
+function clientesEmbarque(){
+  return (CLIENTES||[]).map(c => ({ nome:c.nome_completo || 'Sem nome', vendedor:c.vendedor || 'Sem vendedor',
+    ultimo:c.ultimo_embarque ? String(c.ultimo_embarque).slice(0,10) : null,
+    dias:c.ultimo_embarque ? Number(c.dias_sem_embarcar) : null }));
+}
+/* dias sem embarcar → "N dias" (até 31) ou "A anos, M meses e D dias" pelo calendário,
+   do último embarque até a data da extração (último embarque + dias) */
+function tempoSemEmbarque(ultimo, dias){
+  const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+  if (dias <= 31 || !ultimo) return plural(dias, 'dia', 'dias');
+  const ini = new Date(ultimo + 'T00:00:00Z'), fim = new Date(ini.getTime() + dias*86400000);
+  const somaMeses = n => { const d = new Date(Date.UTC(ini.getUTCFullYear(), ini.getUTCMonth() + n, 1));
+    const ult = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+    d.setUTCDate(Math.min(ini.getUTCDate(), ult)); return d; };
+  let meses = (fim.getUTCFullYear() - ini.getUTCFullYear())*12 + fim.getUTCMonth() - ini.getUTCMonth();
+  if (somaMeses(meses) > fim) meses--;
+  const resto = Math.round((fim - somaMeses(meses)) / 86400000);
+  const anos = Math.floor(meses / 12), m = meses % 12;
+  const partes = [];
+  if (anos) partes.push(plural(anos, 'ano', 'anos'));
+  if (m) partes.push(plural(m, 'mês', 'meses'));
+  if (resto) partes.push(plural(resto, 'dia', 'dias'));
+  return partes.length > 1 ? partes.slice(0, -1).join(', ') + ' e ' + partes[partes.length - 1] : partes[0];
+}
+function quadroEmbarque(){
+  const todos = clientesEmbarque();
+  const grupos = FAIXAS_EMB.map(f => ({ ...f, lista: todos.filter(f.teste) }));
+  $('faixasEmb').innerHTML = grupos.map(g =>
+    `<button type="button" class="faixa${g.id===faixaEmb?' ativa':''}" data-faixa="${g.id}">${g.rot}<span>${fmt(g.lista.length)}</span></button>`).join('');
+  const g = grupos.find(x => x.id === faixaEmb);
+  const lista = g.lista.slice().sort((a,b) => (b.dias ?? 0) - (a.dias ?? 0) || a.nome.localeCompare(b.nome,'pt-BR'));
+  const el = $('gEmb'), lim = 10;
+  const mostrar = lista.length > lim && !el.dataset.tudo ? lista.slice(0, lim) : lista;
+  const max = Math.max(1, ...lista.map(c => c.dias || 0));
+  el.innerHTML = mostrar.length ? mostrar.map(c => c.dias == null
+    ? `<div class="hb" data-t="${esc(c.nome)} · ${esc(c.vendedor)} · sem registro de embarque">
+         <div class="rot">${esc(c.nome)}</div><div class="trk"></div><div class="num">–</div></div>`
+    : `<div class="hb" data-t="${esc(c.nome)} · ${esc(c.vendedor)} · último embarque ${fmtData(c.ultimo)} · ${fmt(c.dias)} dias sem embarcar">
+         <div class="rot">${esc(c.nome)}</div>
+         <div class="trk"><div class="fill" style="width:${(100*c.dias/max).toFixed(2)}%"></div></div>
+         <div class="num">${tempoSemEmbarque(c.ultimo, c.dias)}</div></div>`).join('')
+    : '<div class="vazio">Nenhum cliente nesta faixa.</div>';
+  const b = $('maisEmb');
+  b.classList.toggle('hidden', !(lista.length > lim));
+  b.textContent = el.dataset.tudo ? 'Mostrar top ' + lim : `Ver todos (${fmt(lista.length)})`;
+}
+$('faixasEmb').onclick = e => { const b = e.target.closest('[data-faixa]'); if (!b) return; faixaEmb = b.dataset.faixa; delete $('gEmb').dataset.tudo; quadroEmbarque(); };
 
 function renderizar(){
   const [de, ate] = limitesMes(new Date().getFullYear(), new Date().getMonth());
   $('tituloMes').innerHTML = `Resultados de <b>${MESES_LONGOS[new Date().getMonth()]}/${new Date().getFullYear()}</b> — propostas criadas no mês vigente`;
   M = calcularMetricas(ROTAS, CLIENTES, de, ate, hojeISO());
+  const hj = new Date(), mAnt = hj.getMonth() === 0 ? 11 : hj.getMonth() - 1, aAnt = hj.getMonth() === 0 ? hj.getFullYear() - 1 : hj.getFullYear();
+  const [deA, ateA] = limitesMes(aAnt, mAnt);
+  const A = calcularMetricas(ROTAS, [], deA, ateA, hojeISO());
+  const rotuloAnt = `${MESES_LONGOS[mAnt].toLowerCase()}/${aAnt}`;
+  const variacao = (atual, anterior) => anterior
+    ? `${atual >= anterior ? '+' : '−'}${Math.abs(100*(atual - anterior)/anterior).toFixed(1).replace('.',',')}% vs ${rotuloAnt}`
+    : `sem base em ${rotuloAnt}`;
   $('kProp').textContent = fmt(M.totalPropostas);
+  $('kPropSub').textContent = variacao(M.totalPropostas, A.totalPropostas);
   $('kRotas').textContent = fmt(M.totalRotas);
-  $('kMulti').textContent = M.totalPropostas
-    ? `${fmt(M.multiRota)} propostas com 2+ rotas (${(100*M.multiRota/M.totalPropostas).toFixed(1).replace('.',',')}%)` : '–';
+  $('kRotasSub').textContent = variacao(M.totalRotas, A.totalRotas);
+  $('kAprov').textContent = fmt(M.aprovadas);
+  $('kAprovSub').textContent = variacao(M.aprovadas, A.aprovadas);
   $('kLead').textContent = M.leadTimeMedio == null ? '–' : M.leadTimeMedio.toFixed(1).replace('.',',') + ' dias';
-  $('kLeadSub').textContent = M.leadTimeBase ? `média de ${fmt(M.leadTimeBase)} propostas aprovadas` : 'da criação até a aprovação';
+  $('kLeadSub').textContent = 'Tempo médio da Criação até a Aprovação da proposta';
   $('kVenc').textContent = fmt(M.vencidas.length);
 
-  barras($('gStatus'), M.porStatusRota, M.totalRotas);
-  barras($('gVend'), M.porVendedor, M.totalPropostas);
+  pizza($('gStatus'), M.porStatusRota, M.totalRotas);
+  colunas($('gVend'), M.porVendedor, M.totalPropostas);
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
-  tabelaVencidas(); tabelaNovos();
+  tabelaVencidas(); tabelaNovos(); quadroEmbarque();
 }
 function tabelaVencidas(){
-  const q = $('buscaVenc').value.trim().toUpperCase();
-  const linhas = M.vencidas.filter(v => !q || (v.cliente||'').toUpperCase().includes(q) || v.num.toUpperCase().includes(q));
+  const filtros = [...document.querySelectorAll('#vencFiltros input')].map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
+  const valor = (v, col) => col === 'validade' ? fmtData(v.validade) : v[col];
+  const linhas = M.vencidas.filter(v => filtros.every(([col, q]) => semAcento(valor(v, col)).includes(q)));
   $('notaVenc').textContent = `${fmt(M.vencidas.length)} propostas — validade expirada e nenhuma rota aprovada`;
   $('tVenc').innerHTML = linhas.length ? linhas.slice(0,500).map(v =>
     `<tr><td>${esc(v.num)}</td><td>${esc(v.cliente)}</td><td>${esc(v.vendedor)}</td><td>${fmtData(v.validade)}</td><td>${esc(v.status)}</td></tr>`).join('')
-    : '<tr><td colspan="5" class="vazio">Nenhuma proposta vencida.</td></tr>';
+    : `<tr><td colspan="5" class="vazio">${filtros.length ? 'Nenhuma proposta encontrada.' : 'Nenhuma proposta vencida.'}</td></tr>`;
 }
 function tabelaNovos(){
   const q = $('buscaNovos').value.trim().toUpperCase();
@@ -623,7 +819,11 @@ function tabelaNovos(){
     `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td class="c">${fmtData(c.inicio)}</td><td class="c">${c.ativoDias == null ? '–' : fmt(c.ativoDias) + ' dias'}</td></tr>`).join('')
     : '<tr><td colspan="4" class="vazio">Nenhum novo cliente no mês.</td></tr>';
 }
-$('buscaVenc').oninput = ()=> M && tabelaVencidas();
+$('vencFiltros').addEventListener('input', ()=> M && tabelaVencidas());
+$('vencFiltros').addEventListener('click', e => {
+  const b = e.target.closest('[data-limpa]'); if (!b) return;
+  const inp = $('vencFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaVencidas();
+});
 $('buscaNovos').oninput = ()=> M && tabelaNovos();
 
 /* ---------- Abas ---------- */
@@ -672,7 +872,7 @@ function serieAno(ano){
 }
 
 function prepararHistorico(){
-  cacheAnos = {};
+  cacheAnos = {}; for (const k in cacheAnoDet) delete cacheAnoDet[k];
   $('anoAtualLbl').textContent = ANO_ATUAL;
   const anos = [...new Set(ROTAS.map(r => r.data_criacao && +r.data_criacao.slice(0,4)))]
     .filter(a => a && a < ANO_ATUAL).sort((a,b) => b - a);
@@ -721,7 +921,8 @@ function renderHistorico(){
         const bom = def.menorMelhor ? d < 0 : d > 0, cls = Math.abs(d) < 0.05 ? '' : bom ? 'up' : 'down';
         resumo += ` <span class="${cls}">(${d >= 0 ? '+' : ''}${d.toFixed(1).replace('.',',')}%)</span>`; }
     }
-    return `<div class="cardH"><h2>${def.titulo}</h2><div class="acum">${resumo}</div>${seletor}${grafico(a, c, def)}</div>`;
+    const lupaH = def.id === 'novos' ? '' : `<button class="lupa" type="button" data-hist="${def.id}" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>`;
+    return `<div class="cardH">${lupaH}<h2>${def.titulo}</h2><div class="acum">${resumo}</div>${seletor}${grafico(a, c, def)}</div>`;
   }).join('');
   $('gridHist').querySelectorAll('select[data-dim]').forEach(s => s.onchange = () => { selecaoDim[s.dataset.dim] = s.value; renderHistorico(); });
 }
@@ -759,6 +960,89 @@ function grafico(a, c, def){
   });
   return s + '</svg>';
 }
+
+/* ---------- Detalhamento (lupa) ---------- */
+const DETS = {
+  criadas:  { titulo:'Propostas criadas', filtro: d => true },
+  aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada' },
+  lead:     { titulo:'Lead time — propostas aprovadas', filtro: d => d.lead != null, sub:'propostas usadas no cálculo do lead time' },
+  vencidas: { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada' },
+  multi:    { titulo:'Propostas com 2+ rotas', filtro: d => d.rotas >= 2 },
+  venc:     { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada' },
+  prop:     { titulo:'Propostas criadas', filtro: d => true },
+  status:   { titulo:'Propostas por status da rota', dim: d => d.statusLista, rotulo:'status' },
+  vendedor: { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor' },
+  vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor' },
+  inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside' },
+  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente' },
+  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente' },
+};
+let detEstado = null;
+const cacheAnoDet = {};
+function detalheAno(ano){
+  return (cacheAnoDet[ano] ||= calcularMetricas(ROTAS, CLIENTES, `${ano}-01-01`, `${ano}-12-31`, hojeISO()).detalhe);
+}
+function abrirDetalhe(chave, fontes, contexto, valorInicial){
+  const def = DETS[chave]; if (!def) return;
+  detEstado = { def, fontes };   // fontes: [{rotulo, linhas}]
+  $('detTitulo').textContent = def.titulo;
+  $('detSub').textContent = [contexto, def.sub].filter(Boolean).join(' — ');
+  const selAno = $('detAno');
+  selAno.classList.toggle('hidden', fontes.length < 2);
+  selAno.innerHTML = fontes.length > 1 ? '<option value="">Todos os anos</option>' + fontes.map((f,i) => `<option value="${i}">${esc(f.rotulo)}</option>`).join('') : '';
+  const selF = $('detFiltro');
+  if (def.dim){
+    const cont = new Map();
+    fontes.forEach(f => f.linhas.forEach(d => def.dim(d).forEach(v => cont.set(v, (cont.get(v) || 0) + 1))));
+    const ops = [...cont.entries()].sort((a,b) => b[1] - a[1]);
+    selF.innerHTML = `<option value="">Todos (${def.rotulo})</option>` + ops.map(([v,n]) => `<option value="${esc(v)}">${esc(v)} (${fmt(n)})</option>`).join('');
+    selF.value = valorInicial && cont.has(valorInicial) ? valorInicial : '';
+    selF.classList.remove('hidden');
+  } else { selF.innerHTML = ''; selF.classList.add('hidden'); }
+  document.querySelectorAll('#detFiltros input').forEach(i => i.value = '');
+  $('modalDet').classList.remove('hidden');
+  renderDetalhe();
+}
+function renderDetalhe(){
+  const { def, fontes } = detEstado;
+  const iAno = $('detAno').value, filtroDim = $('detFiltro').value;
+  const filtrosCol = [...document.querySelectorAll('#detFiltros input')].map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
+  let linhas = (iAno === '' ? fontes : [fontes[+iAno]]).flatMap(f => f.linhas);
+  if (def.filtro) linhas = linhas.filter(def.filtro);
+  if (def.dim && filtroDim) linhas = linhas.filter(d => def.dim(d).includes(filtroDim));
+  if (filtrosCol.length) linhas = linhas.filter(d => filtrosCol.every(([col, q]) => semAcento(valorColDet(d, col)).includes(q)));
+  const LIM = 1000, mostrar = linhas.slice(0, LIM);
+  $('detCorpo').innerHTML = mostrar.length ? mostrar.map(d =>
+    `<tr><td>${esc(d.num)}</td><td>${esc(d.cliente)}</td><td>${esc(d.vendedor)}</td><td>${esc(d.inside)}</td><td>${esc(d.statusLista.join(' / '))}</td><td class="c">${fmtData(d.criacao)}</td><td class="c">${fmtData(d.validade)}</td></tr>`).join('')
+    : '<tr><td colspan="7" class="vazio">Nenhuma proposta encontrada.</td></tr>';
+  $('detRodape').textContent = linhas.length > LIM ? `Mostrando ${fmt(LIM)} de ${fmt(linhas.length)} propostas — use os filtros das colunas para refinar.` : `${fmt(linhas.length)} proposta${linhas.length === 1 ? '' : 's'}`;
+}
+const semAcento = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+function valorColDet(d, col){          // mesmo texto exibido na tabela
+  if (col === 'status') return d.statusLista.join(' / ');
+  if (col === 'criacao' || col === 'validade') return fmtData(d[col]);
+  return d[col];
+}
+function fecharDetalhe(){ $('modalDet').classList.add('hidden'); detEstado = null; }
+$('detFechar').onclick = fecharDetalhe;
+$('modalDet').addEventListener('click', e => { if (e.target.id === 'modalDet') fecharDetalhe(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && detEstado) fecharDetalhe(); });
+$('detAno').onchange = renderDetalhe; $('detFiltro').onchange = renderDetalhe; $('detFiltros').addEventListener('input', renderDetalhe);
+$('detFiltros').addEventListener('click', e => {
+  const b = e.target.closest('[data-limpa]'); if (!b) return;
+  const inp = $('detFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); renderDetalhe();
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.lupa'); if (!b) return;
+  if (b.dataset.det){                                   // aba Mês atual
+    const rot = `${MESES_LONGOS[new Date().getMonth()]}/${new Date().getFullYear()}`;
+    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: M.detalhe }], rot);
+  } else if (b.dataset.hist){                           // aba Histórico
+    const id = b.dataset.hist, anos = [ANO_ATUAL].concat(anoComp ? [+anoComp] : []);
+    const sel = selecaoDim[id], inicial = sel && sel !== TODOS ? sel : '';
+    abrirDetalhe(id, anos.map(a => ({ rotulo: String(a), linhas: detalheAno(a) })), anos.join(' x '), inicial);
+  }
+});
 
 /* ---------- Trocar senha ---------- */
 $('btnSenha').onclick = ()=>{ $('msgSenha').textContent=''; $('formSenha').reset(); $('modalSenha').classList.remove('hidden'); };
