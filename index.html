@@ -75,6 +75,8 @@
   #gInside .hb .fill{background:#F8B133}
   #gVend .vb .fill{background:#00A2E8}
   #gCliente .hb .fill{background:#16A34A}
+  #gAgente .hb .fill{background:#7C3AED}
+  #gridAgente>.card{grid-column:1/-1}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
   .grid2>.card{min-width:0}
@@ -191,7 +193,8 @@
     #blocoMes>.grid2{display:contents}
     #blocoMes>.kpis,#cardLucro{grid-column:1/-1;margin:0!important}
     #blocoMes>.kpis{order:-1}
-    #cardLucro{order:1}
+    #cardLucro{order:1;grid-column:1/4!important}
+    #gridAgente>#cardAgente{order:1;grid-column:auto;margin:0}
     #blocoMes>.grid2>.card{margin:0}
     #blocoListas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
     #blocoListas>.grid2{display:contents}
@@ -279,6 +282,23 @@
   .filtro-bar .dir{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
   .filtro-bar .dir .upd{margin-left:0;padding-bottom:0}
   .filtro-bar .dir .legenda{margin-left:0;padding-bottom:0}
+  .msel{position:relative;width:100%}
+  .msel-btn{width:100%;text-align:left;padding:6px 28px 6px 10px;border:1px solid #d8d8d8;border-radius:6px;background:#fff;font:inherit;font-size:12px;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:30px}
+  .msel-btn::after{content:'';position:absolute;right:11px;top:50%;width:6px;height:6px;border-right:2px solid #333;border-bottom:2px solid #333;transform:translateY(-70%) rotate(45deg)}
+  .msel.ativo .msel-btn{border-color:var(--vermelho);color:var(--vermelho);font-weight:700}
+  .msel-pan{position:absolute;z-index:40;top:calc(100% + 4px);left:0;min-width:100%;width:max-content;max-width:420px;background:#fff;border:1px solid #d8d8d8;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.14);padding:8px}
+  .msel-busca{width:100%;padding:6px 8px;border:1px solid #d8d8d8;border-radius:6px;font:inherit;font-size:12px;margin-bottom:6px}
+  .msel-ops{max-height:280px;overflow:auto}
+  .msel .msel-ops label{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:5px 6px;border-radius:6px;font-size:12px;cursor:pointer;color:#000;text-align:left}
+  .msel .msel-ops input[type=checkbox]{flex:0 0 auto;width:15px;height:15px;margin:0;accent-color:var(--vermelho)}
+  .msel .msel-ops small{flex:0 0 auto;margin-left:auto;padding-left:8px}
+  .msel-ops label:hover{background:var(--soft)}
+  .msel-ops label span{flex:1;white-space:normal}
+  .msel-ops small{color:var(--muted)}
+  .msel-acoes{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);margin-top:6px;padding-top:6px}
+  .msel-acoes button{background:none;border:0;color:var(--vermelho);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+  .campo-f{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--muted)}
+  .cardH .msel{margin-bottom:6px}
   .multi{position:relative;min-width:170px}
   .multi-btn{width:100%;text-align:left;padding:9px 34px 9px 12px;border:1px solid #d8d8d8;border-radius:8px;background:#fff;font:inherit;font-size:14px;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .multi-btn::after{content:'';position:absolute;right:13px;top:50%;width:7px;height:7px;border-right:2px solid #333;border-bottom:2px solid #333;transform:translateY(-70%) rotate(45deg)}
@@ -297,6 +317,14 @@
   .lupa{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;border:1.5px solid var(--dourado);background:#fff;display:flex;align-items:center;justify-content:center;padding:0;z-index:2}
   .lupa svg{width:15px;height:15px;fill:none;stroke:var(--vermelho);stroke-width:2.4;stroke-linecap:round}
   .lupa:hover{background:#fff8ec}
+  .cardH .lupa-det{right:52px}
+  #detCorpo tr.grp{cursor:pointer;background:#eef0f4}
+  #detCorpo tr.grp:hover{background:#e3e7ee}
+  #detCorpo tr.grp td{padding:10px 12px;border-top:2px solid #fff}
+  #detCorpo tr.grp b{color:var(--vermelho);font-size:13px;text-transform:uppercase}
+  #detCorpo tr.grp .grp-ico{display:inline-block;width:18px;font-weight:700;color:#00A2E8;font-size:16px}
+  #detCorpo tr.grp .grp-n{margin-left:12px;color:var(--muted);font-size:12px}
+  #detCorpo tr.grp-item td:first-child{padding-left:30px}
   .lupa.expandir svg{stroke-width:2.2;stroke-linejoin:round}
   .exp{position:fixed;inset:0;z-index:110;background:#fff;display:flex;flex-direction:column;padding:20px 28px 16px;border-top:4px solid var(--dourado)}
   .exp.rola{overflow-y:auto}
@@ -462,13 +490,16 @@
       <div class="card"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por inside sales</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
       <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
+    <div class="grid2" id="gridAgente">
+      <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por agente internacional</h2><div class="nota">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
+    </div>
 
     </div>
     <div id="blocoListas">
     <div class="grid2" id="gridPerdas">
       <div class="card" id="cardPerdasCli"><button class="lupa" type="button" data-det="perdasCli" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
         <h2>Top 10 Clientes por Qtd. de Perdas</h2><div class="nota" id="notaPerdasCli"></div>
-        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Cliente</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
+        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Empresa</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
       </div>
       <div class="card" id="cardPerdasMot"><button class="lupa" type="button" data-det="perdasMot" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
         <h2>Motivos Gerais das Perdas (Todos os Clientes)</h2><div class="nota" id="notaPerdasMot"></div>
@@ -476,10 +507,10 @@
       </div>
     </div>
     <div class="grid2">
-      <div class="card">
+      <div class="card" id="cardNovos">
         <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div><div class="aviso-f hidden" id="avisoNovos"></div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
-        <div class="tbl-wrap"><table><thead><tr><th>Nome Cliente</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Convertido em Cliente</th></tr></thead><tbody id="tNovos"></tbody></table></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Cliente Ganho em</th><th class="c">Tempo de prospecção</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
       <div class="card" id="cardEmb">
         <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div><div class="aviso-f hidden" id="avisoEmb"></div>
@@ -490,7 +521,7 @@
 
     <div class="card" style="margin-top:16px" id="cardFat">
       <div class="card-head"><div><h2>Faturamento Previsto</h2><div class="nota" id="notaFat"></div><div class="aviso-f hidden" id="avisoFat"></div></div></div>
-      <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Cliente</th><th class="col-vend">Vendedor</th><th>Armador</th><th>Previsão de chegada</th><th>Prazo para pagamento</th></tr><tr class="filtros" id="fatFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt col-vend"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cia" aria-label="Filtrar Armador" autocomplete="off"><button type="button" data-limpa="cia" aria-label="Limpar filtro Armador">x</button></div></th><th class="flt"><div class="fcol"><input data-col="chegada" aria-label="Filtrar Previsão de chegada" autocomplete="off"><button type="button" data-limpa="chegada" aria-label="Limpar filtro Previsão de chegada">x</button></div></th><th class="flt"><div class="fcol"><input data-col="prazo" aria-label="Filtrar Prazo para pagamento" autocomplete="off"><button type="button" data-limpa="prazo" aria-label="Limpar filtro Prazo para pagamento">x</button></div></th></tr></thead><tbody id="tFat"></tbody></table></div>
+      <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Empresa</th><th class="col-vend">Vendedor</th><th>Armador</th><th>Previsão de chegada</th><th>Prazo para pagamento</th></tr><tr class="filtros" id="fatFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Empresa" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Empresa">x</button></div></th><th class="flt col-vend"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cia" aria-label="Filtrar Armador" autocomplete="off"><button type="button" data-limpa="cia" aria-label="Limpar filtro Armador">x</button></div></th><th class="flt"><div class="fcol"><input data-col="chegada" aria-label="Filtrar Previsão de chegada" autocomplete="off"><button type="button" data-limpa="chegada" aria-label="Limpar filtro Previsão de chegada">x</button></div></th><th class="flt"><div class="fcol"><input data-col="prazo" aria-label="Filtrar Prazo para pagamento" autocomplete="off"><button type="button" data-limpa="prazo" aria-label="Limpar filtro Prazo para pagamento">x</button></div></th></tr></thead><tbody id="tFat"></tbody></table></div>
     </div>
     </div>
     </section>
@@ -583,7 +614,7 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   // 2) filtro de período pela data de criação da referência
   const lista = [...props.values()].filter(p => p.criacao && (!de || p.criacao >= de) && (!ate || p.criacao <= ate));
 
-  const porCliente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map();
+  const porCliente = new Map(), porAgente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map();
   let multiRota = 0, totalRotas = 0, aprovadasN = 0;
   const detalhe = [];   // uma linha por proposta, para as telas de detalhamento
   const leadTimes = []; let leadIgnorados = 0;
@@ -592,6 +623,7 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   for (const p of lista) {
     contar(porCliente, p.cliente || 'Sem cliente');
     contar(porVendedor, p.vendedor || 'Sem vendedor');
+    new Set(p.rotas.map(r => r.agente_internacional || 'Sem agente')).forEach(a => contar(porAgente, a));   // proposta conta 1x por agente
     contar(porEmissor, p.emissor || 'Sem emissor');
     if (p.rotas.length >= 2) multiRota++;
     totalRotas += p.rotas.length;
@@ -630,7 +662,10 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   // 8) novos clientes (data de ativação do prospecto dentro do período)
   const novos = (clientes || [])
     .filter(c => c.data_ativacao_prospecto)
-    .map(c => ({ nome: c.nome_completo, vendedor: c.vendedor, inicio: dia(c.data_ativacao_prospecto), ativoDias: c.ativo_em_dias }))
+    .map(c => { const inicio = dia(c.data_ativacao_prospecto), criacao = c.data_criacao ? dia(c.data_criacao) : null;
+      // dias em prospecção = da criação do cadastro até a ativação como cliente da casa
+      const diasProsp = criacao ? Math.round((Date.parse(inicio + 'T12:00:00') - Date.parse(criacao + 'T12:00:00')) / 864e5) : null;
+      return { nome: c.nome_completo, vendedor: c.vendedor, inicio, criacao, diasProsp: diasProsp != null && diasProsp >= 0 ? diasProsp : null, ativoDias: c.ativo_em_dias }; })
     .filter(c => (!de || c.inicio >= de) && (!ate || c.inicio <= ate))
     .sort((a, b) => (a.inicio < b.inicio ? 1 : -1));
 
@@ -641,6 +676,7 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     detalhe: detalhe.sort((a, b) => (a.criacao < b.criacao ? 1 : a.criacao > b.criacao ? -1 : 0)),
     multiRota,
     porCliente: ordenar(porCliente),
+    porAgente: ordenar(porAgente),
     porVendedor: ordenar(porVendedor),
     porEmissor: ordenar(porEmissor),
     porStatusRota: ordenar(porStatusRota),
@@ -808,7 +844,7 @@ async function carregarDados(){
     const filtro = '';            // o filtro de vendedor agora é o filtro geral (no navegador); o banco já limita cada vendedor ao seu grupo
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
       buscarTudo('com_propostas_rotas','numero_proposta,status,motivo,complemento_motivo,cliente,vendedor,emissor,produto,origem,destino,agente_internacional,cia_armador_coloader,data_criacao,data_aprovacao,data_validade', filtro),
-      buscarTudo('com_clientes','nome_completo,vendedor,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
+      buscarTudo('com_clientes','nome_completo,vendedor,data_criacao,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
       buscarTudo('com_lucro','numero_processo,cliente,vendedor,agente_internacional,cia,data_recebimento,lucro_liquido', filtro),
       buscarEmbarcados(filtro).catch(e => { console.error('embarcados', e); return []; }),          // opcional: sem a tabela o restante do Board segue funcionando
       sb.rpc('com_prazos_embarcados').then(r => { if (r.error) throw r.error; return new Map((r.data || []).map(x => [x.chave, x.prazo_pagamento])); }).catch(e => { console.error('prazos', e); return new Map(); })
@@ -836,16 +872,18 @@ const PRODUTO_REF = { IM:'Importação Marítima', IA:'Importação Aérea', EM:
 const produtoLucro = l => PRODUTO_REF[String(l.numero_processo || '').slice(0,2).toUpperCase()] || 'Outros (sem modalidade na referência)';
 // f: filtros que o lucro aceita { vendedor, agente, cia, produto } — campos vazios = todos
 function lucroPeriodo(de, ate, f){
-  f = typeof f === 'string' ? { vendedor: f } : (f || {});
+  f = typeof f === 'string' ? { vendedor: [f] } : (f || {});
+  const L1 = v => v == null || v === '' ? [] : Array.isArray(v) ? v : [v];      // aceita valor único ou lista
+  f = { vendedor: L1(f.vendedor), agente: L1(f.agente), cia: L1(f.cia), produto: L1(f.produto), cliente: L1(f.cliente) };
   const mapa = new Map(); let total = 0, n = 0;
   for (const l of LUCRO){
     const d = l.data_recebimento && String(l.data_recebimento).slice(0,10);
     if (!d || d < de || d > ate) continue;
-    if (f.vendedor && (l.vendedor || 'Sem vendedor') !== f.vendedor) continue;
-    if (f.agente && (l.agente_internacional || 'Sem agente') !== f.agente) continue;
-    if (f.cia && (l.cia || 'Sem armador/cia') !== f.cia) continue;
-    if (f.produto && produtoLucro(l) !== f.produto) continue;
-    if (f.cliente && (l.cliente || 'Sem cliente') !== f.cliente) continue;
+    if (!naLista(f.vendedor, l.vendedor || 'Sem vendedor')) continue;
+    if (!naLista(f.agente, l.agente_internacional || 'Sem agente')) continue;
+    if (!naLista(f.cia, l.cia || 'Sem armador/cia')) continue;
+    if (!naLista(f.produto, produtoLucro(l))) continue;
+    if (!naLista(f.cliente, l.cliente || 'Sem cliente')) continue;
     const v = Number(l.lucro_liquido) || 0, k = l.vendedor || 'Sem vendedor';
     mapa.set(k, (mapa.get(k) || 0) + v); total += v; n++;
   }
@@ -928,6 +966,7 @@ document.addEventListener('mousemove', e=>{
 function alternar(elId, botao){ const el=$(elId); if (el.dataset.tudo) delete el.dataset.tudo; else el.dataset.tudo='1'; renderizar(); }
 $('maisInside').onclick = ()=>alternar('gInside');
 $('maisCliente').onclick = ()=>alternar('gCliente');
+$('maisAgente').onclick = ()=>alternar('gAgente');
 $('maisEmb').onclick = ()=>{ const el=$('gEmb'); if (el.dataset.tudo) delete el.dataset.tudo; else el.dataset.tudo='1'; quadroEmbarque(); };
 
 /* ---------- Clientes sem embarque ---------- */
@@ -991,7 +1030,7 @@ $('faixasEmb').onclick = e => { const b = e.target.closest('[data-faixa]'); if (
 
 function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativo que não se aplica ao card
   const el = $(id); if (!el) return;
-  const ignora = FILTROS_H.some(F => filtroH[F.id] && !aceitos.includes(F.id));
+  const ignora = FILTROS_H.some(F => temF(F.id) && !aceitos.includes(F.id));
   el.textContent = ignora ? texto : ''; el.classList.toggle('hidden', !ignora);
 }
 function renderizarTitulo(){
@@ -1025,9 +1064,19 @@ function renderizar(){
   colunas($('gVend'), M.porVendedor, M.totalPropostas);
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
+  barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
   quadroLucro(de, ate);
-  quadroPerdas(de, ate); tabelaNovos(); quadroEmbarque(); tabelaFaturamento(de, ate);
+  renderListas();
 }
+/* ---------- Período das listas: mês escolhido; no modo histórico o campo Mês é ignorado
+   e as listas cobrem o ano atual inteiro + os anos marcados para comparação ---------- */
+function periodos(){
+  return modoAnual() ? [ANO_ATUAL, ...anosComp].map(a => [`${a}-01-01`, `${a}-12-31`]) : [limitesMes(mesSel.ano, mesSel.m)];
+}
+const faixaDe = (d, rs) => d ? rs.find(([de, ate]) => d >= de && d <= ate) : null;
+const termoPeriodo = () => modoAnual() ? `em ${[ANO_ATUAL, ...anosComp].join(', ')}` : 'no mês';
+const rotuloPeriodo = () => modoAnual() ? [ANO_ATUAL, ...anosComp].join(', ') : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+function renderListas(){ quadroPerdas(); tabelaNovos(); quadroEmbarque(); tabelaFaturamento(); }
 /* ---------- Faturamento Previsto (PROCESSOS EMBARCADOS + prazo de pagamento do cadastro) ----------
    base: importação (IM/IA) = Prev de Chegada; exportação (EM/EA) = Data de Embarque
    vencimento = base + prazo (prazo em branco ou 0 = vence na própria base)
@@ -1035,19 +1084,19 @@ function renderizar(){
 const ehExportacao = num => /^E[MA]/i.test(String(num || ''));
 function somaDias(iso, n){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 let FAT = { previsto: [], futuras: [] };
-function calcularFaturamento(de, ate){
+function calcularFaturamento(rs){
   const prazoDe = e => { const k1 = 'A:' + String(e.apelido_cliente || '').trim().toUpperCase(), k2 = 'N:' + String(e.cliente || '').trim().toUpperCase();
     return PRAZOS.has(k1) ? { p: PRAZOS.get(k1), cad: true } : PRAZOS.has(k2) ? { p: PRAZOS.get(k2), cad: true } : { p: null, cad: false }; };
   const r = { previsto: [], futuras: [] };
   EMB.forEach(e => {
-    if (filtroH.vendedor && (e.vendedor || 'Sem vendedor') !== filtroH.vendedor) return;
-    if (filtroH.cliente && e.cliente !== filtroH.cliente) return;
-    if (filtroH.cia && (e.cia || 'Sem armador/cia') !== filtroH.cia) return;
+    if (!naLista(filtroH.vendedor, e.vendedor || 'Sem vendedor')) return;
+    if (!naLista(filtroH.cliente, e.cliente)) return;
+    if (!naLista(filtroH.cia, e.cia || 'Sem armador/cia')) return;
     const exp = ehExportacao(e.numero_processo), base = exp ? e.data_embarque : e.prev_chegada;
-    if (!base || base < de || base > ate) return;
+    const fx = faixaDe(base, rs); if (!fx) return;
     const { p, cad } = prazoDe(e), dias = p || 0, venc = somaDias(base, dias);
     const o = { num: e.numero_processo, cliente: e.cliente, vendedor: e.vendedor, cia: e.cia, chegada: e.prev_chegada, embarque: e.data_embarque, exp, base, prazo: p, cad, venc };
-    (venc <= ate ? r.previsto : r.futuras).push(o);
+    (venc <= fx[1] ? r.previsto : r.futuras).push(o);
   });
   const ord = (a, b) => a.base.localeCompare(b.base) || a.num.localeCompare(b.num);
   r.previsto.sort(ord); r.futuras.sort(ord);
@@ -1056,8 +1105,9 @@ function calcularFaturamento(de, ate){
 const textoPrazo = f => !f.cad ? 'Sem cadastro · vence ' + fmtData(f.venc)
   : !f.prazo ? 'À vista (prazo 0)'
   : `${f.prazo} dias · vence ${fmtData(f.venc)}`;
-function tabelaFaturamento(de, ate){
-  FAT = calcularFaturamento(de, ate);
+function tabelaFaturamento(){
+  const rs = periodos(), ate = rs[0][1];
+  FAT = calcularFaturamento(rs);
   avisoFiltro('avisoFat', ['vendedor','cliente','cia'], 'Faturamento Previsto vem dos processos embarcados: aqui valem só os filtros de vendedor, cliente e armador/cia');
   const dir = acesso && acesso.perfil === 'diretoria';
   $('cardFat').classList.toggle('sem-vend', !dir);
@@ -1065,29 +1115,32 @@ function tabelaFaturamento(de, ate){
     .map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
   const valor = (f, col) => col === 'chegada' ? fmtData(f.chegada) + (f.exp ? ' embarque ' + fmtData(f.embarque) : '') : col === 'prazo' ? textoPrazo(f) : f[col];
   const linhas = FAT.previsto.filter(f => filtros.every(([col, q]) => semAcento(valor(f, col)).includes(q)));
-  $('notaFat').textContent = `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) no mês e pagamento previsto até ${fmtData(ate)}`
-    + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento após o mês ficam em Receitas Futuras` : '');
+  $('notaFat').textContent = modoAnual()
+    ? `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) ${termoPeriodo()} e pagamento previsto dentro do mesmo ano`
+      + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento no ano seguinte ficam em Receitas Futuras` : '')
+    : `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) no mês e pagamento previsto até ${fmtData(ate)}`
+      + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento após o mês ficam em Receitas Futuras` : '');
   $('tFat').innerHTML = linhas.length ? linhas.map(f =>
     `<tr><td>${esc(f.num)}</td><td>${esc(f.cliente)}</td>${dir ? `<td>${esc(f.vendedor)}</td>` : ''}<td>${esc(f.cia || '–')}</td>`
     + `<td class="c">${fmtData(f.chegada)}${f.exp ? `<div class="sub-cel">exportação · embarque ${fmtData(f.embarque)}</div>` : ''}</td>`
     + `<td class="c">${esc(textoPrazo(f))}</td></tr>`).join('')
-    : `<tr><td colspan="${dir ? 6 : 5}" class="vazio">${filtros.length ? 'Nenhum processo encontrado.' : 'Nenhum processo com faturamento previsto no mês.'}</td></tr>`;
+    : `<tr><td colspan="${dir ? 6 : 5}" class="vazio">${filtros.length ? 'Nenhum processo encontrado.' : `Nenhum processo com faturamento previsto ${termoPeriodo()}.`}</td></tr>`;
 }
-$('fatFiltros').addEventListener('input', ()=> M && tabelaFaturamento(...limitesMes(mesSel.ano, mesSel.m)));
+$('fatFiltros').addEventListener('input', ()=> M && tabelaFaturamento());
 $('fatFiltros').addEventListener('click', e => {
   const b = e.target.closest('[data-limpa]'); if (!b) return;
-  const inp = $('fatFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaFaturamento(...limitesMes(mesSel.ano, mesSel.m));
+  const inp = $('fatFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaFaturamento();
 });
 /* ---------- Perdas: propostas do mês com ao menos 1 rota Cancelada ou Reprovada ----------
    cada proposta conta 1; motivo da proposta = motivo mais frequente entre as suas rotas perdidas (em branco = "Não informado") */
 const STATUS_PERDA = new Set(['CANCELADA','REPROVADA']);
 const ehPerda = r => STATUS_PERDA.has(String(r.status || '').trim().toUpperCase());
 let PERDAS = { rotas: [], props: [] };
-function calcularPerdas(de, ate){
+function calcularPerdas(rs){
   const rotas = [], porProp = new Map();
   for (const r of rotasFiltradas()){
     const d = r.data_criacao && String(r.data_criacao).slice(0,10);
-    if (!d || d < de || d > ate || !ehPerda(r)) continue;
+    if (!faixaDe(d, rs) || !ehPerda(r)) continue;
     const o = { num: r.numero_proposta, cliente: r.cliente || 'Sem cliente', vendedor: r.vendedor || 'Sem vendedor', inside: r.emissor || 'Sem emissor',
       status: r.status, motivo: (r.motivo && String(r.motivo).trim()) || 'Não informado', compl: r.complemento_motivo || '',
       rota: `${r.origem || '–'} → ${r.destino || '–'}`, criacao: r.data_criacao };
@@ -1101,38 +1154,41 @@ function calcularPerdas(de, ate){
   });
   return { rotas, props };
 }
-function quadroPerdas(de, ate){
-  PERDAS = calcularPerdas(de, ate);
+function quadroPerdas(){
+  PERDAS = calcularPerdas(periodos());
   const P = PERDAS.props, tot = P.length;
   const porCli = new Map(); P.forEach(p => (porCli.get(p.cliente) || porCli.set(p.cliente, []).get(p.cliente)).push(p));
   const top = [...porCli.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'pt-BR')).slice(0, 10);
-  $('notaPerdasCli').textContent = `${fmt(tot)} propostas perdidas (rota Cancelada ou Reprovada) em ${fmt(porCli.size)} clientes · motivo principal = mais frequente entre as propostas do cliente`;
+  $('notaPerdasCli').textContent = `${fmt(tot)} propostas perdidas (rota Cancelada ou Reprovada) ${termoPeriodo()} em ${fmt(porCli.size)} clientes · motivo principal = mais frequente entre as propostas do cliente`;
   $('tPerdasCli').innerHTML = top.length ? top.map(([cli, ps]) => {
     const c = new Map(); ps.forEach(p => c.set(p.motivo, (c.get(p.motivo) || 0) + 1));
     const [mot, n] = [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))[0];
     return `<tr class="clicavel" data-perda-cli="${esc(cli)}" title="Ver rotas perdidas de ${esc(cli)}"><td>${esc(cli)}</td><td class="n qtd">${fmt(ps.length)}</td><td>${esc(mot)} <span class="frac">(${n}/${ps.length})</span></td></tr>`;
-  }).join('') : '<tr><td colspan="3" class="vazio">Nenhuma perda no mês.</td></tr>';
+  }).join('') : `<tr><td colspan="3" class="vazio">Nenhuma perda ${termoPeriodo()}.</td></tr>`;
   const porMot = new Map(); P.forEach(p => porMot.set(p.motivo, (porMot.get(p.motivo) || 0) + 1));
   const mots = [...porMot.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'));
-  $('notaPerdasMot').textContent = `${fmt(tot)} propostas perdidas no mês · cada proposta conta uma vez, pelo seu motivo principal`;
+  $('notaPerdasMot').textContent = `${fmt(tot)} propostas perdidas ${termoPeriodo()} · cada proposta conta uma vez, pelo seu motivo principal`;
   $('tPerdasMot').innerHTML = mots.length ? mots.map(([mot, n]) =>
     `<tr class="clicavel" data-perda-mot="${esc(mot)}" title="Ver rotas perdidas por ${esc(mot)}"><td>${esc(mot)}</td><td class="n qtd">${fmt(n)}</td><td class="n pct">${(100 * n / tot).toFixed(1).replace('.', ',')}%</td></tr>`).join('')
-    : '<tr><td colspan="3" class="vazio">Nenhuma perda no mês.</td></tr>';
+    : `<tr><td colspan="3" class="vazio">Nenhuma perda ${termoPeriodo()}.</td></tr>`;
 }
 document.addEventListener('click', e => {
   const tr = e.target.closest && e.target.closest('[data-perda-cli],[data-perda-mot]'); if (!tr) return;
-  const rot = `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+  const rot = rotuloPeriodo();
   if (tr.dataset.perdaCli != null) abrirDetalhe('perdasCli', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaCli);
   else abrirDetalhe('perdasMot', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaMot);
 });
 function tabelaNovos(){
   avisoFiltro('avisoNovos', ['vendedor','cliente'], 'Novos clientes: aqui valem só os filtros de vendedor e cliente');
   const q = $('buscaNovos').value.trim().toUpperCase();
-  const linhas = M.novosClientes.filter(c => !q || (c.nome||'').toUpperCase().includes(q));
-  $('notaNovos').textContent = `${fmt(M.novosClientes.length)} prospectos ativados no mês`;
+  const novos = modoAnual()
+    ? periodos().flatMap(([de, ate]) => calcularMetricas([], clientesFiltrados(), de, ate, hojeISO()).novosClientes).sort((a, b) => (a.inicio < b.inicio ? 1 : -1))
+    : M.novosClientes;
+  const linhas = novos.filter(c => !q || (c.nome||'').toUpperCase().includes(q));
+  $('notaNovos').textContent = `${fmt(novos.length)} prospectos ativados ${termoPeriodo()}`;
   $('tNovos').innerHTML = linhas.length ? linhas.map(c =>
-    `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td class="c">${fmtData(c.inicio)}</td><td class="c">${c.ativoDias == null ? '–' : fmt(c.ativoDias) + ' dias'}</td></tr>`).join('')
-    : '<tr><td colspan="4" class="vazio">Nenhum novo cliente no mês.</td></tr>';
+    `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td class="c">${fmtData(c.criacao)}</td><td class="c">${fmtData(c.inicio)}</td><td class="c">${COLS_DET.diasProsp.txt(c)}</td></tr>`).join('')
+    : `<tr><td colspan="5" class="vazio">Nenhum novo cliente ${termoPeriodo()}.</td></tr>`;
 }
 $('buscaNovos').oninput = ()=> M && tabelaNovos();
 
@@ -1155,7 +1211,11 @@ $('fMes').onchange = () => {
 // comparação de anos: sem anos marcados = visão do mês; com anos = visão anual (Jan–Dez de cada ano)
 const modoAnual = () => anosComp.length > 0;
 function aplicarModo(){
-  if (M) renderizarTitulo();
+  if (M){ renderizarTitulo(); renderListas(); }
+  $('fMes').disabled = modoAnual();
+  $('cardFat').classList.toggle('hidden', modoAnual());
+  $('cardNovos').classList.toggle('hidden', modoAnual());     // no modo anual os novos clientes ficam no gráfico (lupa = lista agrupada por mês)          // Faturamento Previsto só na visão do mês
+  $('fMes').title = modoAnual() ? 'No modo histórico o mês é ignorado: gráficos e listas cobrem os anos selecionados' : '';
   $('blocoMes').classList.toggle('hidden', modoAnual());
   $('blocoAnual').classList.toggle('hidden', !modoAnual());
   $('legenda').classList.toggle('hidden', !modoAnual());
@@ -1173,14 +1233,15 @@ const compsDe = fn => anosComp.map((ano, i) => ({ ano, cor: corComp(i), v: fn(an
 const TODOS = '__todos__';
 // valor de um mês para a dimensão escolhida ('Todos' = total de rotas no status, total de propostas nos demais)
 const selCard = {};   // filtro dedicado dos gráficos por vendedor / inside / cliente
-const valorDim = (def, m) => def.dedicado && selCard[def.id] ? (m[def.dim + 'Map'].get(selCard[def.id]) || 0) : def.total ? def.total(m) : def.dim === 'porStatusRota' ? (filtroH.status ? (m.porStatusRotaMap.get(filtroH.status) || 0) : m.totalRotas) : m.totalPropostas;
+const valorDim = (def, m) => def.dedicado && (selCard[def.id] || []).length ? selCard[def.id].reduce((t, k) => t + (m[def.dim + 'Map'].get(k) || 0), 0) : def.total ? def.total(m) : def.dim === 'porStatusRota' ? (temF('status') ? filtroH.status.reduce((t, k) => t + (m.porStatusRotaMap.get(k) || 0), 0) : m.totalRotas) : m.totalPropostas;
 
 const HIST = [
   { id:'prop',   titulo:'Propostas criadas',          val: m => m.totalPropostas },
   { id:'status', titulo:'Rotas por status',           dim:'porStatusRota' },
   { id:'vend',   titulo:'Propostas por vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
   { id:'inside', titulo:'Propostas por inside sales', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
-  { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente', dedicado:'cliente' },
+  { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente', dedicado:'empresa' },
+  { id:'agente', titulo:'Propostas por agente internacional', dim:'porAgente', dedicado:'agente' },
   { id:'lead',   titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
   { id:'venc',   titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
   { id:'novos',  titulo:'Novos clientes',             val: m => m.novosClientes.length },
@@ -1195,8 +1256,8 @@ function serieAno(ano){
     if (ano === ANO_ATUAL && i > MES_ATUAL) return null;          // meses futuros
     const [de, ate] = limitesMes(ano, i);
     const m = calcularMetricas(rotas, clis, de, ate, hoje);
-    const lc = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto }); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
-    ['porStatusRota','porVendedor','porEmissor','porCliente','lucroVend'].forEach(k => m[k + 'Map'] = new Map(m[k]));
+    const lc = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto, cliente: filtroH.cliente }); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
+    ['porStatusRota','porVendedor','porEmissor','porCliente','porAgente','lucroVend'].forEach(k => m[k + 'Map'] = new Map(m[k]));
     return m;
   });
   return (cacheAnos[ch] = s);
@@ -1257,15 +1318,15 @@ function renderHistorico(){
   $('legenda').innerHTML = `<span><i style="background:${COR_ATUAL}"></i>${ANO_ATUAL}</span>` +
     anosComp.map((a, i) => `<span><i style="background:${corComp(i)}"></i>${a}</span>`).join('');
   $('gridHist').innerHTML = HIST.map(def => {
-    const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && filtroH[F.id]) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
-      : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && filtroH[F.id]) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
+    const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
+      : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
     let dedicado = '';
     if (def.dedicado){           // lista própria do gráfico, somada aos filtros gerais
       const tot = new Map();
       [sA, ...sCs].forEach(se => se.forEach(m => m && m[def.dim].forEach(([k, v]) => tot.set(k, (tot.get(k) || 0) + v))));
       const ops = [...tot.entries()].sort((x, y) => y[1] - x[1]).map(e => e[0]);
-      if (selCard[def.id] && !ops.includes(selCard[def.id])) ops.unshift(selCard[def.id]);
-      dedicado = `<select data-card="${def.id}" aria-label="Filtrar ${def.dedicado}"><option value="">Todos (${def.dedicado})</option>${ops.map(o => `<option value="${esc(o)}"${o === selCard[def.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+      (selCard[def.id] || []).forEach(v => { if (!ops.includes(v)) ops.unshift(v); });
+      dedicado = htmlMulti('card:' + def.id, `Todos (${def.dedicado})`, ops, selCard[def.id] || [], `Filtrar ${def.dedicado}`);
     }
     const a = valoresDe(def, sA), comps = anosComp.map((ano, i) => ({ ano, cor: corComp(i), v: valoresDe(def, sCs[i]) }));
     const accA = acumulado(def, sA, MES_ATUAL);
@@ -1275,13 +1336,14 @@ function renderHistorico(){
     let extra = '', defG = { ...def, W: largCard, H: altCard };
     if (def.area){                 // área empilhada por vendedor, um painel por ano
       const anosA = [ANO_ATUAL, ...anosComp], series = [sA, ...sCs];
-      defG = { ...def, W: Math.max(gl - 34, 1000), H: 34 + (1 + anosComp.length) * 310, sel: selCard[def.id] || '', anosArea: anosA.map((ano, k) => ({ ano, meses: series[k].map(m => m ? m.lucroVendMap : null) })) };
+      defG = { ...def, W: Math.max(gl - 34, 1000), H: 34 + (1 + anosComp.length) * 310, sel: selCard[def.id] || [], anosArea: anosA.map((ano, k) => ({ ano, meses: series[k].map(m => m ? m.lucroVendMap : null) })) };
       extra = tabelaLucroH(defG.anosArea);
     }
-    ultimoHist[def.id] = { def: defG, a, comps, extra, resumo: resumo + (selCard[def.id] ? ` · ${def.dedicado}: <b>${esc(selCard[def.id])}</b>` : ''), seletor };
-    return `<div class="cardH${def.area ? ' larga' : ''}">${lupaH}<h2>${def.titulo}</h2><div class="acum">${resumo}</div>${dedicado}${seletor}${def.area ? `<div class="combo-scroll">${grafico(a, comps, defG)}</div>` : grafico(a, comps, defG)}${extra}</div>`;
+    ultimoHist[def.id] = { def: defG, a, comps, extra, resumo: resumo + ((selCard[def.id] || []).length ? ` · ${def.dedicado}: <b>${esc(selCard[def.id].join(', '))}</b>` : ''), seletor };
+    const lupaDet = def.id === 'novos' ? `<button class="lupa lupa-det" type="button" data-det-ano="novosAno" title="Ver os novos clientes" aria-label="Ver os novos clientes"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>` : '';
+    return `<div class="cardH${def.area ? ' larga' : ''}">${lupaH}${lupaDet}<h2>${def.titulo}</h2><div class="acum">${resumo}</div>${dedicado}${seletor}${def.area ? `<div class="combo-scroll">${grafico(a, comps, defG)}</div>` : grafico(a, comps, defG)}${extra}</div>`;
   }).join('');
-  $('gridHist').querySelectorAll('select[data-card]').forEach(sel => sel.onchange = () => { selCard[sel.dataset.card] = sel.value; renderHistorico(); });
+  ligarMulti($('gridHist'), (chave, vals) => { selCard[chave.slice(5)] = vals; renderHistorico(); });
   renderFiltrosH();
   preencherAlturas();
 }
@@ -1303,22 +1365,58 @@ function preencherAlturas(){
   });
 }
 
+/* ---------- Seleção múltipla (filtros gerais e filtros próprios dos cards) ----------
+   cada mudança reaplica os filtros; o painel aberto e a busca digitada são restaurados após redesenhar */
+let mselAberto = null, mselBusca = '';
+function htmlMulti(chave, rotTodos, ops, sel, aria, cont){
+  const txt = !sel.length ? rotTodos : sel.length === 1 ? sel[0] : `${sel.length} selecionados`;
+  const aberto = mselAberto === chave;
+  return `<div class="msel${sel.length ? ' ativo' : ''}" data-msel="${esc(chave)}">
+    <button type="button" class="msel-btn" aria-label="${esc(aria)}" aria-expanded="${aberto}" title="${esc(sel.join(', '))}">${esc(txt)}</button>
+    <div class="msel-pan${aberto ? '' : ' hidden'}">
+      <input class="msel-busca" type="search" placeholder="Buscar…" value="${aberto ? esc(mselBusca) : ''}" aria-label="Buscar opções">
+      <div class="msel-ops">${ops.map(o => `<label><input type="checkbox" value="${esc(o)}"${sel.includes(o) ? ' checked' : ''}><span>${esc(o)}</span>${cont && cont.has(o) ? `<small>${fmt(cont.get(o))}</small>` : ''}</label>`).join('') || '<div class="vazio">Sem opções</div>'}</div>
+      <div class="msel-acoes"><button type="button" data-msel-limpar>Limpar</button><button type="button" data-msel-fechar>Fechar</button></div>
+    </div></div>`;
+}
+function ligarMulti(raiz, aoMudar){
+  raiz.querySelectorAll('.msel').forEach(w => {
+    const chave = w.dataset.msel, pan = w.querySelector('.msel-pan'), busca = w.querySelector('.msel-busca');
+    const filtrar = () => { const q = semAcento(busca.value.trim()); w.querySelectorAll('.msel-ops label').forEach(l => l.style.display = !q || semAcento(l.textContent).includes(q) ? '' : 'none'); };
+    if (mselAberto === chave){ filtrar(); setTimeout(() => busca.focus(), 0); }
+    w.querySelector('.msel-btn').onclick = e => { e.stopPropagation();
+      const abrir = pan.classList.contains('hidden');
+      document.querySelectorAll('.msel-pan').forEach(p => p.classList.add('hidden'));
+      pan.classList.toggle('hidden', !abrir); mselAberto = abrir ? chave : null; mselBusca = '';
+      if (abrir){ busca.value = ''; filtrar(); busca.focus(); } };
+    pan.onclick = e => e.stopPropagation();
+    busca.oninput = () => { mselBusca = busca.value; filtrar(); };
+    const valores = () => [...w.querySelectorAll('.msel-ops input:checked')].map(i => i.value);
+    w.querySelectorAll('.msel-ops input').forEach(i => i.onchange = () => { mselAberto = chave; aoMudar(chave, valores()); });
+    w.querySelector('[data-msel-limpar]').onclick = () => { mselAberto = chave; aoMudar(chave, []); };
+    w.querySelector('[data-msel-fechar]').onclick = () => { pan.classList.add('hidden'); mselAberto = null; };
+  });
+}
+document.addEventListener('click', () => { if (mselAberto){ document.querySelectorAll('.msel-pan').forEach(p => p.classList.add('hidden')); mselAberto = null; } });
 /* ---------- Filtros gerais do histórico ---------- */
 const FILTROS_H = [
   { id:'status',   rot:'Status da rota', val: d => d.statusLista },
   { id:'vendedor', rot:'Vendedor',       val: d => [d.vendedor] },
   { id:'inside',   rot:'Inside sales',   val: d => [d.inside] },
-  { id:'cliente',  rot:'Cliente',        val: d => [d.cliente] },
+  { id:'cliente',  rot:'Empresa',        val: d => [d.cliente] },
   { id:'origem',   rot:'Origem',         val: d => d.origemLista },
   { id:'destino',  rot:'Destino',        val: d => d.destinoLista },
   { id:'produto',  rot:'Produto (modalidade)', val: d => d.produtoLista },
   { id:'agente',   rot:'Agente internacional', val: d => d.agenteLista },
   { id:'cia',      rot:'Armador / Coloader / Cia aérea', val: d => d.ciaLista },
 ];
-const filtroH = Object.fromEntries(FILTROS_H.map(F => [F.id, '']));
-const filtrosAtivos = () => FILTROS_H.filter(F => filtroH[F.id]);
-const chaveFiltro = () => FILTROS_H.map(F => filtroH[F.id]).join('|');
-const passaH = (d, ignorar) => filtrosAtivos().every(F => F.id === ignorar || F.val(d).includes(filtroH[F.id]));
+const filtroH = Object.fromEntries(FILTROS_H.map(F => [F.id, []]));      // múltipla seleção: lista de valores (vazia = todos)
+const temF = id => (filtroH[id] || []).length > 0;
+const naLista = (lista, v) => !lista || !lista.length || lista.includes(v);  // lista vazia aceita tudo
+const filtrosAtivos = () => FILTROS_H.filter(F => temF(F.id));
+const chaveFiltro = () => JSON.stringify(FILTROS_H.map(F => filtroH[F.id]));
+const textoF = id => filtroH[id].join(', ');
+const passaH = (d, ignorar) => filtrosAtivos().every(F => F.id === ignorar || F.val(d).some(v => filtroH[F.id].includes(v)));
 // rotas das propostas que passam nos filtros (a proposta entra inteira; o status conta se ela tiver ao menos 1 rota nele)
 function rotasFiltradas(){
   if (!filtrosAtivos().length) return ROTAS;
@@ -1331,7 +1429,7 @@ function rotasFiltradas(){
   return ROTAS.filter(r => ok.has(r.numero_proposta));
 }
 function clientesFiltrados(){
-  return (CLIENTES || []).filter(c => (!filtroH.vendedor || (c.vendedor || 'Sem vendedor') === filtroH.vendedor) && (!filtroH.cliente || c.nome_completo === filtroH.cliente));
+  return (CLIENTES || []).filter(c => naLista(filtroH.vendedor, c.vendedor || 'Sem vendedor') && naLista(filtroH.cliente, c.nome_completo));
 }
 function renderFiltrosH(){
   const anos = [...new Set([ANO_ATUAL, mesSel.ano, ...anosComp])], linhas = anos.flatMap(a => detalheAno(a));
@@ -1344,15 +1442,15 @@ function renderFiltrosH(){
       const extra = new Set(LUCRO.filter(l => anos.includes(+String(l.data_recebimento || '').slice(0,4))).map(l => l[campo] || vazio));
       [...extra].filter(v => !ops.includes(v)).sort((x, y) => x.localeCompare(y, 'pt-BR')).forEach(v => ops.push(v));
     }
-    if (filtroH[F.id] && !ops.includes(filtroH[F.id])) ops.unshift(filtroH[F.id]);
-    return `<label>${F.rot}<select data-f="${F.id}"><option value="">Todos</option>${ops.map(o => `<option value="${esc(o)}"${o === filtroH[F.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    filtroH[F.id].forEach(v => { if (!ops.includes(v)) ops.unshift(v); });
+    return `<div class="campo-f"><span class="rot-f">${F.rot}</span>${htmlMulti('f:' + F.id, 'Todos', ops, filtroH[F.id], 'Filtrar ' + F.rot, cont)}</div>`;
   }).join('') + `<div class="limpar-wrap"><button class="btn ghost small" id="btnLimparH" type="button"${filtrosAtivos().length ? '' : ' disabled'}>Limpar filtros</button></div>`;
   const ativos = filtrosAtivos();
   $('filtrosNota').innerHTML = ativos.length
-    ? 'Filtrando todos os gráficos por ' + ativos.map(F => `${F.rot}: <b>${esc(filtroH[F.id])}</b>`).join(' · ')
+    ? 'Filtrando todos os gráficos por ' + ativos.map(F => `${F.rot}: <b>${esc(textoF(F.id))}</b>`).join(' · ')
     : 'Os filtros valem para todos os gráficos abaixo';
-  $('comboFiltros').querySelectorAll('select').forEach(sel => sel.onchange = () => { filtroH[sel.dataset.f] = sel.value; aoFiltrar(); });
-  $('btnLimparH').onclick = () => { FILTROS_H.forEach(F => filtroH[F.id] = ''); aoFiltrar(); };
+  ligarMulti($('comboFiltros'), (chave, vals) => { filtroH[chave.slice(2)] = vals; aoFiltrar(); });
+  $('btnLimparH').onclick = () => { FILTROS_H.forEach(F => filtroH[F.id] = []); mselAberto = null; aoFiltrar(); };
 }
 function aoFiltrar(){ cacheAnos = {}; renderizar(); aplicarModo();
 }
@@ -1403,7 +1501,7 @@ const VEND_PRINC = ['ADRIANA FREITAS','ROBERTO SOARES','MARCOS JUHAS','DIRETORIA
 function graficoPaineis(def){                // um painel por ano (atual em cima); barras agrupadas por vendedor em cada mês; escala própria por painel
   const G = !!def.grande, AA = def.anosArea, nA = AA.length, W = def.W || 1000, H = def.H || 34 + nA * 250;
   const princ = ordemVendLucro(AA).filter(k => VEND_PRINC.includes(String(k).trim().toUpperCase()));
-  const grupos = def.sel ? [{ k: def.sel, cor: corVendedor(def.sel) }] : [...princ.map(k => ({ k, cor: corVendedor(k) })), { k: 'Outros', cor: COR_OUTROS, outros: true }];
+  const grupos = (def.sel || []).length ? def.sel.map(k => ({ k, cor: corVendedor(k) })) : [...princ.map(k => ({ k, cor: corVendedor(k) })), { k: 'Outros', cor: COR_OUTROS, outros: true }];
   const valor = (mp, g) => { if (!mp) return null;
     if (!g.outros) return mp.get(g.k) || 0;
     let t = 0; mp.forEach((v, n) => { if (!princ.includes(n)) t += v; }); return t; };
@@ -1603,9 +1701,10 @@ function grafico(a, comps, def){
 // colunas das listas detalhadas (padrão: COLS_DET_PADRAO; cada DETS pode trocar com cols:[...])
 const COLS_DET = {
   num:      { rot:'Número da Proposta', txt: d => d.num },
-  cliente:  { rot:'Cliente',            txt: d => d.cliente },
+  cliente:  { rot:'Empresa',            txt: d => d.cliente },
   vendedor: { rot:'Vendedor',           txt: d => d.vendedor },
   inside:   { rot:'Inside',             txt: d => d.inside },
+  agente:   { rot:'Agente Internacional', txt: d => (d.agenteLista || []).join(' / ') || 'Sem agente' },
   status:   { rot:'Status',             txt: d => d.statusLista.join(' / ') },
   criacao:  { rot:'Data Criação',       txt: d => fmtData(d.criacao), c:true },
   validade: { rot:'Data Vencimento',    txt: d => fmtData(d.validade), c:true },
@@ -1615,6 +1714,11 @@ const COLS_DET = {
   motivo:   { rot:'Motivo',             txt: d => d.motivo },
   compl:    { rot:'Complemento',        txt: d => d.compl || '–' },
   rota:     { rot:'Origem → Destino',   txt: d => d.rota },
+  cliNome:  { rot:'Empresa',            txt: d => d.nome || 'Sem nome' },
+  mesAtiv:  { rot:'Mês em que o cliente foi ganho', txt: d => d.inicio ? MESES_LONGOS[+d.inicio.slice(5,7) - 1] : '–', c:true },
+  criacaoCli:{ rot:'Início Prospecção',   txt: d => fmtData(d.criacao), c:true },
+  ativacao: { rot:'Cliente Ganho em',      txt: d => fmtData(d.inicio), c:true },
+  diasProsp:{ rot:'Tempo de prospecção', txt: d => d.diasProsp == null ? '–' : tempoSemEmbarque(d.criacao, d.diasProsp), c:true },   // até 31 dias em dias; acima, em anos/meses/dias
   diasVenc: { rot:'Dias Vencidos',      txt: d => { const n = diasVencidos(d); return n == null ? '–' : `${fmt(n)} dia${n === 1 ? '' : 's'}`; }, c:true },
 };
 const COLS_DET_PADRAO = ['num','cliente','vendedor','inside','status','criacao','validade'];
@@ -1631,8 +1735,11 @@ const ORD = {
 const COLS_STATUS = ['num','cliente','vendedor','inside','status'];
 const COLS_PERDAS = ['num','cliente','vendedor','inside','statusRota','motivo','compl','rota','criacao'];
 const DETS = {
-  perdasCli:{ titulo:'Perdas por cliente — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no mês', dim: d => [d.cliente], rotulo:'cliente', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
-  perdasMot:{ titulo:'Motivos das perdas — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no mês', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
+  novosAno: { titulo:'Novos clientes — prospectos que viraram clientes da casa', sub:'pela Data de Ativação do Prospecto · tempo de prospecção = do início da prospecção (criação do cadastro) até o cliente ganho',
+              cols:['cliNome','vendedor','criacaoCli','ativacao','diasProsp'], unidade:['cliente','clientes'], semPropostas:true, agrupar: d => d.inicio ? d.inicio.slice(0,7) : '',
+              ordem: (a, b) => String(b.inicio || '').localeCompare(String(a.inicio || '')) || String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR') },
+  perdasCli:{ titulo:'Perdas por cliente — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.cliente], rotulo:'empresa', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
+  perdasMot:{ titulo:'Motivos das perdas — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
   criadas:  { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
   prop:     { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
   aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada', cols:['num','cliente','vendedor','inside','criacao','aprovacao','lead'], ordem: ORD.leadAsc },
@@ -1643,8 +1750,9 @@ const DETS = {
   vendedor: { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
   vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
   inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside', ordem: ORD.inside },
-  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
-  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
+  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
+  agente:   { titulo:'Propostas por agente internacional', dim: d => d.agenteLista, rotulo:'agente', cols:['num','cliente','agente','vendedor','status','criacao','validade'], ordem: ORD.cliente },
+  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
 };
 let detEstado = null;
 const cacheAnoDet = {};
@@ -1653,7 +1761,7 @@ function detalheAno(ano){
 }
 function abrirDetalhe(chave, fontes, contexto, valorInicial){
   const def = DETS[chave]; if (!def) return;
-  detEstado = { def, fontes };   // fontes: [{rotulo, linhas}]
+  detEstado = { def, fontes, abertos: new Set() };   // fontes: [{rotulo, linhas}]
   $('detTitulo').textContent = def.titulo;
   $('detSub').textContent = [contexto, def.sub].filter(Boolean).join(' — ');
   const selAno = $('detAno');
@@ -1685,12 +1793,24 @@ function renderDetalhe(){
   if (def.ordem) linhas = linhas.slice().sort(def.ordem);
   const LIM = 1000, mostrar = linhas.slice(0, LIM);
   const cols = def.cols || COLS_DET_PADRAO;
-  $('detCorpo').innerHTML = mostrar.length ? mostrar.map(d =>
-    `<tr>${cols.map(k => `<td${COLS_DET[k].c ? ' class="c"' : ''}>${esc(COLS_DET[k].txt(d))}</td>`).join('')}</tr>`).join('')
-    : `<tr><td colspan="${cols.length}" class="vazio">Nenhuma proposta encontrada.</td></tr>`;
+  const linhaHtml = (d, attr) => `<tr${attr || ''}>${cols.map(k => `<td${COLS_DET[k].c ? ' class="c"' : ''}>${esc(COLS_DET[k].txt(d))}</td>`).join('')}</tr>`;
+  if (def.agrupar && mostrar.length){        // grupos expansíveis por mês/ano (mais recente primeiro)
+    const grupos = new Map();
+    mostrar.forEach(d => { const g = def.agrupar(d); (grupos.get(g) || grupos.set(g, []).get(g)).push(d); });
+    const tudoAberto = filtrosCol.length > 0;
+    $('detCorpo').innerHTML = [...grupos.entries()].sort((a, b) => b[0].localeCompare(a[0])).map(([g, ds]) => {
+      const aberto = tudoAberto || detEstado.abertos.has(g);
+      const rot = g ? `${MESES_LONGOS[+g.slice(5,7) - 1]}/${g.slice(0,4)}` : 'Sem data';
+      return `<tr class="grp${aberto ? ' aberto' : ''}" data-grp="${g}"><td colspan="${cols.length}"><span class="grp-ico">${aberto ? '−' : '+'}</span><b>${rot}</b><span class="grp-n">${fmt(ds.length)} ${ds.length === 1 ? 'cliente' : 'clientes'}</span></td></tr>`
+        + (aberto ? ds.map(d => linhaHtml(d, ' class="grp-item"')).join('') : '');
+    }).join('');
+  } else {
+    $('detCorpo').innerHTML = mostrar.length ? mostrar.map(d => linhaHtml(d)).join('')
+      : `<tr><td colspan="${cols.length}" class="vazio">Nenhuma proposta encontrada.</td></tr>`;
+  }
   const un = def.unidade || ['proposta','propostas'];
   $('detRodape').textContent = linhas.length > LIM ? `Mostrando ${fmt(LIM)} de ${fmt(linhas.length)} ${un[1]} — use os filtros das colunas para refinar.`
-    : `${fmt(linhas.length)} ${linhas.length === 1 ? un[0] : un[1]}` + (def.unidade ? ` · ${fmt(new Set(linhas.map(d => d.num)).size)} propostas` : '');
+    : `${fmt(linhas.length)} ${linhas.length === 1 ? un[0] : un[1]}` + (def.unidade && !def.semPropostas ? ` · ${fmt(new Set(linhas.map(d => d.num)).size)} propostas` : '');
 }
 const semAcento = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
 function valorColDet(d, col){ return COLS_DET[col] ? COLS_DET[col].txt(d) : d[col]; }   // mesmo texto exibido na tabela
@@ -1698,6 +1818,10 @@ function fecharDetalhe(){ $('modalDet').classList.add('hidden'); detEstado = nul
 $('detFechar').onclick = fecharDetalhe;
 $('modalDet').addEventListener('click', e => { if (e.target.id === 'modalDet') fecharDetalhe(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && detEstado) fecharDetalhe(); });
+$('detCorpo').addEventListener('click', e => {      // abre/fecha o grupo (mês/ano) da lista detalhada
+  const tr = e.target.closest('tr.grp'); if (!tr || !detEstado) return;
+  const g = tr.dataset.grp; detEstado.abertos.has(g) ? detEstado.abertos.delete(g) : detEstado.abertos.add(g); renderDetalhe();
+});
 $('detAno').onchange = renderDetalhe; $('detFiltro').onchange = renderDetalhe; $('detCab').addEventListener('input', renderDetalhe);
 $('detCab').addEventListener('click', e => {
   const b = e.target.closest('[data-limpa]'); if (!b) return;
@@ -1706,8 +1830,8 @@ $('detCab').addEventListener('click', e => {
 document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('.lupa'); if (!b || b.dataset.exp) return;
   if (b.dataset.det){                                   // aba Mês atual
-    const rot = `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
-    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: b.dataset.det.startsWith('perdas') ? PERDAS.rotas : M.detalhe }], rot);
+    const perdas = b.dataset.det.startsWith('perdas'), rot = perdas ? rotuloPeriodo() : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: perdas ? PERDAS.rotas : M.detalhe }], rot);
   }
 });
 
@@ -1717,7 +1841,7 @@ function desenharExpandido(){
   const u = ultimoHist[expAberto]; if (!u) return;
   const area = $('expArea'), w = Math.max(340, area.clientWidth - 8), h = Math.max(220, area.clientHeight - 8);
   $('expTitulo').textContent = u.def.titulo;
-  $('expSub').innerHTML = u.resumo + (filtrosAtivos().length ? ' · filtros: ' + filtrosAtivos().map(F => esc(filtroH[F.id])).join(' · ') : '');
+  $('expSub').innerHTML = u.resumo + (filtrosAtivos().length ? ' · filtros: ' + filtrosAtivos().map(F => esc(textoF(F.id))).join(' · ') : '');
   $('expAviso').innerHTML = u.seletor;
   $('expLeg').innerHTML = $('legenda').innerHTML;
   $('expExtra').innerHTML = u.extra || '';
@@ -1729,6 +1853,12 @@ function desenharExpandido(){
 function abrirExpandido(id){ expAberto = id; $('modalExp').classList.remove('hidden'); document.body.style.overflow = 'hidden'; desenharExpandido(); $('expFechar').focus(); }
 function fecharExpandido(){ expAberto = null; $('modalExp').classList.add('hidden'); document.body.style.overflow = ''; }
 document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-exp]'); if (b) abrirExpandido(b.dataset.exp); });
+document.addEventListener('click', e => {          // lista detalhada da visão anual (um bloco por ano)
+  const b = e.target.closest && e.target.closest('[data-det-ano]'); if (!b) return;
+  const anos = [ANO_ATUAL, ...anosComp], clis = clientesFiltrados();
+  const fontes = anos.map(a => ({ rotulo: String(a), linhas: calcularMetricas([], clis, `${a}-01-01`, `${a}-12-31`, hojeISO()).novosClientes }));
+  abrirDetalhe(b.dataset.detAno, fontes, `${anos.join(' x ')}`);
+});
 $('expFechar').onclick = fecharExpandido;
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && expAberto) fecharExpandido(); });
 window.addEventListener('resize', () => { if (expAberto) desenharExpandido(); });
