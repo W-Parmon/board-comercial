@@ -47,7 +47,7 @@
   .user{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px}
   .user .nome{font-weight:600}
   .tag{background:var(--gold);color:#000;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;text-transform:uppercase}
-  main{max-width:1280px;margin:0 auto;padding:24px}
+  main{max-width:none;margin:0;padding:24px 32px}
   .bar{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:20px}
   .bar .field{margin:0}
   .bar select,.bar input[type=date]{padding:8px 10px;border:1px solid #d8d8d8;border-radius:8px;background:#fff}
@@ -73,7 +73,7 @@
   .hb .trk{height:14px;background:var(--track);border-radius:0 4px 4px 0}
   .hb .fill{height:100%;background:var(--red);border-radius:0 4px 4px 0;min-width:2px}
   #gInside .hb .fill{background:#F8B133}
-  #gVend .vb .fill{background:#2563EB}
+  #gVend .vb .fill{background:#00A2E8}
   #gCliente .hb .fill{background:#16A34A}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
@@ -146,7 +146,7 @@
   .ano-fixo{padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--soft);font-weight:700;color:var(--red)}
   .legenda{display:flex;gap:16px;align-items:center;font-size:12px;color:#000;margin-left:auto;padding-bottom:8px}
   .legenda i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px}
-  .gridH{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .gridH{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
   .cardH{border:1px solid var(--line);border-radius:10px;padding:16px 16px 10px;min-width:0}
   .cardH h2{color:var(--red);font-size:14px;font-weight:700}
   .cardH .acum{font-size:12px;color:var(--muted);margin:2px 0 8px;min-height:16px}
@@ -156,10 +156,60 @@
   .cardH svg text{font-family:inherit;font-size:10px;fill:#6b6b6b}
   .cardH .hit{fill:transparent;cursor:default}
   .cardH .hit:hover{fill:rgba(0,0,0,.04)}
+  .cardH svg text.vl,.exp-area svg text.vl{fill:#222;font-weight:600;pointer-events:none}
+  .cardH.larga{grid-column:1 / -1}
+  .cardH.larga > svg{overflow:visible}
+  .cardH.larga .combo-scroll{overflow-x:auto}
+  .tab-lucroH{margin-top:10px;overflow-x:auto}
+  .tab-lucroH table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .tab-lucroH th{font-size:11px;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:2px solid var(--gold);position:static;background:none;text-transform:none}
+  .tab-lucroH th small{font-weight:400}
+  .tab-lucroH td{padding:5px 8px;border-bottom:1px solid var(--line)}
+  .tab-lucroH td i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:0}
+  .tab-lucroH .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tab-lucroH tfoot td{font-weight:700;border-top:2px solid var(--gold);border-bottom:none}
+  #expExtra .tab-lucroH{max-height:34vh;overflow:auto}
   .up{color:#1d7a3a}.down{color:var(--red)}
-  @media (max-width:1100px){.gridH{grid-template-columns:1fr 1fr}}
+  /* gráfico combinado */
+  .combo{margin-bottom:16px}
+  .combo-filtros{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px 12px;margin-bottom:12px}
+  .combo-filtros label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+  .combo-filtros select{margin:0}
+  .limpar-wrap{display:flex;align-items:flex-end}
+  .aviso-f{font-size:11px;color:var(--muted);background:var(--soft);border-radius:6px;padding:4px 8px;margin-bottom:6px}
+
+  @media (max-width:900px){.gridH{grid-template-columns:1fr}}
   @media (max-width:700px){.gridH{grid-template-columns:1fr}.legenda{margin-left:0}}
 
+
+  /* ===== Tela larga / TV: tudo ocupa a largura total, mais gráficos por linha ===== */
+  html,body,#app,main{width:100%;max-width:none!important}
+  main{padding-left:clamp(16px,1.6vw,40px);padding-right:clamp(16px,1.6vw,40px)}
+  .vb .col{height:clamp(180px,22vh,380px)}
+  @media (min-width:1600px){
+    #blocoMes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
+    #blocoMes>.grid2{display:contents}
+    #blocoMes>.kpis,#cardLucro{grid-column:1/-1;margin:0!important}
+    #blocoMes>.kpis{order:-1}
+    #cardLucro{order:1}
+    #blocoMes>.grid2>.card{margin:0}
+    #blocoListas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    #blocoListas>.grid2{display:contents}
+    #blocoListas>.grid2>.card,#cardEmb{margin:0!important}
+    #cardEmb{order:1}
+    #cardFat{order:2;grid-column:1/-1;margin:0!important}
+    .gridH{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media (min-width:1600px) and (max-width:1999px){#blocoMes .vbars .rot{font-size:10px}}
+  .tab-perdas{max-height:none;border:none}
+  .tab-perdas th{font-size:11px;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:2px solid var(--dourado);background:none;position:static}
+  .tab-perdas td{padding:7px 8px;border-bottom:1px solid var(--line);font-size:12.5px}
+  .tab-perdas .n{text-align:right;white-space:nowrap}
+  .tab-perdas .qtd{color:var(--vermelho);font-weight:700}
+  .tab-perdas .pct,.tab-perdas .frac{color:var(--muted)}
+  .tab-perdas tr.clicavel{cursor:pointer}
+  .tab-perdas tr.clicavel:hover td{background:var(--soft)}
+  #gridPerdas .card{margin:0}
   #tip{position:fixed;pointer-events:none;background:#000;color:#fff;font-size:12px;padding:6px 9px;border-radius:6px;z-index:20;max-width:320px}
 
   .panel{border:1px solid var(--line);border-radius:10px;padding:20px;margin-top:8px}
@@ -229,6 +279,17 @@
   .filtro-bar .dir{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
   .filtro-bar .dir .upd{margin-left:0;padding-bottom:0}
   .filtro-bar .dir .legenda{margin-left:0;padding-bottom:0}
+  .multi{position:relative;min-width:170px}
+  .multi-btn{width:100%;text-align:left;padding:9px 34px 9px 12px;border:1px solid #d8d8d8;border-radius:8px;background:#fff;font:inherit;font-size:14px;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .multi-btn::after{content:'';position:absolute;right:13px;top:50%;width:7px;height:7px;border-right:2px solid #333;border-bottom:2px solid #333;transform:translateY(-70%) rotate(45deg)}
+  .multi-painel{position:absolute;z-index:30;top:calc(100% + 4px);left:0;min-width:100%;background:#fff;border:1px solid #d8d8d8;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.12);padding:6px}
+  .multi-painel label{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-size:14px;cursor:pointer;white-space:nowrap}
+  .multi-painel label:hover{background:var(--soft)}
+  .multi-painel input{accent-color:var(--red);width:16px;height:16px;margin:0}
+  .multi-painel i{width:12px;height:12px;border-radius:3px;display:inline-block;margin-left:auto}
+  .multi-painel .vazio{padding:8px;font-size:13px}
+  .filtro-bar .dir .legenda{font-size:15px;font-weight:700;gap:20px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .filtro-bar .dir .legenda i{width:16px;height:16px;border-radius:4px;margin-right:8px;vertical-align:-3px}
   @media (max-width:700px){.hist-ctrls{padding-left:0;border-left:none;flex-wrap:wrap}.filtro-bar .dir{margin-left:0;align-items:flex-start}}
   th.c,td.c{text-align:center}
   /* lupa + detalhamento */
@@ -236,6 +297,29 @@
   .lupa{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;border:1.5px solid var(--dourado);background:#fff;display:flex;align-items:center;justify-content:center;padding:0;z-index:2}
   .lupa svg{width:15px;height:15px;fill:none;stroke:var(--vermelho);stroke-width:2.4;stroke-linecap:round}
   .lupa:hover{background:#fff8ec}
+  .lupa.expandir svg{stroke-width:2.2;stroke-linejoin:round}
+  .exp{position:fixed;inset:0;z-index:110;background:#fff;display:flex;flex-direction:column;padding:20px 28px 16px;border-top:4px solid var(--dourado)}
+  .exp.rola{overflow-y:auto}
+  #modalOutros{z-index:130}
+  .det-outros{max-width:820px}
+  #outTab{max-height:70vh;overflow:auto;padding:0 22px 18px;margin-top:4px}
+  .tab-lucroH .lupa-outros{position:static;display:inline-flex;width:24px;height:24px;margin-left:10px;vertical-align:middle}
+  .tab-lucroH .lupa-outros svg{width:13px;height:13px}
+  .exp.rola .exp-area{flex:none}
+  .exp.rola #expExtra .tab-lucroH{max-height:none}
+  .exp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:8px}
+  .exp-top h3{color:var(--vermelho);font-size:22px;margin:0}
+  .exp-sub{font-size:14px;color:var(--cinza);margin-top:4px}
+  .exp-sub b{color:#000}
+  .exp-dir{display:flex;align-items:center;gap:12px}
+  .exp .legenda{font-size:15px;font-weight:700;gap:18px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;margin:0}
+  .exp .legenda i{width:16px;height:16px;border-radius:4px;margin-right:8px;vertical-align:-3px}
+  .exp .det-fechar{font-size:22px}
+  .exp-area{flex:1;min-height:0}
+  .exp-area svg{width:100%;height:100%;display:block}
+  .exp-area svg text{font-family:inherit;font-size:13px;fill:#6b6b6b}
+  .exp-area .hit{fill:transparent}.exp-area .hit:hover{fill:rgba(0,0,0,.04)}
+  @media (max-width:700px){.exp-area svg text{font-size:11px}.exp{padding:14px 12px}.exp-top{flex-direction:column}.exp-top h3{font-size:18px}}
   .card h2,.cardH h2,.kpi .lbl{padding-right:36px}
   .det{background:#fff;border-radius:12px;width:100%;max-width:1100px;max-height:88vh;display:flex;flex-direction:column;border-top:4px solid var(--dourado);box-shadow:0 10px 40px rgba(0,0,0,.25)}
   .det-top{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 22px 8px}
@@ -253,6 +337,9 @@
   .det-tbl td.c{white-space:nowrap}
   .det-tbl table{min-width:860px}
   .com-filtro thead{position:sticky;top:0;z-index:2;background:#fff}
+  #cardFat.sem-vend .col-vend{display:none}
+  #cardFat .tbl-wrap{max-height:520px}
+  .sub-cel{font-size:11px;color:var(--muted)}
   .com-filtro thead th{position:static;border-bottom:none;text-align:center}
   .com-filtro tr.filtros th{padding:0 6px 8px;border-bottom:none;box-shadow:inset 0 -2px 0 var(--dourado)}
   .fcol{display:flex;align-items:center;border:1px solid #d8d8d8;border-radius:6px;background:#fff}
@@ -323,31 +410,19 @@
     <div class="user">
       <div class="quem"><span class="nome" id="uNome"></span><span class="tag" id="uPerfil"></span></div>
       <div class="acoes">
+        <button class="hbtn hidden" id="btnTela" type="button" aria-pressed="false">⛶ Tela cheia</button>
         <button class="hbtn" id="btnSenha" type="button">Trocar senha</button>
         <button class="hbtn" id="btnSair" type="button">Sair</button>
       </div>
     </div>
   </header>
-  <nav class="abas">
-    <button class="aba ativa" data-aba="abaMes" type="button">📊 Mês atual</button>
-    <button class="aba" data-aba="abaHist" type="button">📈 Histórico</button>
-  </nav>
   <main>
     <div class="bar filtro-bar">
-      <div class="field hidden" id="boxFiltro">
-        <label for="fVendedor">Vendedor</label>
-        <select id="fVendedor">
-          <option value="">Todos</option>
-          <option value="MARCOS">Marcos</option>
-          <option value="ROBERTO">Roberto</option>
-          <option value="ESSIO">Éssio</option>
-          <option value="DIRETORIA">Diretoria (Diretoria, Ana Paula e Adriana)</option>
-        </select>
-      </div>
-      <div class="hist-ctrls hidden" id="histCtrls">
-        <div class="field"><label>Ano</label><div class="ano-fixo" id="anoAtualLbl"></div></div>
-        <div class="field"><label for="fComparar">Comparar com</label>
-          <select id="fComparar"><option value="">Sem comparação</option></select></div>
+      <div class="hist-ctrls" id="histCtrls">
+        <div class="field"><label for="fMes">Mês</label><input type="month" id="fMes"></div>
+        <div class="field"><label for="fCompBtn">Comparar com</label>
+          <div class="multi" id="fComparar"><button type="button" class="multi-btn" id="fCompBtn" aria-haspopup="true" aria-expanded="false">Sem comparação</button>
+            <div class="multi-painel hidden" id="fCompPainel" role="group" aria-label="Anos para comparar"></div></div></div>
         <button class="btn" id="btnAplicar" type="button">Aplicar</button>
       </div>
       <div class="dir">
@@ -359,12 +434,19 @@
 
     <!-- ===== ABA MÊS ATUAL ===== -->
     <section id="abaMes">
+      <div class="cardH combo" id="combo">
+        <h2>Filtros</h2>
+        <div class="acum" id="filtrosNota">Os filtros valem para todos os gráficos e listas abaixo</div>
+        <div class="combo-filtros" id="comboFiltros"></div>
+      </div>
     <div class="titulo-mes" id="tituloMes"></div>
+    <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
+    <div id="blocoMes">
     <div class="kpis">
       <div class="kpi"><button class="lupa" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
       <div class="kpi"><div class="lbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
       <div class="kpi"><button class="lupa" type="button" data-det="aprovadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas aprovadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">com pelo menos 1 rota aprovada</div></div>
-      <div class="kpi"><button class="lupa" type="button" data-det="lead" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
+      <div class="kpi"><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
       <div class="kpi"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
 
@@ -372,8 +454,8 @@
       <div class="card"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Status das rotas</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
       <div class="card"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
     </div>
-    <div class="card" style="margin-bottom:16px">
-      <h2>Lucro líquido por vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div>
+    <div class="card" style="margin-bottom:16px" id="cardLucro">
+      <h2>Lucro líquido por vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div><div class="aviso-f hidden" id="avisoLucro"></div>
       <div class="lucro-wrap"><div class="vbars lucro-bars" id="gLucro"></div><div class="lucro-tot" id="tLucro"></div></div>
     </div>
     <div class="grid2">
@@ -381,28 +463,38 @@
       <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
 
+    </div>
+    <div id="blocoListas">
+    <div class="grid2" id="gridPerdas">
+      <div class="card" id="cardPerdasCli"><button class="lupa" type="button" data-det="perdasCli" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
+        <h2>Top 10 Clientes por Qtd. de Perdas</h2><div class="nota" id="notaPerdasCli"></div>
+        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Cliente</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
+      </div>
+      <div class="card" id="cardPerdasMot"><button class="lupa" type="button" data-det="perdasMot" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
+        <h2>Motivos Gerais das Perdas (Todos os Clientes)</h2><div class="nota" id="notaPerdasMot"></div>
+        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Motivo</th><th class="n">Qtd.</th><th class="n">%</th></tr></thead><tbody id="tPerdasMot"></tbody></table></div>
+      </div>
+    </div>
     <div class="grid2">
       <div class="card">
-        <div class="card-head"><div><h2>Propostas vencidas</h2><div class="nota" id="notaVenc"></div></div></div>
-        <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Cliente</th><th>Vendedor</th><th>Validade</th><th>Status das rotas</th></tr><tr class="filtros" id="vencFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="validade" aria-label="Filtrar Validade" autocomplete="off"><button type="button" data-limpa="validade" aria-label="Limpar filtro Validade">x</button></div></th><th class="flt"><div class="fcol"><input data-col="status" aria-label="Filtrar Status das rotas" autocomplete="off"><button type="button" data-limpa="status" aria-label="Limpar filtro Status das rotas">x</button></div></th></tr></thead><tbody id="tVenc"></tbody></table></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div></div></div>
+        <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div><div class="aviso-f hidden" id="avisoNovos"></div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
         <div class="tbl-wrap"><table><thead><tr><th>Nome Cliente</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Convertido em Cliente</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
+      <div class="card" id="cardEmb">
+        <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div><div class="aviso-f hidden" id="avisoEmb"></div>
+        <div class="faixas" id="faixasEmb"></div>
+        <div class="hbars" id="gEmb"></div><button class="btn ghost small mais hidden" id="maisEmb" type="button"></button>
+      </div>
     </div>
-    <div class="card" style="margin-bottom:16px">
-      <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div>
-      <div class="faixas" id="faixasEmb"></div>
-      <div class="hbars" id="gEmb"></div><button class="btn ghost small mais hidden" id="maisEmb" type="button"></button>
+
+    <div class="card" style="margin-top:16px" id="cardFat">
+      <div class="card-head"><div><h2>Faturamento Previsto</h2><div class="nota" id="notaFat"></div><div class="aviso-f hidden" id="avisoFat"></div></div></div>
+      <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Cliente</th><th class="col-vend">Vendedor</th><th>Armador</th><th>Previsão de chegada</th><th>Prazo para pagamento</th></tr><tr class="filtros" id="fatFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt col-vend"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cia" aria-label="Filtrar Armador" autocomplete="off"><button type="button" data-limpa="cia" aria-label="Limpar filtro Armador">x</button></div></th><th class="flt"><div class="fcol"><input data-col="chegada" aria-label="Filtrar Previsão de chegada" autocomplete="off"><button type="button" data-limpa="chegada" aria-label="Limpar filtro Previsão de chegada">x</button></div></th><th class="flt"><div class="fcol"><input data-col="prazo" aria-label="Filtrar Prazo para pagamento" autocomplete="off"><button type="button" data-limpa="prazo" aria-label="Limpar filtro Prazo para pagamento">x</button></div></th></tr></thead><tbody id="tFat"></tbody></table></div>
+    </div>
     </div>
     </section>
 
-    <!-- ===== ABA HISTÓRICO ===== -->
-    <section id="abaHist" class="hidden">
-      <div class="gridH" id="gridHist"></div>
-    </section>
 
   </main>
   <footer class="brand-footer">
@@ -417,6 +509,28 @@
 <div id="tip" class="hidden"></div>
 <div class="carregando hidden" id="carregando">Carregando dados…</div>
 
+<!-- GRÁFICO EM TELA CHEIA -->
+<div class="exp hidden" id="modalExp" role="dialog" aria-modal="true" aria-labelledby="expTitulo">
+  <div class="exp-top">
+    <div><h3 id="expTitulo"></h3><div class="exp-sub" id="expSub"></div></div>
+    <div class="exp-dir"><div class="legenda" id="expLeg"></div><button class="det-fechar" id="expFechar" type="button" aria-label="Fechar tela cheia">✕</button></div>
+  </div>
+  <div id="expAviso"></div>
+  <div class="exp-area" id="expArea"></div>
+  <div id="expExtra"></div>
+</div>
+
+<!-- MODAL OUTROS VENDEDORES (lucro, aba Histórico) -->
+<div class="modal-bg hidden" id="modalOutros">
+  <div class="det det-outros" role="dialog" aria-modal="true" aria-labelledby="outTitulo">
+    <div class="det-top">
+      <div><h3 id="outTitulo">Outros vendedores — lucro líquido</h3><div class="det-sub" id="outSub"></div></div>
+      <button class="det-fechar" id="outFechar" type="button" aria-label="Fechar" onclick="fecharOutros()">✕</button>
+    </div>
+    <div class="tab-lucroH" id="outTab"></div>
+  </div>
+</div>
+
 <!-- MODAL DETALHAMENTO -->
 <div class="modal-bg hidden" id="modalDet">
   <div class="det" role="dialog" aria-modal="true" aria-labelledby="detTitulo">
@@ -428,7 +542,7 @@
       <select id="detAno" class="hidden"></select>
       <select id="detFiltro" class="hidden"></select>
     </div>
-    <div class="tbl-wrap det-tbl com-filtro"><table><thead><tr><th>Número da Proposta</th><th>Cliente</th><th>Vendedor</th><th>Inside</th><th>Status</th><th class="c">Data Criação</th><th class="c">Data Vencimento</th></tr><tr class="filtros" id="detFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Número da Proposta" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Número da Proposta">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Cliente" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Cliente">x</button></div></th><th class="flt"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="inside" aria-label="Filtrar Inside" autocomplete="off"><button type="button" data-limpa="inside" aria-label="Limpar filtro Inside">x</button></div></th><th class="flt"><div class="fcol"><input data-col="status" aria-label="Filtrar Status" autocomplete="off"><button type="button" data-limpa="status" aria-label="Limpar filtro Status">x</button></div></th><th class="flt"><div class="fcol"><input data-col="criacao" aria-label="Filtrar Data Criação" autocomplete="off"><button type="button" data-limpa="criacao" aria-label="Limpar filtro Data Criação">x</button></div></th><th class="flt"><div class="fcol"><input data-col="validade" aria-label="Filtrar Data Vencimento" autocomplete="off"><button type="button" data-limpa="validade" aria-label="Limpar filtro Data Vencimento">x</button></div></th></tr></thead><tbody id="detCorpo"></tbody></table></div>
+    <div class="tbl-wrap det-tbl com-filtro"><table><thead id="detCab"></thead><tbody id="detCorpo"></tbody></table></div>
     <div class="det-rodape" id="detRodape"></div>
   </div>
 </div>
@@ -487,13 +601,17 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     if (aprovadas.length) aprovadasN++;
     const vals = p.rotas.map(r => dia(r.data_validade)).filter(Boolean).sort();
     const det = { num: p.num, cliente: p.cliente || 'Sem cliente', vendedor: p.vendedor || 'Sem vendedor', inside: p.emissor || 'Sem emissor',
-      statusLista: [...new Set(p.rotas.map(r => r.status || 'Sem status'))], criacao: p.criacao, validade: vals.length ? vals[vals.length - 1] : null,
-      rotas: p.rotas.length, aprovada: aprovadas.length > 0, lead: null, vencida: false };
+      statusLista: [...new Set(p.rotas.map(r => r.status || 'Sem status'))],
+      origemLista: [...new Set(p.rotas.map(r => r.origem || 'Sem origem'))], destinoLista: [...new Set(p.rotas.map(r => r.destino || 'Sem destino'))],
+      produtoLista: [...new Set(p.rotas.map(r => r.produto || 'Sem produto'))], agenteLista: [...new Set(p.rotas.map(r => r.agente_internacional || 'Sem agente'))],
+      ciaLista: [...new Set(p.rotas.map(r => r.cia_armador_coloader || 'Sem armador/cia'))], criacao: p.criacao, validade: vals.length ? vals[vals.length - 1] : null,
+      rotas: p.rotas.length, aprovada: aprovadas.length > 0, aprovacao: null, lead: null, vencida: false };
     detalhe.push(det);
 
     // 6) lead time: criação → primeira aprovação (em dias corridos)
     const datasAprov = aprovadas.map(r => dia(r.data_aprovacao)).filter(Boolean).sort();
     if (datasAprov.length) {
+      det.aprovacao = datasAprov[0];
       const d = diasEntre(p.criacao, datasAprov[0]);
       if (d >= 0) { leadTimes.push(d); det.lead = d; } else leadIgnorados++;
     }
@@ -560,7 +678,8 @@ const esc = s => String(s ?? '').replace(/&amp;/g, '&').replace(/[&<>"]/g, c => 
 const MESES_LONGOS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const limitesMes = (ano, m) => { const ult = new Date(ano, m + 1, 0).getDate(), mm = String(m + 1).padStart(2,'0'); return [`${ano}-${mm}-01`, `${ano}-${mm}-${ult}`]; };
 const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
-let acesso = null, ROTAS = [], CLIENTES = [], LUCRO = [], M = null;
+let mesSel = { ano: new Date().getFullYear(), m: new Date().getMonth() };   // mês exibido (padrão: mês vigente)
+let acesso = null, ROTAS = [], CLIENTES = [], LUCRO = [], EMB = [], PRAZOS = new Map(), M = null;
 
 /* ---------- Autenticação ---------- */
 let emRecuperacao = false;
@@ -631,6 +750,17 @@ $('formLogin').addEventListener('submit', async e=>{
   $('senha').value = '';
   await abrirApp();
 });
+/* ---------- Tela cheia do Board ---------- */
+const temTelaCheia = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+const elTelaCheia = () => document.fullscreenElement || document.webkitFullscreenElement;
+$('btnTela').classList.toggle('hidden', !temTelaCheia);
+$('btnTela').onclick = () => {
+  if (elTelaCheia()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  else { const d = document.documentElement; (d.requestFullscreen || d.webkitRequestFullscreen).call(d); }
+};
+function atualizarBtnTela(){ const on = !!elTelaCheia(); $('btnTela').textContent = on ? '✕ Sair da tela cheia' : '⛶ Tela cheia'; $('btnTela').setAttribute('aria-pressed', on); }
+document.addEventListener('fullscreenchange', atualizarBtnTela);
+document.addEventListener('webkitfullscreenchange', atualizarBtnTela);
 $('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrarLogin(); };
 
 async function abrirApp(){
@@ -639,7 +769,6 @@ async function abrirApp(){
   acesso = data;
   $('uNome').textContent = data.nome;
   $('uPerfil').textContent = data.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
-  $('boxFiltro').classList.toggle('hidden', data.perfil !== 'diretoria');
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
@@ -658,20 +787,36 @@ async function buscarTudo(tabela, colunas, filtro){
   }
   return todas;
 }
+async function buscarEmbarcados(filtro){       // só o necessário para o mês vigente e o próximo (chegada/embarque a partir do mês anterior)
+  const hj = new Date(), ini = limitesMes(hj.getMonth() ? hj.getFullYear() : hj.getFullYear() - 1, hj.getMonth() ? hj.getMonth() - 1 : 11)[0];
+  const passo = 1000; let i = 0, todas = [];
+  while (true){
+    let q = sb.from('com_embarcados').select('numero_processo,cliente,apelido_cliente,vendedor,cia,data_embarque,prev_chegada')
+      .or(`prev_chegada.gte.${ini},data_embarque.gte.${ini}`).order('numero_processo').range(i, i + passo - 1);
+    if (filtro) q = q.eq('vendedor_grupo', filtro);
+    const { data, error } = await q;
+    if (error) throw error;
+    todas = todas.concat(data);
+    if (data.length < passo) break;
+    i += passo;
+  }
+  return todas;
+}
 async function carregarDados(){
   $('carregando').classList.remove('hidden');
   try{
-    const filtro = acesso.perfil === 'diretoria' ? $('fVendedor').value : '';
-    [ROTAS, CLIENTES, LUCRO] = await Promise.all([
-      buscarTudo('com_propostas_rotas','numero_proposta,status,cliente,vendedor,emissor,data_criacao,data_aprovacao,data_validade', filtro),
+    const filtro = '';            // o filtro de vendedor agora é o filtro geral (no navegador); o banco já limita cada vendedor ao seu grupo
+    [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
+      buscarTudo('com_propostas_rotas','numero_proposta,status,motivo,complemento_motivo,cliente,vendedor,emissor,produto,origem,destino,agente_internacional,cia_armador_coloader,data_criacao,data_aprovacao,data_validade', filtro),
       buscarTudo('com_clientes','nome_completo,vendedor,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
-      buscarTudo('com_lucro','numero_processo,cliente,vendedor,data_recebimento,lucro_liquido', filtro)
+      buscarTudo('com_lucro','numero_processo,cliente,vendedor,agente_internacional,cia,data_recebimento,lucro_liquido', filtro),
+      buscarEmbarcados(filtro).catch(e => { console.error('embarcados', e); return []; }),          // opcional: sem a tabela o restante do Board segue funcionando
+      sb.rpc('com_prazos_embarcados').then(r => { if (r.error) throw r.error; return new Map((r.data || []).map(x => [x.chave, x.prazo_pagamento])); }).catch(e => { console.error('prazos', e); return new Map(); })
     ]);
     renderizar(); prepararHistorico();
   }catch(e){ console.error(e); $('kProp').textContent = 'erro'; }
   $('carregando').classList.add('hidden');
 }
-$('fVendedor').onchange = carregarDados;
 
 async function mostrarAtualizacao(){
   const { data } = await sb.from('com_cargas').select('carregado_em').order('carregado_em',{ascending:false}).limit(1);
@@ -686,20 +831,30 @@ const tip = $('tip');
 const fmtBRL = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
 const fmtCurto = v => { const a = Math.abs(v), s = v < 0 ? '−' : '';
   return a >= 1e6 ? s + (a/1e6).toFixed(1).replace('.',',').replace(',0','') + ' mi' : a >= 1e3 ? s + (a/1e3).toFixed(1).replace('.',',').replace(',0','') + ' mil' : s + a.toFixed(0); };
-function lucroPeriodo(de, ate){
+// modalidade pelo começo da referência do processo (IM, IA, EM, EA)
+const PRODUTO_REF = { IM:'Importação Marítima', IA:'Importação Aérea', EM:'Exportação Marítima', EA:'Exportação Aérea' };
+const produtoLucro = l => PRODUTO_REF[String(l.numero_processo || '').slice(0,2).toUpperCase()] || 'Outros (sem modalidade na referência)';
+// f: filtros que o lucro aceita { vendedor, agente, cia, produto } — campos vazios = todos
+function lucroPeriodo(de, ate, f){
+  f = typeof f === 'string' ? { vendedor: f } : (f || {});
   const mapa = new Map(); let total = 0, n = 0;
   for (const l of LUCRO){
     const d = l.data_recebimento && String(l.data_recebimento).slice(0,10);
     if (!d || d < de || d > ate) continue;
+    if (f.vendedor && (l.vendedor || 'Sem vendedor') !== f.vendedor) continue;
+    if (f.agente && (l.agente_internacional || 'Sem agente') !== f.agente) continue;
+    if (f.cia && (l.cia || 'Sem armador/cia') !== f.cia) continue;
+    if (f.produto && produtoLucro(l) !== f.produto) continue;
+    if (f.cliente && (l.cliente || 'Sem cliente') !== f.cliente) continue;
     const v = Number(l.lucro_liquido) || 0, k = l.vendedor || 'Sem vendedor';
     mapa.set(k, (mapa.get(k) || 0) + v); total += v; n++;
   }
   const pares = [...mapa.entries()].sort((a,b) => b[1] - a[1]);
   return { total, n, pares, mapa };
 }
-const CORES_VEND = { 'ADRIANA FREITAS':'#2563EB', 'ANA PAULA':'#F97316', 'ROBERTO SOARES':'#16A34A', 'DIRETORIA':'#C21A2B',
-  'MARCOS JUHAS':'#7C3AED', 'ÉSSIO LIMA':'#0D9488', 'FREE HAND - ZHEJIANG XINGANG':'#F8B133' };
-const CORES_VEND_EXTRAS = ['#DB2777','#0EA5E9','#4B5563','#84CC16','#78350F','#A3A3A3','#9333EA','#EA580C'];
+const CORES_VEND = { 'ADRIANA FREITAS':'#00A2E8', 'ANA PAULA':'#F97316', 'ROBERTO SOARES':'#16A34A', 'DIRETORIA':'#C21A2B',
+  'MARCOS JUHAS':'#7C3AED', 'ÉSSIO LIMA':'#0D9488', 'JESSICA RIBAS':'#BE185D', 'FREE HAND - ZHEJIANG XINGANG':'#F8B133' };
+const CORES_VEND_EXTRAS = ['#DB2777','#A16207','#4B5563','#84CC16','#78350F','#A3A3A3','#9333EA','#EA580C'];
 function corVendedor(nome){
   const k = String(nome).trim().toUpperCase();
   if (CORES_VEND[k]) return CORES_VEND[k];
@@ -707,7 +862,8 @@ function corVendedor(nome){
   return CORES_VEND_EXTRAS[h % CORES_VEND_EXTRAS.length];
 }
 function quadroLucro(de, ate){
-  const L = lucroPeriodo(de, ate), el = $('gLucro');
+  const L = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto, cliente: filtroH.cliente }), el = $('gLucro');
+  avisoFiltro('avisoLucro', ['vendedor','agente','cia','produto','cliente'], 'Lucro vem dos processos: aqui valem só os filtros de vendedor, cliente, produto, agente e armador/cia');
   if (!L.pares.length){ el.innerHTML = '<div class="vazio">Sem lucro registrado no mês.</div>'; $('tLucro').innerHTML = ''; return; }
   const max = Math.max(1, ...L.pares.map(p => p[1]));
   el.innerHTML = L.pares.map(([rot, v]) =>
@@ -744,9 +900,9 @@ function pizza(el, pares, total){
   el.innerHTML = `<svg viewBox="0 0 200 200" role="img" aria-label="Status das rotas">${fatias}</svg>
     <div class="leg-pz">${pares.map(([rot, v], i) => `<div data-t="${esc(rot)}: ${fmt(v)} (${pct(v)})"><i style="background:${corStatus(rot, i)}"></i><span>${esc(rot)}</span><b>${fmt(v)}</b><em>${pct(v)}</em></div>`).join('')}</div>`;
 }
-const CORES_STATUS = { 'ENVIADO AO CLIENTE':'#2563EB', 'APROVADA':'#16A34A', 'CANCELADA':'#DC2626', 'SEM STATUS':'#4B5563',
+const CORES_STATUS = { 'ENVIADO AO CLIENTE':'#00A2E8', 'APROVADA':'#16A34A', 'CANCELADA':'#DC2626', 'SEM STATUS':'#4B5563',
   'EM ANDAMENTO':'#F8B133', 'REPROVADA':'#F97316', 'ESTUDO DE VIABILIDADE':'#7C3AED' };
-const CORES_EXTRAS = ['#0D9488','#A3A3A3','#DB2777','#0EA5E9','#78350F'];
+const CORES_EXTRAS = ['#0D9488','#A3A3A3','#DB2777','#A16207','#78350F'];
 function corStatus(rot, i){ return CORES_STATUS[String(rot).trim().toUpperCase()] || CORES_EXTRAS[i % CORES_EXTRAS.length]; }
 function barras(el, pares, total, limite, botao){
   const mostrar = limite && pares.length > limite && !el.dataset.tudo ? pares.slice(0, limite) : pares;
@@ -785,7 +941,7 @@ const FAIXAS_EMB = [
 ];
 let faixaEmb = '30';
 function clientesEmbarque(){
-  return (CLIENTES||[]).map(c => ({ nome:c.nome_completo || 'Sem nome', vendedor:c.vendedor || 'Sem vendedor',
+  return clientesFiltrados().map(c => ({ nome:c.nome_completo || 'Sem nome', vendedor:c.vendedor || 'Sem vendedor',
     ultimo:c.ultimo_embarque ? String(c.ultimo_embarque).slice(0,10) : null,
     dias:c.ultimo_embarque ? Number(c.dias_sem_embarcar) : null }));
 }
@@ -809,6 +965,7 @@ function tempoSemEmbarque(ultimo, dias){
   return partes.length > 1 ? partes.slice(0, -1).join(', ') + ' e ' + partes[partes.length - 1] : partes[0];
 }
 function quadroEmbarque(){
+  avisoFiltro('avisoEmb', ['vendedor','cliente'], 'Clientes sem embarque: aqui valem só os filtros de vendedor e cliente');
   const todos = clientesEmbarque();
   const grupos = FAIXAS_EMB.map(f => ({ ...f, lista: todos.filter(f.teste) }));
   $('faixasEmb').innerHTML = grupos.map(g =>
@@ -832,13 +989,24 @@ function quadroEmbarque(){
 }
 $('faixasEmb').onclick = e => { const b = e.target.closest('[data-faixa]'); if (!b) return; faixaEmb = b.dataset.faixa; delete $('gEmb').dataset.tudo; quadroEmbarque(); };
 
+function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativo que não se aplica ao card
+  const el = $(id); if (!el) return;
+  const ignora = FILTROS_H.some(F => filtroH[F.id] && !aceitos.includes(F.id));
+  el.textContent = ignora ? texto : ''; el.classList.toggle('hidden', !ignora);
+}
+function renderizarTitulo(){
+  const vigente = mesSel.ano === new Date().getFullYear() && mesSel.m === new Date().getMonth();
+  $('tituloMes').innerHTML = modoAnual() ? `Visão anual de <b>${ANO_ATUAL}</b> comparada com <b>${anosComp.join(', ')}</b> — mês a mês`
+    : `Resultados de <b>${MESES_LONGOS[mesSel.m]}/${mesSel.ano}</b> — propostas criadas no ${vigente ? 'mês vigente' : 'mês selecionado'}`;
+}
 function renderizar(){
-  const [de, ate] = limitesMes(new Date().getFullYear(), new Date().getMonth());
-  $('tituloMes').innerHTML = `Resultados de <b>${MESES_LONGOS[new Date().getMonth()]}/${new Date().getFullYear()}</b> — propostas criadas no mês vigente`;
-  M = calcularMetricas(ROTAS, CLIENTES, de, ate, hojeISO());
-  const hj = new Date(), mAnt = hj.getMonth() === 0 ? 11 : hj.getMonth() - 1, aAnt = hj.getMonth() === 0 ? hj.getFullYear() - 1 : hj.getFullYear();
+  const [de, ate] = limitesMes(mesSel.ano, mesSel.m);
+  renderizarTitulo();
+  const rotasF = rotasFiltradas();
+  M = calcularMetricas(rotasF, clientesFiltrados(), de, ate, hojeISO());
+  const mAnt = mesSel.m === 0 ? 11 : mesSel.m - 1, aAnt = mesSel.m === 0 ? mesSel.ano - 1 : mesSel.ano;
   const [deA, ateA] = limitesMes(aAnt, mAnt);
-  const A = calcularMetricas(ROTAS, [], deA, ateA, hojeISO());
+  const A = calcularMetricas(rotasF, [], deA, ateA, hojeISO());
   const rotuloAnt = `${MESES_LONGOS[mAnt].toLowerCase()}/${aAnt}`;
   const variacao = (atual, anterior) => anterior
     ? `${atual >= anterior ? '+' : '−'}${Math.abs(100*(atual - anterior)/anterior).toFixed(1).replace('.',',')}% vs ${rotuloAnt}`
@@ -858,18 +1026,107 @@ function renderizar(){
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   quadroLucro(de, ate);
-  tabelaVencidas(); tabelaNovos(); quadroEmbarque();
+  quadroPerdas(de, ate); tabelaNovos(); quadroEmbarque(); tabelaFaturamento(de, ate);
 }
-function tabelaVencidas(){
-  const filtros = [...document.querySelectorAll('#vencFiltros input')].map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
-  const valor = (v, col) => col === 'validade' ? fmtData(v.validade) : v[col];
-  const linhas = M.vencidas.filter(v => filtros.every(([col, q]) => semAcento(valor(v, col)).includes(q)));
-  $('notaVenc').textContent = `${fmt(M.vencidas.length)} propostas — validade expirada e nenhuma rota aprovada`;
-  $('tVenc').innerHTML = linhas.length ? linhas.slice(0,500).map(v =>
-    `<tr><td>${esc(v.num)}</td><td>${esc(v.cliente)}</td><td>${esc(v.vendedor)}</td><td>${fmtData(v.validade)}</td><td>${esc(v.status)}</td></tr>`).join('')
-    : `<tr><td colspan="5" class="vazio">${filtros.length ? 'Nenhuma proposta encontrada.' : 'Nenhuma proposta vencida.'}</td></tr>`;
+/* ---------- Faturamento Previsto (PROCESSOS EMBARCADOS + prazo de pagamento do cadastro) ----------
+   base: importação (IM/IA) = Prev de Chegada; exportação (EM/EA) = Data de Embarque
+   vencimento = base + prazo (prazo em branco ou 0 = vence na própria base)
+   Faturamento Previsto: base no mês vigente e vencimento até o fim do mês · Receitas Futuras: base no mês e vencimento depois */
+const ehExportacao = num => /^E[MA]/i.test(String(num || ''));
+function somaDias(iso, n){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+let FAT = { previsto: [], futuras: [] };
+function calcularFaturamento(de, ate){
+  const prazoDe = e => { const k1 = 'A:' + String(e.apelido_cliente || '').trim().toUpperCase(), k2 = 'N:' + String(e.cliente || '').trim().toUpperCase();
+    return PRAZOS.has(k1) ? { p: PRAZOS.get(k1), cad: true } : PRAZOS.has(k2) ? { p: PRAZOS.get(k2), cad: true } : { p: null, cad: false }; };
+  const r = { previsto: [], futuras: [] };
+  EMB.forEach(e => {
+    if (filtroH.vendedor && (e.vendedor || 'Sem vendedor') !== filtroH.vendedor) return;
+    if (filtroH.cliente && e.cliente !== filtroH.cliente) return;
+    if (filtroH.cia && (e.cia || 'Sem armador/cia') !== filtroH.cia) return;
+    const exp = ehExportacao(e.numero_processo), base = exp ? e.data_embarque : e.prev_chegada;
+    if (!base || base < de || base > ate) return;
+    const { p, cad } = prazoDe(e), dias = p || 0, venc = somaDias(base, dias);
+    const o = { num: e.numero_processo, cliente: e.cliente, vendedor: e.vendedor, cia: e.cia, chegada: e.prev_chegada, embarque: e.data_embarque, exp, base, prazo: p, cad, venc };
+    (venc <= ate ? r.previsto : r.futuras).push(o);
+  });
+  const ord = (a, b) => a.base.localeCompare(b.base) || a.num.localeCompare(b.num);
+  r.previsto.sort(ord); r.futuras.sort(ord);
+  return r;
 }
+const textoPrazo = f => !f.cad ? 'Sem cadastro · vence ' + fmtData(f.venc)
+  : !f.prazo ? 'À vista (prazo 0)'
+  : `${f.prazo} dias · vence ${fmtData(f.venc)}`;
+function tabelaFaturamento(de, ate){
+  FAT = calcularFaturamento(de, ate);
+  avisoFiltro('avisoFat', ['vendedor','cliente','cia'], 'Faturamento Previsto vem dos processos embarcados: aqui valem só os filtros de vendedor, cliente e armador/cia');
+  const dir = acesso && acesso.perfil === 'diretoria';
+  $('cardFat').classList.toggle('sem-vend', !dir);
+  const filtros = [...document.querySelectorAll('#fatFiltros input')].filter(i => dir || i.dataset.col !== 'vendedor')
+    .map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
+  const valor = (f, col) => col === 'chegada' ? fmtData(f.chegada) + (f.exp ? ' embarque ' + fmtData(f.embarque) : '') : col === 'prazo' ? textoPrazo(f) : f[col];
+  const linhas = FAT.previsto.filter(f => filtros.every(([col, q]) => semAcento(valor(f, col)).includes(q)));
+  $('notaFat').textContent = `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) no mês e pagamento previsto até ${fmtData(ate)}`
+    + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento após o mês ficam em Receitas Futuras` : '');
+  $('tFat').innerHTML = linhas.length ? linhas.map(f =>
+    `<tr><td>${esc(f.num)}</td><td>${esc(f.cliente)}</td>${dir ? `<td>${esc(f.vendedor)}</td>` : ''}<td>${esc(f.cia || '–')}</td>`
+    + `<td class="c">${fmtData(f.chegada)}${f.exp ? `<div class="sub-cel">exportação · embarque ${fmtData(f.embarque)}</div>` : ''}</td>`
+    + `<td class="c">${esc(textoPrazo(f))}</td></tr>`).join('')
+    : `<tr><td colspan="${dir ? 6 : 5}" class="vazio">${filtros.length ? 'Nenhum processo encontrado.' : 'Nenhum processo com faturamento previsto no mês.'}</td></tr>`;
+}
+$('fatFiltros').addEventListener('input', ()=> M && tabelaFaturamento(...limitesMes(mesSel.ano, mesSel.m)));
+$('fatFiltros').addEventListener('click', e => {
+  const b = e.target.closest('[data-limpa]'); if (!b) return;
+  const inp = $('fatFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaFaturamento(...limitesMes(mesSel.ano, mesSel.m));
+});
+/* ---------- Perdas: propostas do mês com ao menos 1 rota Cancelada ou Reprovada ----------
+   cada proposta conta 1; motivo da proposta = motivo mais frequente entre as suas rotas perdidas (em branco = "Não informado") */
+const STATUS_PERDA = new Set(['CANCELADA','REPROVADA']);
+const ehPerda = r => STATUS_PERDA.has(String(r.status || '').trim().toUpperCase());
+let PERDAS = { rotas: [], props: [] };
+function calcularPerdas(de, ate){
+  const rotas = [], porProp = new Map();
+  for (const r of rotasFiltradas()){
+    const d = r.data_criacao && String(r.data_criacao).slice(0,10);
+    if (!d || d < de || d > ate || !ehPerda(r)) continue;
+    const o = { num: r.numero_proposta, cliente: r.cliente || 'Sem cliente', vendedor: r.vendedor || 'Sem vendedor', inside: r.emissor || 'Sem emissor',
+      status: r.status, motivo: (r.motivo && String(r.motivo).trim()) || 'Não informado', compl: r.complemento_motivo || '',
+      rota: `${r.origem || '–'} → ${r.destino || '–'}`, criacao: r.data_criacao };
+    rotas.push(o);
+    (porProp.get(o.num) || porProp.set(o.num, []).get(o.num)).push(o);
+  }
+  const props = [...porProp.values()].map(rs => {
+    const cont = new Map(); rs.forEach(x => cont.set(x.motivo, (cont.get(x.motivo) || 0) + 1));
+    const motivo = [...cont.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))[0][0];
+    return { num: rs[0].num, cliente: rs[0].cliente, motivo };
+  });
+  return { rotas, props };
+}
+function quadroPerdas(de, ate){
+  PERDAS = calcularPerdas(de, ate);
+  const P = PERDAS.props, tot = P.length;
+  const porCli = new Map(); P.forEach(p => (porCli.get(p.cliente) || porCli.set(p.cliente, []).get(p.cliente)).push(p));
+  const top = [...porCli.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'pt-BR')).slice(0, 10);
+  $('notaPerdasCli').textContent = `${fmt(tot)} propostas perdidas (rota Cancelada ou Reprovada) em ${fmt(porCli.size)} clientes · motivo principal = mais frequente entre as propostas do cliente`;
+  $('tPerdasCli').innerHTML = top.length ? top.map(([cli, ps]) => {
+    const c = new Map(); ps.forEach(p => c.set(p.motivo, (c.get(p.motivo) || 0) + 1));
+    const [mot, n] = [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))[0];
+    return `<tr class="clicavel" data-perda-cli="${esc(cli)}" title="Ver rotas perdidas de ${esc(cli)}"><td>${esc(cli)}</td><td class="n qtd">${fmt(ps.length)}</td><td>${esc(mot)} <span class="frac">(${n}/${ps.length})</span></td></tr>`;
+  }).join('') : '<tr><td colspan="3" class="vazio">Nenhuma perda no mês.</td></tr>';
+  const porMot = new Map(); P.forEach(p => porMot.set(p.motivo, (porMot.get(p.motivo) || 0) + 1));
+  const mots = [...porMot.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'));
+  $('notaPerdasMot').textContent = `${fmt(tot)} propostas perdidas no mês · cada proposta conta uma vez, pelo seu motivo principal`;
+  $('tPerdasMot').innerHTML = mots.length ? mots.map(([mot, n]) =>
+    `<tr class="clicavel" data-perda-mot="${esc(mot)}" title="Ver rotas perdidas por ${esc(mot)}"><td>${esc(mot)}</td><td class="n qtd">${fmt(n)}</td><td class="n pct">${(100 * n / tot).toFixed(1).replace('.', ',')}%</td></tr>`).join('')
+    : '<tr><td colspan="3" class="vazio">Nenhuma perda no mês.</td></tr>';
+}
+document.addEventListener('click', e => {
+  const tr = e.target.closest && e.target.closest('[data-perda-cli],[data-perda-mot]'); if (!tr) return;
+  const rot = `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+  if (tr.dataset.perdaCli != null) abrirDetalhe('perdasCli', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaCli);
+  else abrirDetalhe('perdasMot', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaMot);
+});
 function tabelaNovos(){
+  avisoFiltro('avisoNovos', ['vendedor','cliente'], 'Novos clientes: aqui valem só os filtros de vendedor e cliente');
   const q = $('buscaNovos').value.trim().toUpperCase();
   const linhas = M.novosClientes.filter(c => !q || (c.nome||'').toUpperCase().includes(q));
   $('notaNovos').textContent = `${fmt(M.novosClientes.length)} prospectos ativados no mês`;
@@ -877,71 +1134,96 @@ function tabelaNovos(){
     `<tr><td>${esc(c.nome)}</td><td>${esc(c.vendedor)}</td><td class="c">${fmtData(c.inicio)}</td><td class="c">${c.ativoDias == null ? '–' : fmt(c.ativoDias) + ' dias'}</td></tr>`).join('')
     : '<tr><td colspan="4" class="vazio">Nenhum novo cliente no mês.</td></tr>';
 }
-$('vencFiltros').addEventListener('input', ()=> M && tabelaVencidas());
-$('vencFiltros').addEventListener('click', e => {
-  const b = e.target.closest('[data-limpa]'); if (!b) return;
-  const inp = $('vencFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaVencidas();
-});
 $('buscaNovos').oninput = ()=> M && tabelaNovos();
 
 /* ---------- Abas ---------- */
-document.querySelectorAll('.aba').forEach(b => b.onclick = () => {
-  document.querySelectorAll('.aba').forEach(x => x.classList.toggle('ativa', x === b));
-  $('abaMes').classList.toggle('hidden', b.dataset.aba !== 'abaMes');
-  $('abaHist').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
-  $('histCtrls').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
-  $('legenda').classList.toggle('hidden', b.dataset.aba !== 'abaHist');
-  if (b.dataset.aba === 'abaHist') renderHistorico();
-});
+// TV / telas muito largas: amplia a página proporcionalmente (layout de referência: 1920px)
+function ajustarEscala(){
+  const z = window.innerWidth > 2100 ? Math.min(2.5, window.innerWidth / 1920) : 1;
+  document.documentElement.style.zoom = z === 1 ? '' : z.toFixed(3);
+}
+ajustarEscala();
+window.addEventListener('resize', () => { const antes = document.documentElement.style.zoom; ajustarEscala();
+  if (document.documentElement.style.zoom !== antes && M){ renderizar(); if (modoAnual()) renderHistorico(); } });
+// seletor de mês (padrão: mês vigente; não passa do mês atual)
+(() => { const hj = new Date(), v = `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}`; $('fMes').value = v; $('fMes').max = v; $('fMes').min = '2024-01'; })();
+$('fMes').onchange = () => {
+  const [a, m] = ($('fMes').value || '').split('-').map(Number);
+  if (!a || !m) return;
+  mesSel = { ano: a, m: m - 1 }; if (ROTAS.length || LUCRO.length) renderizar();
+};
+// comparação de anos: sem anos marcados = visão do mês; com anos = visão anual (Jan–Dez de cada ano)
+const modoAnual = () => anosComp.length > 0;
+function aplicarModo(){
+  if (M) renderizarTitulo();
+  $('blocoMes').classList.toggle('hidden', modoAnual());
+  $('blocoAnual').classList.toggle('hidden', !modoAnual());
+  $('legenda').classList.toggle('hidden', !modoAnual());
+  if (modoAnual()) renderHistorico(); else renderFiltrosH();
+}
 
 /* ---------- Histórico (mês a mês) ---------- */
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const COR_ATUAL = '#C21A2B', COR_COMP = '#F8B133';
 const ANO_ATUAL = new Date().getFullYear(), MES_ATUAL = new Date().getMonth();
-let anoComp = '', cacheAnos = {};
-const selecaoDim = {};   // valor escolhido no seletor de cada gráfico
+let anosComp = [], cacheAnos = {};
+const CORES_COMP = ['#F8B133','#00A2E8','#16A34A','#7C3AED','#0D9488','#DB2777','#78350F'];
+const corComp = i => CORES_COMP[i % CORES_COMP.length];
+const compsDe = fn => anosComp.map((ano, i) => ({ ano, cor: corComp(i), v: fn(ano) }));
 const TODOS = '__todos__';
 // valor de um mês para a dimensão escolhida ('Todos' = total de rotas no status, total de propostas nos demais)
-const valorDim = (def, m) => selecaoDim[def.id] === TODOS ? (def.total ? def.total(m) : def.dim === 'porStatusRota' ? m.totalRotas : m.totalPropostas) : (m[def.dim + 'Map'].get(selecaoDim[def.id]) || 0);
+const selCard = {};   // filtro dedicado dos gráficos por vendedor / inside / cliente
+const valorDim = (def, m) => def.dedicado && selCard[def.id] ? (m[def.dim + 'Map'].get(selCard[def.id]) || 0) : def.total ? def.total(m) : def.dim === 'porStatusRota' ? (filtroH.status ? (m.porStatusRotaMap.get(filtroH.status) || 0) : m.totalRotas) : m.totalPropostas;
 
 const HIST = [
   { id:'prop',   titulo:'Propostas criadas',          val: m => m.totalPropostas },
-  { id:'multi',  titulo:'Propostas com 2+ rotas',     val: m => m.multiRota },
   { id:'status', titulo:'Rotas por status',           dim:'porStatusRota' },
-  { id:'vend',   titulo:'Propostas por vendedor',     dim:'porVendedor' },
-  { id:'inside', titulo:'Propostas por inside sales', dim:'porEmissor' },
-  { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente' },
+  { id:'vend',   titulo:'Propostas por vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
+  { id:'inside', titulo:'Propostas por inside sales', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
+  { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente', dedicado:'cliente' },
   { id:'lead',   titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
   { id:'venc',   titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
   { id:'novos',  titulo:'Novos clientes',             val: m => m.novosClientes.length },
-  { id:'lucro',  titulo:'Lucro líquido (R$)',         dim:'lucroVend', total: m => m.lucroTotal, moeda:true },
+  { id:'lucro',  titulo:'Lucro líquido por vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
 ];
 
 function serieAno(ano){
-  if (cacheAnos[ano]) return cacheAnos[ano];
-  const hoje = hojeISO();
+  const ch = ano + '#' + chaveFiltro();
+  if (cacheAnos[ch]) return cacheAnos[ch];
+  const hoje = hojeISO(), rotas = rotasFiltradas(), clis = clientesFiltrados();
   const s = MESES.map((_, i) => {
     if (ano === ANO_ATUAL && i > MES_ATUAL) return null;          // meses futuros
     const [de, ate] = limitesMes(ano, i);
-    const m = calcularMetricas(ROTAS, CLIENTES, de, ate, hoje);
-    const lc = lucroPeriodo(de, ate); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
+    const m = calcularMetricas(rotas, clis, de, ate, hoje);
+    const lc = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto }); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
     ['porStatusRota','porVendedor','porEmissor','porCliente','lucroVend'].forEach(k => m[k + 'Map'] = new Map(m[k]));
     return m;
   });
-  return (cacheAnos[ano] = s);
+  return (cacheAnos[ch] = s);
 }
 
 function prepararHistorico(){
   cacheAnos = {}; for (const k in cacheAnoDet) delete cacheAnoDet[k];
-  $('anoAtualLbl').textContent = ANO_ATUAL;
   const anos = [...new Set([...ROTAS.map(r => r.data_criacao && +r.data_criacao.slice(0,4)), ...LUCRO.map(l => l.data_recebimento && +String(l.data_recebimento).slice(0,4))])]
     .filter(a => a && a < ANO_ATUAL).sort((a,b) => b - a);
-  const sel = $('fComparar'), atual = sel.value;
-  sel.innerHTML = '<option value="">Sem comparação</option>' + anos.map(a => `<option value="${a}">${a}</option>`).join('');
-  if (anos.includes(+atual)) sel.value = atual; else { sel.value = ''; anoComp = ''; }
-  if (!$('abaHist').classList.contains('hidden')) renderHistorico();
+  anosComp = anosComp.filter(a => anos.includes(a));
+  $('fCompPainel').innerHTML = anos.length ? anos.map(a => `<label><input type="checkbox" value="${a}"${anosComp.includes(a) ? ' checked' : ''}>${a}<i></i></label>`).join('')
+    : '<div class="vazio">Nenhum ano anterior com dados</div>';
+  marcarCoresComp(); rotuloComp();
+  aplicarModo();
 }
-$('btnAplicar').onclick = () => { anoComp = $('fComparar').value; renderHistorico(); };
+const anosMarcados = () => [...$('fCompPainel').querySelectorAll('input:checked')].map(i => +i.value).sort((a,b) => b - a);
+function marcarCoresComp(){            // mostra no painel a cor que cada ano marcado terá no gráfico
+  const m = anosMarcados();
+  $('fCompPainel').querySelectorAll('label').forEach(l => { const a = +l.querySelector('input').value, k = m.indexOf(a); l.querySelector('i').style.background = k < 0 ? 'transparent' : corComp(k); });
+}
+function rotuloComp(){ const m = anosMarcados(); $('fCompBtn').textContent = m.length ? m.join(', ') : 'Sem comparação'; }
+function abrirPainelComp(abrir){ $('fCompPainel').classList.toggle('hidden', !abrir); $('fCompBtn').setAttribute('aria-expanded', abrir); }
+$('fCompBtn').onclick = e => { e.stopPropagation(); abrirPainelComp($('fCompPainel').classList.contains('hidden')); };
+$('fCompPainel').addEventListener('change', () => { marcarCoresComp(); rotuloComp(); });
+document.addEventListener('click', e => { if (!e.target.closest('#fComparar')) abrirPainelComp(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') abrirPainelComp(false); });
+$('btnAplicar').onclick = () => { anosComp = anosMarcados(); abrirPainelComp(false); aplicarModo(); };
 
 function valoresDe(def, serie){
   if (!serie) return MESES.map(() => null);
@@ -957,85 +1239,412 @@ function acumulado(def, serie, ateMes){
   }
   return def.media ? (peso ? soma / peso : null) : soma;
 }
+function textoComp(ano, accA, accC, def){      // " · vs 2025: 2.390 (+7,5%)"
+  let t = ` · vs ${ano}: <b>${fmtV(accC, def.media, def.moeda)}</b>`;
+  if (accA != null && accC){ const d = (accA - accC) / Math.abs(accC) * 100;
+    const bom = def.menorMelhor ? d < 0 : d > 0, cls = Math.abs(d) < 0.05 ? '' : bom ? 'up' : 'down';
+    t += ` <span class="${cls}">(${d >= 0 ? '+' : ''}${d.toFixed(1).replace('.',',')}%)</span>`; }
+  return t;
+}
 const fmtV = (v, media, moeda) => v == null ? '–' : moeda ? fmtBRL(v) : media ? v.toFixed(1).replace('.',',') : fmt(v);
 
+const ultimoHist = {};
+let histResize; window.addEventListener('resize', () => { clearTimeout(histResize); histResize = setTimeout(() => { if (modoAnual()) renderHistorico(); }, 200); });
 function renderHistorico(){
-  const sA = serieAno(ANO_ATUAL), sC = anoComp ? serieAno(+anoComp) : null;
+  const sA = serieAno(ANO_ATUAL), sCs = anosComp.map(serieAno);
+  const gl = $('gridHist').clientWidth || 1200, cols = gl >= 1500 ? 3 : gl > 884 ? 2 : 1;
+  const largCard = Math.max(320, Math.round((gl - 16 * (cols - 1)) / cols - 34)), altCard = largCard > 500 ? 260 : 210;
   $('legenda').innerHTML = `<span><i style="background:${COR_ATUAL}"></i>${ANO_ATUAL}</span>` +
-    (anoComp ? `<span><i style="background:${COR_COMP}"></i>${anoComp}</span>` : '');
+    anosComp.map((a, i) => `<span><i style="background:${corComp(i)}"></i>${a}</span>`).join('');
   $('gridHist').innerHTML = HIST.map(def => {
-    let seletor = '';
-    if (def.dim){
+    const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && filtroH[F.id]) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
+      : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && filtroH[F.id]) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
+    let dedicado = '';
+    if (def.dedicado){           // lista própria do gráfico, somada aos filtros gerais
       const tot = new Map();
-      [sA, sC].forEach(s => s && s.forEach(m => m && m[def.dim].forEach(([k, v]) => tot.set(k, (tot.get(k) || 0) + v))));
-      const opcoes = [...tot.entries()].sort((a,b) => b[1] - a[1]).slice(0, 40).map(e => e[0]);
-      if (selecaoDim[def.id] !== TODOS && !opcoes.includes(selecaoDim[def.id])) selecaoDim[def.id] = TODOS;
-      seletor = `<select data-dim="${def.id}"><option value="${TODOS}"${selecaoDim[def.id] === TODOS ? ' selected' : ''}>Todos</option>${opcoes.map(o => `<option value="${esc(o)}"${o === selecaoDim[def.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+      [sA, ...sCs].forEach(se => se.forEach(m => m && m[def.dim].forEach(([k, v]) => tot.set(k, (tot.get(k) || 0) + v))));
+      const ops = [...tot.entries()].sort((x, y) => y[1] - x[1]).map(e => e[0]);
+      if (selCard[def.id] && !ops.includes(selCard[def.id])) ops.unshift(selCard[def.id]);
+      dedicado = `<select data-card="${def.id}" aria-label="Filtrar ${def.dedicado}"><option value="">Todos (${def.dedicado})</option>${ops.map(o => `<option value="${esc(o)}"${o === selCard[def.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
     }
-    const a = valoresDe(def, sA), c = sC ? valoresDe(def, sC) : null;
-    const accA = acumulado(def, sA, MES_ATUAL), accC = sC ? acumulado(def, sC, MES_ATUAL) : null;
+    const a = valoresDe(def, sA), comps = anosComp.map((ano, i) => ({ ano, cor: corComp(i), v: valoresDe(def, sCs[i]) }));
+    const accA = acumulado(def, sA, MES_ATUAL);
     let resumo = `Jan–${MESES[MES_ATUAL]}: <b>${fmtV(accA, def.media, def.moeda)}</b>`;
-    if (sC){
-      resumo += ` vs ${anoComp}: <b>${fmtV(accC, def.media, def.moeda)}</b>`;
-      if (accA != null && accC){ const d = (accA - accC) / accC * 100;
-        const bom = def.menorMelhor ? d < 0 : d > 0, cls = Math.abs(d) < 0.05 ? '' : bom ? 'up' : 'down';
-        resumo += ` <span class="${cls}">(${d >= 0 ? '+' : ''}${d.toFixed(1).replace('.',',')}%)</span>`; }
+    anosComp.forEach((ano, i) => resumo += textoComp(ano, accA, acumulado(def, sCs[i], MES_ATUAL), def));
+    const lupaH = `<button class="lupa expandir" type="button" data-exp="${def.id}" title="Expandir gráfico" aria-label="Expandir gráfico"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>`;
+    let extra = '', defG = { ...def, W: largCard, H: altCard };
+    if (def.area){                 // área empilhada por vendedor, um painel por ano
+      const anosA = [ANO_ATUAL, ...anosComp], series = [sA, ...sCs];
+      defG = { ...def, W: Math.max(gl - 34, 1000), H: 34 + (1 + anosComp.length) * 310, sel: selCard[def.id] || '', anosArea: anosA.map((ano, k) => ({ ano, meses: series[k].map(m => m ? m.lucroVendMap : null) })) };
+      extra = tabelaLucroH(defG.anosArea);
     }
-    const lupaH = def.id === 'novos' || def.id === 'lucro' ? '' : `<button class="lupa" type="button" data-hist="${def.id}" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>`;
-    return `<div class="cardH">${lupaH}<h2>${def.titulo}</h2><div class="acum">${resumo}</div>${seletor}${grafico(a, c, def)}</div>`;
+    ultimoHist[def.id] = { def: defG, a, comps, extra, resumo: resumo + (selCard[def.id] ? ` · ${def.dedicado}: <b>${esc(selCard[def.id])}</b>` : ''), seletor };
+    return `<div class="cardH${def.area ? ' larga' : ''}">${lupaH}<h2>${def.titulo}</h2><div class="acum">${resumo}</div>${dedicado}${seletor}${def.area ? `<div class="combo-scroll">${grafico(a, comps, defG)}</div>` : grafico(a, comps, defG)}${extra}</div>`;
   }).join('');
-  $('gridHist').querySelectorAll('select[data-dim]').forEach(s => s.onchange = () => { selecaoDim[s.dataset.dim] = s.value; renderHistorico(); });
+  $('gridHist').querySelectorAll('select[data-card]').forEach(sel => sel.onchange = () => { selCard[sel.dataset.card] = sel.value; renderHistorico(); });
+  renderFiltrosH();
+  preencherAlturas();
+}
+// cards da mesma linha ficam com a altura do maior: o gráfico de cada card cresce para ocupar o espaço que sobra
+function preencherAlturas(){
+  const cards = [...$('gridHist').querySelectorAll('.cardH:not(.larga)')];
+  cards.forEach(c => { const svg = c.querySelector(':scope > svg'); if (svg) svg.style.height = ''; });
+  cards.forEach(card => {
+    const btn = card.querySelector('[data-exp]'), u = btn && ultimoHist[btn.dataset.exp], svg = card.querySelector(':scope > svg');
+    if (!u || !svg) return;
+    const ext = card.querySelector(':scope > .tab-lucroH');
+    const sobra = card.getBoundingClientRect().bottom - parseFloat(getComputedStyle(card).paddingBottom) - (ext || svg).getBoundingClientRect().bottom - 4;
+    if (sobra < 8) return;
+    const escala = svg.getBoundingClientRect().width / (u.def.W || svg.viewBox.baseVal.width || 1);
+    const H = Math.round((u.def.H || svg.viewBox.baseVal.height) + sobra / escala);
+    const tmp = document.createElement('div');
+    tmp.innerHTML = grafico(u.a, u.comps, { ...u.def, H });
+    svg.replaceWith(tmp.firstElementChild);
+  });
 }
 
-/* colunas agrupadas: 12 meses, ano atual (vermelho) x ano comparado (cinza) */
-function grafico(a, c, def){
-  const W = 360, H = 170, L = def.moeda ? 44 : 30, R = 6, T = 8, B = 20;
-  const vals = [...a, ...(c || [])].filter(v => v != null);
+/* ---------- Filtros gerais do histórico ---------- */
+const FILTROS_H = [
+  { id:'status',   rot:'Status da rota', val: d => d.statusLista },
+  { id:'vendedor', rot:'Vendedor',       val: d => [d.vendedor] },
+  { id:'inside',   rot:'Inside sales',   val: d => [d.inside] },
+  { id:'cliente',  rot:'Cliente',        val: d => [d.cliente] },
+  { id:'origem',   rot:'Origem',         val: d => d.origemLista },
+  { id:'destino',  rot:'Destino',        val: d => d.destinoLista },
+  { id:'produto',  rot:'Produto (modalidade)', val: d => d.produtoLista },
+  { id:'agente',   rot:'Agente internacional', val: d => d.agenteLista },
+  { id:'cia',      rot:'Armador / Coloader / Cia aérea', val: d => d.ciaLista },
+];
+const filtroH = Object.fromEntries(FILTROS_H.map(F => [F.id, '']));
+const filtrosAtivos = () => FILTROS_H.filter(F => filtroH[F.id]);
+const chaveFiltro = () => FILTROS_H.map(F => filtroH[F.id]).join('|');
+const passaH = (d, ignorar) => filtrosAtivos().every(F => F.id === ignorar || F.val(d).includes(filtroH[F.id]));
+// rotas das propostas que passam nos filtros (a proposta entra inteira; o status conta se ela tiver ao menos 1 rota nele)
+function rotasFiltradas(){
+  if (!filtrosAtivos().length) return ROTAS;
+  const props = new Map();
+  for (const r of ROTAS){ let p = props.get(r.numero_proposta);
+    if (!p){ p = { cliente: r.cliente || 'Sem cliente', vendedor: r.vendedor || 'Sem vendedor', inside: r.emissor || 'Sem emissor', statusLista: [], origemLista: [], destinoLista: [], produtoLista: [], agenteLista: [], ciaLista: [] }; props.set(r.numero_proposta, p); }
+    p.statusLista.push(r.status || 'Sem status'); p.origemLista.push(r.origem || 'Sem origem'); p.destinoLista.push(r.destino || 'Sem destino');
+    p.produtoLista.push(r.produto || 'Sem produto'); p.agenteLista.push(r.agente_internacional || 'Sem agente'); p.ciaLista.push(r.cia_armador_coloader || 'Sem armador/cia'); }
+  const ok = new Set([...props].filter(([, p]) => passaH(p)).map(([k]) => k));
+  return ROTAS.filter(r => ok.has(r.numero_proposta));
+}
+function clientesFiltrados(){
+  return (CLIENTES || []).filter(c => (!filtroH.vendedor || (c.vendedor || 'Sem vendedor') === filtroH.vendedor) && (!filtroH.cliente || c.nome_completo === filtroH.cliente));
+}
+function renderFiltrosH(){
+  const anos = [...new Set([ANO_ATUAL, mesSel.ano, ...anosComp])], linhas = anos.flatMap(a => detalheAno(a));
+  $('comboFiltros').innerHTML = FILTROS_H.map(F => {
+    const cont = new Map();
+    linhas.filter(d => passaH(d, F.id)).forEach(d => new Set(F.val(d)).forEach(v => cont.set(v, (cont.get(v) || 0) + 1)));
+    const ops = [...cont.entries()].sort((a,b) => b[1] - a[1]).slice(0, 400).map(e => e[0]);
+    if (F.id === 'agente' || F.id === 'cia'){          // o lucro tem agentes/cias que não aparecem nas propostas
+      const campo = F.id === 'agente' ? 'agente_internacional' : 'cia', vazio = F.id === 'agente' ? 'Sem agente' : 'Sem armador/cia';
+      const extra = new Set(LUCRO.filter(l => anos.includes(+String(l.data_recebimento || '').slice(0,4))).map(l => l[campo] || vazio));
+      [...extra].filter(v => !ops.includes(v)).sort((x, y) => x.localeCompare(y, 'pt-BR')).forEach(v => ops.push(v));
+    }
+    if (filtroH[F.id] && !ops.includes(filtroH[F.id])) ops.unshift(filtroH[F.id]);
+    return `<label>${F.rot}<select data-f="${F.id}"><option value="">Todos</option>${ops.map(o => `<option value="${esc(o)}"${o === filtroH[F.id] ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+  }).join('') + `<div class="limpar-wrap"><button class="btn ghost small" id="btnLimparH" type="button"${filtrosAtivos().length ? '' : ' disabled'}>Limpar filtros</button></div>`;
+  const ativos = filtrosAtivos();
+  $('filtrosNota').innerHTML = ativos.length
+    ? 'Filtrando todos os gráficos por ' + ativos.map(F => `${F.rot}: <b>${esc(filtroH[F.id])}</b>`).join(' · ')
+    : 'Os filtros valem para todos os gráficos abaixo';
+  $('comboFiltros').querySelectorAll('select').forEach(sel => sel.onchange = () => { filtroH[sel.dataset.f] = sel.value; aoFiltrar(); });
+  $('btnLimparH').onclick = () => { FILTROS_H.forEach(F => filtroH[F.id] = ''); aoFiltrar(); };
+}
+function aoFiltrar(){ cacheAnos = {}; renderizar(); aplicarModo();
+}
+
+/* colunas agrupadas: 12 meses — anos comparados (do mais antigo ao mais recente) e o ano atual (vermelho) à direita */
+/* ---------- Lucro no histórico: área empilhada por vendedor ---------- */
+function ordemVendLucro(anosArea){          // ranking pelo ano atual (como na aba Mês atual); quem só aparece nos anos comparados vem depois
+  const atual = new Map(), resto = new Map();
+  anosArea.forEach((A, k) => A.meses.forEach(mp => mp && mp.forEach((v, n) => { const m = k ? resto : atual; m.set(n, (m.get(n) || 0) + v); })));
+  resto.forEach((v, n) => { if (!atual.has(n)) atual.set(n, -1e15 + v); });
+  return [...atual.entries()].sort((a, b) => b[1] - a[1]).map(e => e[0]);
+}
+const fmtCurtoInt = v => { const x = Math.abs(v), sg = v < 0 ? '−' : '';
+  return x >= 1e6 ? sg + (x/1e6).toFixed(1).replace('.',',').replace(',0','') + ' mi' : x >= 1e3 ? sg + Math.round(x/1e3) + ' mil' : sg + Math.round(x); };
+let ultimoOutros = null;
+function abrirOutros(){
+  const u = ultimoOutros; if (!u) return;
+  const lin = u.outros.map(k => ({ k, vs: u.anosArea.map(A => u.soma(A, k)) }))
+    .sort((a, b) => { for (let i = 0; i < a.vs.length; i++) if (b.vs[i] !== a.vs[i]) return b.vs[i] - a.vs[i]; return a.k.localeCompare(b.k); });
+  const n = u.anosArea.length, tot = u.anosArea.map((_, i) => lin.reduce((t, l) => t + l.vs[i], 0));
+  $('outSub').textContent = `${lin.length} vendedores · Lucro Líquido Jan–${MESES[u.ate]} · ordenado pelo lucro de ${u.anosArea[0].ano}, do maior para o menor`;
+  $('outTab').innerHTML = `<table><thead><tr><th>Vendedor</th>${u.cab}</tr></thead><tbody>${lin.map(l =>
+    `<tr><td><i style="background:${corVendedor(l.k)}"></i>${esc(l.k)}</td>${l.vs.map(v => `<td class="n">${fmtBRL(v)}</td>`).join('')}${n > 1 ? u.vari(l.vs[0], l.vs[1]) : ''}</tr>`).join('')}</tbody>
+    <tfoot><tr><td>Total Outros vendedores</td>${tot.map(v => `<td class="n">${fmtBRL(v)}</td>`).join('')}${n > 1 ? u.vari(tot[0], tot[1]) : ''}</tr></tfoot></table>`;
+  $('modalOutros').classList.remove('hidden'); $('outFechar').focus();
+}
+function fecharOutros(){ $('modalOutros').classList.add('hidden'); }
+document.addEventListener('click', e => { if (e.target.closest('[data-outros]')) abrirOutros(); else if (e.target.id === 'modalOutros') fecharOutros(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('modalOutros').classList.contains('hidden')){ e.stopImmediatePropagation(); fecharOutros(); } }, true);
+function tabelaLucroH(anosArea){
+  const vends = ordemVendLucro(anosArea), ate = MES_ATUAL;
+  const soma = (A, k) => A.meses.slice(0, ate + 1).reduce((s, mp) => s + (mp ? (mp.get(k) || 0) : 0), 0);
+  const tot = A => A.meses.slice(0, ate + 1).reduce((s, mp) => s + (mp ? [...mp.values()].reduce((x, y) => x + y, 0) : 0), 0);
+  const cab = anosArea.map(A => `<th class="n">${A.ano} <small>Jan–${MESES[ate]}</small></th>`).join('') + (anosArea.length > 1 ? `<th class="n">Var. vs ${anosArea[1].ano}</th>` : '');
+  const vari = (x, y) => y ? `<td class="n ${x >= y ? 'up' : 'down'}">${x >= y ? '+' : ''}${((x - y) / Math.abs(y) * 100).toFixed(1).replace('.',',')}%</td>` : '<td class="n">–</td>';
+  const princ = vends.filter(k => VEND_PRINC.includes(String(k).trim().toUpperCase())), outros = vends.filter(k => !princ.includes(k));
+  const somaOutros = A => outros.reduce((t, k) => t + soma(A, k), 0);
+  ultimoOutros = { anosArea, outros, soma, vari, cab, ate };
+  const linhas = princ.map(k => { const vs = anosArea.map(A => soma(A, k));
+    return `<tr><td><i style="background:${corVendedor(k)}"></i>${esc(k)}</td>${vs.map(v => `<td class="n">${fmtBRL(v)}</td>`).join('')}${anosArea.length > 1 ? vari(vs[0], vs[1]) : ''}</tr>`; }).join('')
+    + (outros.length ? (vs => `<tr class="linha-outros"><td><i style="background:${COR_OUTROS}"></i>Outros vendedores<button class="lupa lupa-outros" type="button" data-outros="1" title="Ver vendedores agrupados" aria-label="Ver vendedores agrupados em Outros"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button></td>${vs.map(v => `<td class="n">${fmtBRL(v)}</td>`).join('')}${anosArea.length > 1 ? vari(vs[0], vs[1]) : ''}</tr>`)(anosArea.map(somaOutros)) : '');
+  const ts = anosArea.map(tot);
+  return `<div class="tab-lucroH"><table><thead><tr><th>Vendedor</th>${cab}</tr></thead><tbody>${linhas}</tbody>
+    <tfoot><tr><td>Total de Lucro Líquido</td>${ts.map(v => `<td class="n">${fmtBRL(v)}</td>`).join('')}${anosArea.length > 1 ? vari(ts[0], ts[1]) : ''}</tr></tfoot></table></div>`;
+}
+/* barras = lucro acumulado do ano atual por vendedor (cor do vendedor); linhas = anos comparados (cor da legenda do ano) */
+const VEND_PRINC = ['ADRIANA FREITAS','ROBERTO SOARES','MARCOS JUHAS','DIRETORIA','ANA PAULA','ÉSSIO LIMA','JESSICA RIBAS'], COR_OUTROS = '#9CA3AF';
+function graficoPaineis(def){                // um painel por ano (atual em cima); barras agrupadas por vendedor em cada mês; escala própria por painel
+  const G = !!def.grande, AA = def.anosArea, nA = AA.length, W = def.W || 1000, H = def.H || 34 + nA * 250;
+  const princ = ordemVendLucro(AA).filter(k => VEND_PRINC.includes(String(k).trim().toUpperCase()));
+  const grupos = def.sel ? [{ k: def.sel, cor: corVendedor(def.sel) }] : [...princ.map(k => ({ k, cor: corVendedor(k) })), { k: 'Outros', cor: COR_OUTROS, outros: true }];
+  const valor = (mp, g) => { if (!mp) return null;
+    if (!g.outros) return mp.get(g.k) || 0;
+    let t = 0; mp.forEach((v, n) => { if (!princ.includes(n)) t += v; }); return t; };
+  const fs = G ? 12 : 10, L = G ? 100 : 88, R = 10, LEG = 30, gap = 14;
+  const pH = (H - LEG - gap * (nA - 1)) / nA, TOPO = G ? 60 : 54, BASE = 20;
+  const gw = (W - L - R) / 12, nb = grupos.length, bw = Math.max(3, Math.min(G ? 34 : 26, gw * 0.86 / nb));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(def.titulo)}">`;
+  let lx = 4;                                  // legenda dos vendedores
+  grupos.forEach(g => { const nome = g.outros ? 'Outros vendedores' : g.k;
+    s += `<rect x="${lx}" y="6" width="12" height="12" rx="3" fill="${g.cor}"/><text x="${lx + 17}" y="16" style="font-size:${fs + 1}px;fill:#333">${esc(nome)}</text>`;
+    lx += 17 + nome.length * (fs + 1) * 0.62 + 20; });
+  AA.forEach((A, k) => {
+    const y0 = LEG + k * (pH + gap), yb = y0 + pH - BASE, alt = yb - (y0 + TOPO);
+    const vals = A.meses.flatMap(mp => grupos.map(g => valor(mp, g))).filter(v => v != null);
+    const bruto = Math.max(1, ...vals), p10 = Math.pow(10, Math.floor(Math.log10(bruto))), f = bruto / p10;
+    const passo = p10 * (f > 5 ? 2 : f > 2 ? 1 : 0.5), max = Math.ceil(bruto / passo) * passo;
+    const y = v => yb - alt * Math.max(0, v) / max, cor = k ? corComp(k - 1) : COR_ATUAL;
+    s += `<rect x="4" y="${y0}" width="${W - R - 4}" height="${pH}" rx="8" fill="${k ? '#fafafa' : '#fff'}" stroke="#eee"/>`;
+    s += `<text transform="translate(${G ? 22 : 18},${(y0 + pH / 2).toFixed(1)}) rotate(-90)" text-anchor="middle" style="font-size:${fs + 8}px;font-weight:700;fill:${cor}">${A.ano}</text>`;
+    for (let t = 0; t <= max + 1e-9; t += passo){ const yy = y(t).toFixed(1);
+      s += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${t ? '#f0f0f0' : '#d0d0d0'}"/><text x="${L - 5}" y="${+yy + 3}" text-anchor="end" style="font-size:${fs}px">${fmtCurto(t)}</text>`; }
+    MESES.forEach((mes, i) => {
+      const mp = A.meses[i], x0 = L + gw * i + (gw - nb * bw) / 2;
+      s += `<text x="${L + gw * (i + .5)}" y="${yb + 14}" text-anchor="middle" style="font-size:${fs}px">${mes}</text>`;
+      if (i) s += `<line x1="${L + gw * i}" x2="${L + gw * i}" y1="${y0 + TOPO - 8}" y2="${yb}" stroke="#f3f3f3"/>`;
+      grupos.forEach((g, j) => {
+        const v = valor(mp, g); if (v == null) return;
+        const cx = x0 + bw * j + bw / 2, top = y(v), h = yb - top;
+        if (h > 0.5) s += `<rect x="${(cx - bw / 2 + 0.6).toFixed(1)}" y="${top.toFixed(1)}" width="${(bw - 1.2).toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(3, bw / 3)}" fill="${g.cor}"/>`;
+        if (v) s += nb === 1 ? `<text class="vl" x="${cx.toFixed(1)}" y="${(top - 6).toFixed(1)}" text-anchor="middle" style="font-size:${fs + 2}px;paint-order:stroke;stroke:#fff;stroke-width:3px">${fmtCurtoInt(v)}</text>` : `<text class="vl" transform="translate(${(cx + fs * 0.35).toFixed(1)},${(top - 4).toFixed(1)}) rotate(-90)" style="font-size:${fs}px;paint-order:stroke;stroke:#fff;stroke-width:3px">${fmtCurtoInt(v)}</text>`;
+        s += `<rect class="hit" x="${(cx - bw / 2).toFixed(1)}" y="${y0 + TOPO - 8}" width="${bw.toFixed(1)}" height="${(yb - y0 - TOPO + 8).toFixed(1)}" data-t="${esc(`${g.outros ? 'Outros vendedores' : g.k} — ${mes}/${A.ano}: ${fmtBRL(v)}`)}"/>`;
+      });
+    });
+  });
+  return s + '</svg>';
+}
+function graficoCombo(a, comps, def){       // barras = ano atual mês a mês (cor do vendedor); linhas = anos comparados
+  const G = !!def.grande, W = def.W || 900, H = def.H || 330;
+  const vals = [...a, ...comps.flatMap(c => c.v)].filter(v => v != null);
+  const bruto = Math.max(1, ...vals), p10 = Math.pow(10, Math.floor(Math.log10(bruto))), f = bruto / p10;
+  const passo = p10 * (f > 5 ? 2 : f > 2 ? 1 : 0.5), max = Math.ceil(bruto * 1.12 / passo) * passo;
+  const fs = G ? 13 : 11, L = G ? 66 : 54, R = 12, T = 16, B = G ? 30 : 24;
+  const gw = (W - L - R) / 12, bw = Math.min(G ? 60 : 44, gw * 0.5);
+  const x = i => L + gw * (i + 0.5), y = v => T + (H - T - B) * (1 - Math.max(0, v) / max);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(def.titulo)}">`;
+  for (let t = 0; t <= max + 1e-9; t += passo){ const yy = y(t).toFixed(1);
+    s += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${t ? '#f0f0f0' : '#d0d0d0'}"/><text x="${L - 4}" y="${+yy + 3}" text-anchor="end">${fmtCurto(t)}</text>`; }
+  MESES.forEach((mes, i) => {
+    const v = a[i], cx = x(i);
+    s += `<text x="${cx}" y="${H - (G ? 9 : 7)}" text-anchor="middle">${mes}</text>`;
+    if (v == null) return;
+    const top = y(v), h = (H - B) - top;
+    if (h > 0.5){ const r = Math.min(4, bw / 2, h);
+      s += `<path d="M${cx - bw/2},${H - B} V${top + r} Q${cx - bw/2},${top} ${cx - bw/2 + r},${top} H${cx + bw/2 - r} Q${cx + bw/2},${top} ${cx + bw/2},${top + r} V${H - B} Z" fill="${def.corBarra || COR_ATUAL}"/>`; }
+    if (v) s += `<text class="vl" x="${cx}" y="${(top - 6).toFixed(1)}" text-anchor="middle" style="font-size:${fs}px;paint-order:stroke;stroke:#fff;stroke-width:3px">${fmtCurtoInt(v)}</text>`;
+  });
+  comps.forEach(c => {
+    const pts = MESES.map((_, i) => c.v[i] == null ? null : [x(i), y(c.v[i]), c.v[i], i]).filter(Boolean);
+    if (!pts.length) return;
+    s += `<polyline points="${pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ')}" fill="none" stroke="${c.cor}" stroke-width="${G ? 3 : 2.4}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(p => {
+      s += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${G ? 5 : 4}" fill="#fff" stroke="${c.cor}" stroke-width="2.2"/>`;
+      const bt = a[p[3]] == null ? null : y(a[p[3]]), acima = bt != null && p[1] < bt && bt - p[1] < (G ? 26 : 22);
+      if (p[2]) s += `<text class="vl" x="${p[0].toFixed(1)}" y="${(acima ? p[1] - (G ? 9 : 8) : p[1] + (G ? 18 : 15)).toFixed(1)}" text-anchor="middle" style="font-size:${fs - 1}px;fill:${c.cor};paint-order:stroke;stroke:#fff;stroke-width:3px">${fmtCurtoInt(p[2])}</text>`;
+    });
+  });
+  MESES.forEach((mes, i) => {
+    let t = `${mes} — ${ANO_ATUAL}: ${a[i] == null ? '—' : fmtBRL(a[i])}`;
+    comps.forEach(c => t += ` · ${c.ano}: ${c.v[i] == null ? '—' : fmtBRL(c.v[i])}`);
+    s += `<rect class="hit" x="${(x(i) - gw / 2).toFixed(1)}" y="${T}" width="${gw.toFixed(1)}" height="${H - T - B}" data-t="${esc(t)}"/>`;
+  });
+  return s + '</svg>';
+}
+function graficoArea(def){
+  const G = !!def.grande, anosArea = def.anosArea, nA = anosArea.length, W = def.W || 900, H = def.H || 300;
+  const vends = ordemVendLucro(anosArea), gapP = 18;
+  const pw = nA > 1 && W / nA >= 330 ? (W - gapP * (nA - 1)) / nA : W;           // painéis lado a lado quando cabem
+  const porLinha = Math.max(1, Math.round(W / (pw + gapP))), linhasP = Math.ceil(nA / porLinha), ph = linhasP > 1 ? Math.max(200, H) : H;
+  const Htot = ph * linhasP + gapP * (linhasP - 1);
+  const pilhas = anosArea.map(A => A.meses.map(mp => { if (!mp) return null; let acc = 0; return vends.map(k => (acc += Math.max(0, mp.get(k) || 0))); }));
+  const totais = anosArea.map(A => A.meses.map(mp => mp ? [...mp.values()].reduce((x, y) => x + y, 0) : null));
+  const bruto = Math.max(1, ...pilhas.flat().filter(Boolean).map(p => p[p.length - 1] || 0));
+  const p10 = Math.pow(10, Math.floor(Math.log10(bruto))), f = bruto / p10, passo = p10 * (f > 5 ? 2 : f > 2 ? 1 : 0.5), max = Math.ceil(bruto * 1.08 / passo) * passo;
+  const fs = G ? 12 : 10, L = G ? 62 : 50, R = 10, T = 22, B = G ? 26 : 20;
+  let s = `<svg viewBox="0 0 ${W} ${Htot}" role="img" aria-label="${esc(def.titulo)}">`;
+  anosArea.forEach((A, k) => {
+    const ox = (k % porLinha) * (pw + gapP), oy = Math.floor(k / porLinha) * (ph + gapP);
+    const x = i => ox + L + (pw - L - R) * (i + 0.5) / 12, y = v => oy + T + (ph - T - B) * (1 - v / max);
+    s += `<text x="${ox + L}" y="${oy + 13}" style="font-size:${fs + 2}px;font-weight:700;fill:${k ? corComp(k - 1) : COR_ATUAL}">${A.ano}</text>`;
+    for (let t = 0; t <= max + 1e-9; t += passo){ const yy = y(t).toFixed(1);
+      s += `<line x1="${ox + L}" x2="${ox + pw - R}" y1="${yy}" y2="${yy}" stroke="${t ? '#f0f0f0' : '#d0d0d0'}"/><text x="${ox + L - 4}" y="${+yy + 3}" text-anchor="end">${fmtCurto(t)}</text>`; }
+    const idx = pilhas[k].map((p, i) => p ? i : -1).filter(i => i >= 0);
+    // camadas (de cima para baixo, para a primeira ficar por baixo no desenho)
+    for (let j = vends.length - 1; j >= 0; j--){
+      if (!idx.length) break;
+      const topo = idx.map(i => `${x(i).toFixed(1)},${y(pilhas[k][i][j]).toFixed(1)}`);
+      const base = idx.slice().reverse().map(i => `${x(i).toFixed(1)},${y(j ? pilhas[k][i][j - 1] : 0).toFixed(1)}`);
+      s += `<polygon points="${topo.concat(base).join(' ')}" fill="${corVendedor(vends[j])}" fill-opacity=".88" stroke="#fff" stroke-width=".6"><title>${esc(vends[j])}</title></polygon>`;
+    }
+    MESES.forEach((mes, i) => {
+      s += `<text x="${x(i).toFixed(1)}" y="${oy + ph - (G ? 8 : 6)}" text-anchor="middle">${mes}</text>`;
+      const tv = totais[k][i]; if (tv == null) return;
+      const topoV = pilhas[k][i][vends.length - 1] || 0;
+      s += `<text class="vl" x="${x(i).toFixed(1)}" y="${(y(topoV) - 5).toFixed(1)}" text-anchor="middle" style="font-size:${fs}px">${fmtCurtoInt(tv)}</text>`;
+      const mp = A.meses[i], det = vends.filter(v => mp.get(v)).map(v => `${v}: ${fmtBRL(mp.get(v))}`).join(' · ');
+      s += `<rect class="hit" x="${(x(i) - (pw - L - R) / 24).toFixed(1)}" y="${oy + T}" width="${((pw - L - R) / 12).toFixed(1)}" height="${ph - T - B}" data-t="${esc(`${mes}/${A.ano} — total ${fmtBRL(tv)} · ${det}`)}"/>`;
+    });
+  });
+  return s + '</svg>';
+}
+/* barras deitadas: um mês por linha, anos comparados empilhados na linha (mais antigo em cima, ano atual embaixo) */
+function graficoH(a, comps, def){
+  const G = !!def.grande, W = def.W || 360, n = comps.length + 1;
+  const fs = G ? 13 : 10, bh = G ? Math.max(8, Math.min(18, 34 / n)) : Math.max(7, Math.min(13, 26 / n)), gapB = 2, gapM = G ? 10 : 7;
+  const L = G ? 40 : 32, T = 6, B = G ? 24 : 18, R = G ? 70 : 52;
+  const alturaMes = n * bh + (n - 1) * gapB + gapM;
+  const H = def.H && G ? def.H : T + B + 12 * alturaMes;
+  const vals = [...a, ...comps.flatMap(c => c.v)].filter(v => v != null);
+  const bruto = Math.max(1, ...vals), p10 = Math.pow(10, Math.floor(Math.log10(bruto))), f = bruto / p10;
+  const passo = p10 * (f > 5 ? 2 : f > 2 ? 1 : 0.5), max = Math.ceil(bruto / passo) * passo;
+  const altMes = (H - T - B) / 12, bhR = Math.min(bh, (altMes - gapM - (n - 1) * gapB) / n);
+  const x = v => L + (W - L - R) * (v / max);
+  const rot = v => def.moeda ? fmtCurto(v) : fmtV(v, def.media, false);
+  const series = [...comps.slice().reverse().map(c => ({ v: c.v, cor: c.cor })), { v: a, cor: COR_ATUAL }];
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(def.titulo)}">`;
+  for (let k = 0; k <= max + 1e-9; k += passo){
+    const xx = x(k).toFixed(1);
+    s += `<line x1="${xx}" x2="${xx}" y1="${T}" y2="${H-B}" stroke="${k ? '#f0f0f0' : '#d0d0d0'}"/><text x="${xx}" y="${H-B+ (G ? 17 : 13)}" text-anchor="middle">${def.moeda ? fmtCurto(k) : fmtV(k, def.media && passo < 1)}</text>`;
+  }
+  MESES.forEach((mes, i) => {
+    const y0 = T + altMes * i + gapM / 2, meio = y0 + (n * bhR + (n - 1) * gapB) / 2;
+    s += `<text x="${L - 6}" y="${(meio + fs * 0.35).toFixed(1)}" text-anchor="end">${mes}</text>`;
+    series.forEach((se, k) => {
+      const v = se.v[i]; if (v == null || v <= 0) return;
+      const yy = y0 + k * (bhR + gapB), w = Math.max(1, x(v) - L), r = Math.min(3, bhR / 2, w);
+      s += `<path d="M${L},${yy} H${L + w - r} Q${L + w},${yy} ${L + w},${yy + r} V${yy + bhR - r} Q${L + w},${yy + bhR} ${L + w - r},${yy + bhR} H${L} Z" fill="${se.cor}"/>`;
+      s += `<text class="vl" x="${(L + w + 4).toFixed(1)}" y="${(yy + bhR / 2 + fs * 0.35).toFixed(1)}" style="font-size:${fs}px">${rot(v)}</text>`;
+    });
+    let t = `${mes} — ${ANO_ATUAL}: ${a[i] == null ? '—' : fmtV(a[i], def.media, def.moeda)}`;
+    comps.forEach(c => t += ` · ${c.ano}: ${c.v[i] == null ? '—' : fmtV(c.v[i], def.media, def.moeda)}`);
+    s += `<rect class="hit" x="${L}" y="${(T + altMes * i).toFixed(1)}" width="${W - L - R}" height="${altMes.toFixed(1)}" data-t="${esc(t)}"/>`;
+  });
+  return s + '</svg>';
+}
+function grafico(a, comps, def){
+  comps = comps || [];
+  if (def.horizontal) return graficoH(a, comps, def);
+  if (def.area) return graficoPaineis(def);
+  const G = !!def.grande, W = def.W || 360, H = def.H || 200, L = def.moeda ? (G ? 66 : 44) : (G ? 44 : 30), R = 6, B = G ? 30 : 20;
+  const vals = [...a, ...comps.flatMap(c => c.v)].filter(v => v != null);
   const bruto = Math.max(1, ...vals);
   const passo = Math.pow(10, Math.floor(Math.log10(bruto))) * (bruto / Math.pow(10, Math.floor(Math.log10(bruto))) > 5 ? 2 : bruto / Math.pow(10, Math.floor(Math.log10(bruto))) > 2 ? 1 : 0.5);
   const max = Math.ceil(bruto / passo) * passo;
+  const n = comps.length + 1, gap = n > 3 ? 1 : 2, gw = (W - L - R) / 12;
+  const bw = n === 1 ? Math.min(G ? 64 : W > 600 ? 32 : W > 360 ? 22 : 14, gw * 0.5)
+                     : Math.min(G ? 44 : W > 600 ? 24 : W > 360 ? 16 : 10, (gw * 0.8 - gap * (n - 1)) / n);
+  // rótulos de valor acima das barras: na horizontal quando cabem na largura da barra, senão na vertical
+  const curtoInteiro = v => { const x = Math.abs(v), sg = v < 0 ? '−' : '';
+    return x >= 1e6 ? sg + (x/1e6).toFixed(1).replace('.',',').replace(',0','') + ' mi' : x >= 1e3 ? sg + Math.round(x/1e3) + ' mil' : sg + Math.round(x); };
+  const rot = v => def.moeda ? (G ? fmtCurto(v) : curtoInteiro(v)) : fmtV(v, def.media, false);
+  const fs = G ? (W < 600 ? 10 : 13) : (W >= 520 ? 10 : 8), larguraTxt = t => t.length * fs * 0.58;
+  const maiorTxt = Math.max(0, ...vals.filter(v => v).map(v => larguraTxt(rot(v))));
+  const vertical = maiorTxt > bw + gap + (n === 1 ? gw * 0.3 : 2);
+  const T = (G ? 12 : 8) + (vertical ? maiorTxt + 4 : fs + 4);
   const y = v => T + (H - T - B) * (1 - v / max);
-  const gw = (W - L - R) / 12, bw = c ? Math.min(10, gw * 0.34) : Math.min(14, gw * 0.5), gap = 2;
+  const series = [...comps.slice().reverse().map(c => ({ v: c.v, cor: c.cor })), { v: a, cor: COR_ATUAL }];
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(def.titulo)}">`;
   for (let k = 0; k <= max + 1e-9; k += passo){
     const yy = y(k).toFixed(1);
     s += `<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="${k ? '#f0f0f0' : '#d0d0d0'}"/>`;
     s += `<text x="${L-4}" y="${+yy+3}" text-anchor="end">${def.moeda ? fmtCurto(k) : fmtV(k, def.media && passo < 1)}</text>`;
   }
+  let rotulos = '';
   const barra = (x, v, cor) => {
     if (v == null) return '';
     const h = Math.max(v > 0 ? 1 : 0, (H - B) - y(v)), yy = (H - B) - h;
     if (!h) return '';
-    const r = Math.min(3, bw / 2, h);
+    const r = Math.min(3, bw / 2, h), cx = x + bw / 2;
+    rotulos += vertical
+      ? `<text class="vl" x="${cx.toFixed(1)}" y="${(yy - 3).toFixed(1)}" transform="rotate(-90 ${cx.toFixed(1)} ${(yy - 3).toFixed(1)})" dy="${(fs * 0.35).toFixed(1)}" style="font-size:${fs}px">${rot(v)}</text>`
+      : `<text class="vl" x="${cx.toFixed(1)}" y="${(yy - 4).toFixed(1)}" text-anchor="middle" style="font-size:${fs}px">${rot(v)}</text>`;
     return `<path d="M${x},${H-B} V${yy + r} Q${x},${yy} ${x + r},${yy} H${x + bw - r} Q${x + bw},${yy} ${x + bw},${yy + r} V${H-B} Z" fill="${cor}"/>`;
   };
   MESES.forEach((mes, i) => {
     const cx = L + gw * i + gw / 2;
-    if (c){ s += barra(cx - bw - gap/2, c[i], COR_COMP); s += barra(cx + gap/2, a[i], COR_ATUAL); }
-    else s += barra(cx - bw/2, a[i], COR_ATUAL);
-    s += `<text x="${cx}" y="${H-6}" text-anchor="middle">${mes}</text>`;
+    const x0 = cx - (n * bw + (n - 1) * gap) / 2;
+    series.forEach((se, k) => s += barra(x0 + k * (bw + gap), se.v[i], se.cor));
+    s += `<text x="${cx}" y="${H-(G ? 9 : 6)}" text-anchor="middle">${mes}</text>`;
     let t = `${mes} — ${ANO_ATUAL}: ${a[i] == null ? '—' : fmtV(a[i], def.media, def.moeda)}`;
-    if (c) t += ` · ${anoComp}: ${c[i] == null ? '—' : fmtV(c[i], def.media, def.moeda)}`;
+    comps.forEach(c => t += ` · ${c.ano}: ${c.v[i] == null ? '—' : fmtV(c.v[i], def.media, def.moeda)}`);
     s += `<rect class="hit" x="${L + gw*i}" y="${T}" width="${gw}" height="${H-T-B}" data-t="${esc(t)}"/>`;
   });
-  return s + '</svg>';
+  return s + rotulos + '</svg>';
 }
 
 /* ---------- Detalhamento (lupa) ---------- */
+// colunas das listas detalhadas (padrão: COLS_DET_PADRAO; cada DETS pode trocar com cols:[...])
+const COLS_DET = {
+  num:      { rot:'Número da Proposta', txt: d => d.num },
+  cliente:  { rot:'Cliente',            txt: d => d.cliente },
+  vendedor: { rot:'Vendedor',           txt: d => d.vendedor },
+  inside:   { rot:'Inside',             txt: d => d.inside },
+  status:   { rot:'Status',             txt: d => d.statusLista.join(' / ') },
+  criacao:  { rot:'Data Criação',       txt: d => fmtData(d.criacao), c:true },
+  validade: { rot:'Data Vencimento',    txt: d => fmtData(d.validade), c:true },
+  aprovacao:{ rot:'Data Aprovação',     txt: d => fmtData(d.aprovacao), c:true },
+  lead:     { rot:'Lead Time',          txt: d => d.lead == null ? '–' : `${fmt(d.lead)} dia${d.lead === 1 ? '' : 's'}`, c:true },
+  statusRota:{ rot:'Status',           txt: d => d.status || '–' },
+  motivo:   { rot:'Motivo',             txt: d => d.motivo },
+  compl:    { rot:'Complemento',        txt: d => d.compl || '–' },
+  rota:     { rot:'Origem → Destino',   txt: d => d.rota },
+  diasVenc: { rot:'Dias Vencidos',      txt: d => { const n = diasVencidos(d); return n == null ? '–' : `${fmt(n)} dia${n === 1 ? '' : 's'}`; }, c:true },
+};
+const COLS_DET_PADRAO = ['num','cliente','vendedor','inside','status','criacao','validade'];
+function diasVencidos(d){ if (!d.validade) return null; const n = Math.round((new Date(hojeISO() + 'T12:00:00') - new Date(d.validade.slice(0,10) + 'T12:00:00')) / 864e5); return n > 0 ? n : null; }
+const porCriacaoDesc = (a, b) => String(b.criacao || '').localeCompare(String(a.criacao || ''));
+const alfa = campo => (a, b) => String(a[campo] || '').localeCompare(String(b[campo] || ''), 'pt-BR', { sensitivity:'base' }) || porCriacaoDesc(a, b);
+const nulosNoFim = (va, vb) => va == null ? (vb == null ? 0 : 1) : vb == null ? -1 : 0;
+const ORD = {
+  criacao:  porCriacaoDesc,                                                                   // mais recente → mais antiga
+  leadAsc:  (a, b) => nulosNoFim(a.lead, b.lead) || (a.lead ?? 0) - (b.lead ?? 0) || porCriacaoDesc(a, b),   // mais rápida → mais demorada
+  vencDesc: (a, b) => { const x = diasVencidos(a), y = diasVencidos(b); return nulosNoFim(x, y) || (y ?? 0) - (x ?? 0) || porCriacaoDesc(a, b); },  // vencida há mais tempo primeiro
+  vendedor: alfa('vendedor'), inside: alfa('inside'), cliente: alfa('cliente'),
+};
+const COLS_STATUS = ['num','cliente','vendedor','inside','status'];
+const COLS_PERDAS = ['num','cliente','vendedor','inside','statusRota','motivo','compl','rota','criacao'];
 const DETS = {
-  criadas:  { titulo:'Propostas criadas', filtro: d => true },
-  aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada' },
-  lead:     { titulo:'Lead time — propostas aprovadas', filtro: d => d.lead != null, sub:'propostas usadas no cálculo do lead time' },
-  vencidas: { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada' },
+  perdasCli:{ titulo:'Perdas por cliente — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no mês', dim: d => [d.cliente], rotulo:'cliente', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
+  perdasMot:{ titulo:'Motivos das perdas — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no mês', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
+  criadas:  { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
+  prop:     { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
+  aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada', cols:['num','cliente','vendedor','inside','criacao','aprovacao','lead'], ordem: ORD.leadAsc },
+  vencidas: { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada', cols:[...COLS_DET_PADRAO, 'diasVenc'], ordem: ORD.vencDesc },
+  venc:     { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada', cols:[...COLS_DET_PADRAO, 'diasVenc'], ordem: ORD.vencDesc },
   multi:    { titulo:'Propostas com 2+ rotas', filtro: d => d.rotas >= 2 },
-  venc:     { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada' },
-  prop:     { titulo:'Propostas criadas', filtro: d => true },
-  status:   { titulo:'Propostas por status da rota', dim: d => d.statusLista, rotulo:'status' },
-  vendedor: { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor' },
-  vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor' },
-  inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside' },
-  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente' },
-  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente' },
+  status:   { titulo:'Propostas por status da rota', dim: d => d.statusLista, rotulo:'status', cols: COLS_STATUS },
+  vendedor: { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
+  vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
+  inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside', ordem: ORD.inside },
+  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
+  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
 };
 let detEstado = null;
 const cacheAnoDet = {};
@@ -1059,7 +1668,9 @@ function abrirDetalhe(chave, fontes, contexto, valorInicial){
     selF.value = valorInicial && cont.has(valorInicial) ? valorInicial : '';
     selF.classList.remove('hidden');
   } else { selF.innerHTML = ''; selF.classList.add('hidden'); }
-  document.querySelectorAll('#detFiltros input').forEach(i => i.value = '');
+  const cols = (def.cols || COLS_DET_PADRAO);
+  $('detCab').innerHTML = `<tr>${cols.map(k => `<th>${COLS_DET[k].rot}</th>`).join('')}</tr><tr class="filtros" id="detFiltros">${cols.map(k =>
+    `<th class="flt"><div class="fcol"><input data-col="${k}" aria-label="Filtrar ${COLS_DET[k].rot}" autocomplete="off"><button type="button" data-limpa="${k}" aria-label="Limpar filtro ${COLS_DET[k].rot}">x</button></div></th>`).join('')}</tr>`;
   $('modalDet').classList.remove('hidden');
   renderDetalhe();
 }
@@ -1071,38 +1682,56 @@ function renderDetalhe(){
   if (def.filtro) linhas = linhas.filter(def.filtro);
   if (def.dim && filtroDim) linhas = linhas.filter(d => def.dim(d).includes(filtroDim));
   if (filtrosCol.length) linhas = linhas.filter(d => filtrosCol.every(([col, q]) => semAcento(valorColDet(d, col)).includes(q)));
+  if (def.ordem) linhas = linhas.slice().sort(def.ordem);
   const LIM = 1000, mostrar = linhas.slice(0, LIM);
+  const cols = def.cols || COLS_DET_PADRAO;
   $('detCorpo').innerHTML = mostrar.length ? mostrar.map(d =>
-    `<tr><td>${esc(d.num)}</td><td>${esc(d.cliente)}</td><td>${esc(d.vendedor)}</td><td>${esc(d.inside)}</td><td>${esc(d.statusLista.join(' / '))}</td><td class="c">${fmtData(d.criacao)}</td><td class="c">${fmtData(d.validade)}</td></tr>`).join('')
-    : '<tr><td colspan="7" class="vazio">Nenhuma proposta encontrada.</td></tr>';
-  $('detRodape').textContent = linhas.length > LIM ? `Mostrando ${fmt(LIM)} de ${fmt(linhas.length)} propostas — use os filtros das colunas para refinar.` : `${fmt(linhas.length)} proposta${linhas.length === 1 ? '' : 's'}`;
+    `<tr>${cols.map(k => `<td${COLS_DET[k].c ? ' class="c"' : ''}>${esc(COLS_DET[k].txt(d))}</td>`).join('')}</tr>`).join('')
+    : `<tr><td colspan="${cols.length}" class="vazio">Nenhuma proposta encontrada.</td></tr>`;
+  const un = def.unidade || ['proposta','propostas'];
+  $('detRodape').textContent = linhas.length > LIM ? `Mostrando ${fmt(LIM)} de ${fmt(linhas.length)} ${un[1]} — use os filtros das colunas para refinar.`
+    : `${fmt(linhas.length)} ${linhas.length === 1 ? un[0] : un[1]}` + (def.unidade ? ` · ${fmt(new Set(linhas.map(d => d.num)).size)} propostas` : '');
 }
 const semAcento = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-function valorColDet(d, col){          // mesmo texto exibido na tabela
-  if (col === 'status') return d.statusLista.join(' / ');
-  if (col === 'criacao' || col === 'validade') return fmtData(d[col]);
-  return d[col];
-}
+function valorColDet(d, col){ return COLS_DET[col] ? COLS_DET[col].txt(d) : d[col]; }   // mesmo texto exibido na tabela
 function fecharDetalhe(){ $('modalDet').classList.add('hidden'); detEstado = null; }
 $('detFechar').onclick = fecharDetalhe;
 $('modalDet').addEventListener('click', e => { if (e.target.id === 'modalDet') fecharDetalhe(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && detEstado) fecharDetalhe(); });
-$('detAno').onchange = renderDetalhe; $('detFiltro').onchange = renderDetalhe; $('detFiltros').addEventListener('input', renderDetalhe);
-$('detFiltros').addEventListener('click', e => {
+$('detAno').onchange = renderDetalhe; $('detFiltro').onchange = renderDetalhe; $('detCab').addEventListener('input', renderDetalhe);
+$('detCab').addEventListener('click', e => {
   const b = e.target.closest('[data-limpa]'); if (!b) return;
   const inp = $('detFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); renderDetalhe();
 });
 document.addEventListener('click', e => {
-  const b = e.target.closest && e.target.closest('.lupa'); if (!b) return;
+  const b = e.target.closest && e.target.closest('.lupa'); if (!b || b.dataset.exp) return;
   if (b.dataset.det){                                   // aba Mês atual
-    const rot = `${MESES_LONGOS[new Date().getMonth()]}/${new Date().getFullYear()}`;
-    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: M.detalhe }], rot);
-  } else if (b.dataset.hist){                           // aba Histórico
-    const id = b.dataset.hist, anos = [ANO_ATUAL].concat(anoComp ? [+anoComp] : []);
-    const sel = selecaoDim[id], inicial = sel && sel !== TODOS ? sel : '';
-    abrirDetalhe(id, anos.map(a => ({ rotulo: String(a), linhas: detalheAno(a) })), anos.join(' x '), inicial);
+    const rot = `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: b.dataset.det.startsWith('perdas') ? PERDAS.rotas : M.detalhe }], rot);
   }
 });
+
+/* ---------- Gráfico em tela cheia (aba Histórico) ---------- */
+let expAberto = null;
+function desenharExpandido(){
+  const u = ultimoHist[expAberto]; if (!u) return;
+  const area = $('expArea'), w = Math.max(340, area.clientWidth - 8), h = Math.max(220, area.clientHeight - 8);
+  $('expTitulo').textContent = u.def.titulo;
+  $('expSub').innerHTML = u.resumo + (filtrosAtivos().length ? ' · filtros: ' + filtrosAtivos().map(F => esc(filtroH[F.id])).join(' · ') : '');
+  $('expAviso').innerHTML = u.seletor;
+  $('expLeg').innerHTML = $('legenda').innerHTML;
+  $('expExtra').innerHTML = u.extra || '';
+  const pain = u.def.area ? 34 + u.def.anosArea.length * 290 : 0;
+  $('modalExp').classList.toggle('rola', !!pain);
+  const hG = Math.max(220, area.clientHeight - 8, pain);
+  area.innerHTML = grafico(u.a, u.comps, { ...u.def, W: w, H: hG, grande: true });
+}
+function abrirExpandido(id){ expAberto = id; $('modalExp').classList.remove('hidden'); document.body.style.overflow = 'hidden'; desenharExpandido(); $('expFechar').focus(); }
+function fecharExpandido(){ expAberto = null; $('modalExp').classList.add('hidden'); document.body.style.overflow = ''; }
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-exp]'); if (b) abrirExpandido(b.dataset.exp); });
+$('expFechar').onclick = fecharExpandido;
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && expAberto) fecharExpandido(); });
+window.addEventListener('resize', () => { if (expAberto) desenharExpandido(); });
 
 /* ---------- Trocar senha ---------- */
 $('btnSenha').onclick = ()=>{ $('msgSenha').textContent=''; $('formSenha').reset(); $('modalSenha').classList.remove('hidden'); };
