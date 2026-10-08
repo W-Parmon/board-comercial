@@ -77,6 +77,8 @@
   #gCliente .hb .fill{background:#16A34A}
   #gAgente .hb .fill{background:#7C3AED}
   #gridAgente>.card{grid-column:1/-1}
+  body.sem-lucro #cardLucro{display:none!important}
+  body.sem-lucro #gridAgente>#cardAgente{grid-column:1/-1}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
   .grid2>.card{min-width:0}
@@ -800,10 +802,12 @@ document.addEventListener('fullscreenchange', atualizarBtnTela);
 document.addEventListener('webkitfullscreenchange', atualizarBtnTela);
 $('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrarLogin(); };
 
+const ehDiretoria = () => !!(acesso && acesso.perfil === 'diretoria');
 async function abrirApp(){
   const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave').maybeSingle();
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
   acesso = data;
+  document.body.classList.toggle('sem-lucro', !ehDiretoria());   // vendedores não veem o quadro de lucro líquido
   $('uNome').textContent = data.nome;
   $('uPerfil').textContent = data.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
@@ -1066,7 +1070,7 @@ function renderizar(){
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
-  quadroLucro(de, ate);
+  if (ehDiretoria()) quadroLucro(de, ate);   // lucro líquido só aparece para a Diretoria
   renderListas();
 }
 /* ---------- Período das listas: mês escolhido; no modo histórico o campo Mês é ignorado
@@ -1318,7 +1322,7 @@ function renderHistorico(){
   const largCard = Math.max(320, Math.round((gl - 16 * (cols - 1)) / cols - 34)), altCard = largCard > 500 ? 260 : 210;
   $('legenda').innerHTML = `<span><i style="background:${COR_ATUAL}"></i>${ANO_ATUAL}</span>` +
     anosComp.map((a, i) => `<span><i style="background:${corComp(i)}"></i>${a}</span>`).join('');
-  $('gridHist').innerHTML = HIST.map(def => {
+  $('gridHist').innerHTML = HIST.filter(def => def.id !== 'lucro' || ehDiretoria()).map(def => {
     const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
       : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
     let dedicado = '';
