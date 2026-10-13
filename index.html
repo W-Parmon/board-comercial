@@ -77,14 +77,24 @@
   #gCliente .hb .fill{background:#16A34A}
   #gAgente .hb .fill{background:#7C3AED}
   body.sem-lucro #cardLucro,body.sem-lucro .so-lucro{display:none!important}   /* novos gráficos de lucro: usar a classe so-lucro */
-  body.sem-fat #cardFat{display:none!important}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
   .grid2>.card{min-width:0}
   body.modo-anual .so-mes{display:none!important}   /* no modo de comparação anual só ficam as listas */
   #blocoLinhas .grid2>.card{margin:0}
-  #linha6>.card,#linha7>.card,#cardFat{margin:0 0 16px}
+  #linha6>.card,#linha7>.card{margin:0 0 16px}
   .card-reserva{display:flex;flex-direction:column}
+  #cardEmb{position:relative}
+  #cardEmb .btn-exp{position:absolute;top:16px;right:18px}
+  .emb-ln{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1.1fr) minmax(0,1.1fr) 110px minmax(0,2fr) 170px;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .emb-ln .rot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .emb-ln .cnpj{white-space:nowrap;color:#333}
+  .emb-ln .c{text-align:center}.emb-ln .n,.emb-ln .num{text-align:right}
+  .emb-ln .num{font-weight:700;white-space:nowrap}
+  .emb-ln .trk{height:14px;background:var(--soft);border-radius:4px;overflow:hidden}
+  .emb-ln .trk .fill{height:100%;background:var(--vermelho);border-radius:4px}
+  .emb-cab{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;border-bottom:2px solid var(--dourado)}
+  @media (max-width:900px){.emb-ln{grid-template-columns:minmax(0,1fr) 110px;}.emb-ln>div:nth-child(2),.emb-ln>div:nth-child(3),.emb-ln>div:nth-child(5){display:none}.emb-ln .c{text-align:right}.emb-ln .num{grid-column:1/-1;text-align:left;font-weight:400;color:var(--muted)}}
   .reserva-vazia{flex:1;min-height:160px;margin-top:12px;border:2px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:14px;letter-spacing:.3px}
   .vbars{display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding-bottom:4px}
   .vb{flex:1 0 56px;display:flex;flex-direction:column;align-items:center;border-radius:4px;padding-top:2px}
@@ -99,6 +109,26 @@
   .lucro-bars .vb{flex:1 0 64px}
   .lucro-bars .vb .num{font-size:11px;white-space:nowrap}
   .lucro-tot{flex:0 0 300px;font-size:12.5px;align-self:center}
+  .lc-topo{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end;margin:6px 0 16px}
+  .lc-graf{flex:1 1 420px;display:flex;gap:40px;justify-content:center;align-items:flex-end;min-height:230px}
+  .lc-grp{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .lc-grp .bars{display:flex;gap:10px;align-items:flex-end;height:180px}
+  .lc-grp .b{width:54px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+  .lc-grp .b .v{font-size:11px;font-weight:700;margin-bottom:3px;white-space:nowrap}
+  .lc-grp .b .f{width:100%;border-radius:4px 4px 0 0;min-height:2px}
+  .lc-grp .g{font-size:12px;font-weight:700;border-top:2px solid var(--gold);padding-top:4px;min-width:130px;text-align:center}
+  .lc-leg{display:flex;gap:14px;font-size:11.5px;justify-content:center;margin-top:6px}
+  .lc-leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .lc-kpis{flex:0 0 320px;font-size:12.5px}
+  .lc-kpis h3{font-size:13px;color:var(--red);margin:10px 0 4px;font-weight:700}
+  .lc-kpis .ln{display:flex;justify-content:space-between;gap:10px;padding:2px 4px}
+  .lc-kpis .ln b{font-variant-numeric:tabular-nums}
+  .lc-kpis .fut{color:var(--muted);border-top:1px dashed var(--line);margin-top:8px;padding-top:6px}
+  #cardLC tfoot td{font-weight:700;border-top:2px solid var(--gold);background:#fff}
+  #cardLC .tbl-wrap{max-height:460px}
+  #cardLC td.neg{color:#DC2626}
+  #futLC h3{font-size:13px;color:var(--red);margin:18px 0 4px}
+  #futLC .nota{margin-bottom:8px}
   .lucro-tot h3{font-size:13px;color:var(--red);text-align:right;margin:0 0 8px;font-weight:700;text-decoration:underline}
   .lucro-tot .ln{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;padding:3px 4px;border-radius:4px}
   .lucro-tot .ln:hover{background:var(--soft)}
@@ -437,8 +467,6 @@
   .det-tbl td.c{white-space:nowrap}
   .det-tbl table{min-width:860px}
   .com-filtro thead{position:sticky;top:0;z-index:2;background:#fff}
-  #cardFat.sem-vend .col-vend{display:none}
-  #cardFat .tbl-wrap{max-height:520px}
   .sub-cel{font-size:11px;color:var(--muted)}
   .com-filtro thead th{position:static;border-bottom:none;text-align:center}
   .com-filtro tr.filtros th{padding:0 6px 8px;border-bottom:none;box-shadow:inset 0 -2px 0 var(--dourado)}
@@ -587,17 +615,22 @@
       <h2>Lucro Operacional por Vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div><div class="aviso-f hidden" id="avisoLucro"></div>
       <div class="lucro-wrap"><div class="vbars lucro-bars" id="gLucro"></div><div class="lucro-tot" id="tLucro"></div></div>
     </div>
+    <div class="card hidden" id="cardLC">
+      <h2>Lucro e Comissão</h2><div class="nota" id="notaLC"></div><div class="aviso-f hidden" id="avisoLC"></div>
+      <div class="lc-topo"><div class="lc-graf" id="gLC"></div><div class="lc-kpis" id="kLC"></div></div>
+      <div class="faixas" id="visLC"><button type="button" class="faixa ativa" data-vis="atual">Atual · recebidos no mês<span id="nLCa"></span></button><button type="button" class="faixa" data-vis="prev">Previsto · a receber até o fim do mês<span id="nLCp"></span></button></div>
+      <input class="busca" id="buscaLC" placeholder="Buscar processo ou cliente…">
+      <div class="tbl-wrap"><table><thead id="hLC"></thead><tbody id="tLC"></tbody><tfoot id="fLC"></tfoot></table></div>
+      <div id="futLC"></div>
+    </div>
     </div>
     <div id="linha7">
       <div class="card" id="cardEmb">
+        <button class="btn ghost small btn-exp" id="btnExpEmb" type="button" title="Exportar a faixa selecionada para Excel">⬇ Exportar Excel</button>
         <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div><div class="aviso-f hidden" id="avisoEmb"></div>
         <div class="faixas" id="faixasEmb"></div>
         <div class="hbars" id="gEmb"></div><button class="btn ghost small mais hidden" id="maisEmb" type="button"></button>
       </div>
-    </div>
-    <div class="card so-mes" id="cardFat">
-      <div class="card-head"><div><h2>Faturamento Previsto</h2><div class="nota" id="notaFat"></div><div class="aviso-f hidden" id="avisoFat"></div></div></div>
-      <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Empresa</th><th class="col-vend">Vendedor</th><th>Armador</th><th>Previsão de chegada</th><th>Prazo para pagamento</th></tr><tr class="filtros" id="fatFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Empresa" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Empresa">x</button></div></th><th class="flt col-vend"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cia" aria-label="Filtrar Armador" autocomplete="off"><button type="button" data-limpa="cia" aria-label="Limpar filtro Armador">x</button></div></th><th class="flt"><div class="fcol"><input data-col="chegada" aria-label="Filtrar Previsão de chegada" autocomplete="off"><button type="button" data-limpa="chegada" aria-label="Limpar filtro Previsão de chegada">x</button></div></th><th class="flt"><div class="fcol"><input data-col="prazo" aria-label="Filtrar Prazo para pagamento" autocomplete="off"><button type="button" data-limpa="prazo" aria-label="Limpar filtro Prazo para pagamento">x</button></div></th></tr></thead><tbody id="tFat"></tbody></table></div>
     </div>
     </div>
     </section>
@@ -794,7 +827,7 @@ const MESES_LONGOS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Jul
 const limitesMes = (ano, m) => { const ult = new Date(ano, m + 1, 0).getDate(), mm = String(m + 1).padStart(2,'0'); return [`${ano}-${mm}-01`, `${ano}-${mm}-${ult}`]; };
 const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 let mesSel = { ano: new Date().getFullYear(), m: new Date().getMonth() };   // mês exibido (padrão: mês vigente)
-let acesso = null, ROTAS = [], CLIENTES = [], LUCRO = [], EMB = [], PRAZOS = new Map(), M = null;
+let acesso = null, ROTAS = [], CLIENTES = [], LUCRO = [], EMB = [], PRAZOS = new Map(), M = null, COMIS = [];
 
 /* ---------- Autenticação ---------- */
 let emRecuperacao = false;
@@ -890,17 +923,20 @@ $('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrar
 
 // REGRA: tudo que envolve lucro (gráficos, totais, listas — atuais e futuros) só aparece para o perfil Diretoria.
 // Marketing vê o mesmo que a Diretoria, menos lucro (o banco também bloqueia com_lucro para esse perfil).
+// Inside (Viviane, Isabela, Andrezza, Gabriela, Camila): todos os gráficos do seu escopo, nada de lucro (bloqueado também no banco).
 const ehDiretoria = () => !!(acesso && acesso.perfil === 'diretoria');
-const veLucro = ehDiretoria;
-const veFaturamento = () => !!(acesso && acesso.vendedor_chave === 'ROBERTO');   // Faturamento Previsto: só Roberto e as insides vinculadas a ele
+const ehVendedor = () => !!(acesso && acesso.perfil === 'vendedor');
+// vendedores (e insides do grupo) veem o lucro do próprio grupo, vindo das planilhas COMISSÃO <VENDEDOR> <ano> (coluna Total Processo)
+const veLucro = () => ehDiretoria() || ehVendedor();
 async function abrirApp(){
   const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave').maybeSingle();
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
   acesso = data;
   document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
-  document.body.classList.toggle('sem-fat', !veFaturamento());   // vendedores não veem o quadro de lucro líquido
+  $('cardLucro').classList.toggle('hidden', ehVendedor());   // vendedor: o quadro de lucro vira "Lucro e Comissão"
+  $('cardLC').classList.toggle('hidden', !ehVendedor());   // vendedores não veem o quadro de lucro líquido
   $('uNome').textContent = data.nome;
-  $('uPerfil').textContent = { diretoria:'Diretoria', marketing:'Marketing' }[data.perfil] || 'Vendedor';
+  $('uPerfil').textContent = { diretoria:'Diretoria', marketing:'Marketing', inside:'Inside' }[data.perfil] || 'Vendedor';
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
@@ -940,8 +976,12 @@ async function carregarDados(){
     const filtro = '';            // o filtro de vendedor agora é o filtro geral (no navegador); o banco já limita cada vendedor ao seu grupo
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
       buscarTudo('com_propostas_rotas','numero_proposta,status,motivo,complemento_motivo,cliente,vendedor,emissor,produto,origem,destino,agente_internacional,cia_armador_coloader,data_criacao,data_aprovacao,data_validade', filtro),
-      buscarTudo('com_clientes','nome_completo,vendedor,data_criacao,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
-      buscarTudo('com_lucro','numero_processo,cliente,vendedor,agente_internacional,cia,data_recebimento,lucro_liquido', filtro),
+      buscarTudo('com_clientes','nome_completo,cnpj,vendedor,data_criacao,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
+      ehDiretoria() ? buscarTudo('com_lucro','numero_processo,cliente,vendedor,agente_internacional,cia,data_recebimento,lucro_liquido', filtro)
+        : ehVendedor() ? buscarTudo('com_comissao','numero_processo,modalidade,cliente,vendedor,data_recebimento,total_processo,comissao_total', filtro)
+            .then(L => (COMIS = L).map(l => ({ numero_processo: l.numero_processo, cliente: l.cliente, vendedor: l.vendedor, data_recebimento: l.data_recebimento,
+                                      lucro_liquido: l.total_processo, agente_internacional: null, cia: null })))
+        : Promise.resolve([]),          // Marketing: sem lucro
       buscarEmbarcados(filtro).catch(e => { console.error('embarcados', e); return []; }),          // opcional: sem a tabela o restante do Board segue funcionando
       sb.rpc('com_prazos_embarcados').then(r => { if (r.error) throw r.error; return new Map((r.data || []).map(x => [x.chave, x.prazo_pagamento])); }).catch(e => { console.error('prazos', e); return new Map(); })
     ]);
@@ -1007,8 +1047,9 @@ function quadroLucro(de, ate){
        <div class="rot">${esc(rot)}</div></div>`).join('');
   $('tLucro').innerHTML = '<h3>Totais</h3>' + L.pares.map(([rot, v]) =>
     `<div class="ln" data-t="${esc(rot)}: ${fmtBRL(v)}"><i style="background:${corVendedor(rot)}"></i><span>${esc(rot)}</span><b>${fmtBRL(v)}</b></div>`).join('') +
-    `<div class="tot"><span>Total de Lucro Líquido:</span><b>${fmtBRL(L.total)}</b></div>`;
-  $('notaLucro').textContent = `${fmt(L.n)} processos com Data de Recebimento no mês · soma da coluna Lucro Líquido`;
+    `<div class="tot"><span>${ehDiretoria() ? 'Total de Lucro Líquido' : 'Total do Lucro Operacional'}:</span><b>${fmtBRL(L.total)}</b></div>`;
+  $('notaLucro').textContent = ehDiretoria() ? `${fmt(L.n)} processos com Data de Recebimento no mês · soma da coluna Lucro Líquido`
+    : `${fmt(L.n)} processos com Data de Recebimento no mês · planilha de comissão do vendedor · soma da coluna Total Processo`;
 }
 function colunas(el, pares, total){
   if (!pares.length){ el.innerHTML = '<div class="vazio">Sem dados no mês.</div>'; return; }
@@ -1074,9 +1115,9 @@ const FAIXAS_EMB = [
   { id:'180+',  rot:'Mais de 180 Dias',  teste:c => c.dias != null && c.dias >= 181 },
   { id:'nunca', rot:'Nunca Embarcou', teste:c => c.dias == null },
 ];
-let faixaEmb = '30';
+let faixaEmb = '30', EMB_ATUAL = { faixa: '', lista: [] };
 function clientesEmbarque(){
-  return clientesFiltrados().map(c => ({ nome:c.nome_completo || 'Sem nome', vendedor:c.vendedor || 'Sem vendedor',
+  return clientesFiltrados().map(c => ({ nome:c.nome_completo || 'Sem nome', cnpj:c.cnpj || '', vendedor:c.vendedor || 'Sem vendedor',
     ultimo:c.ultimo_embarque ? String(c.ultimo_embarque).slice(0,10) : null,
     dias:c.ultimo_embarque ? Number(c.dias_sem_embarcar) : null }));
 }
@@ -1110,18 +1151,46 @@ function quadroEmbarque(){
   const el = $('gEmb'), lim = 10;
   const mostrar = lista.length > lim && !el.dataset.tudo ? lista.slice(0, lim) : lista;
   const max = Math.max(1, ...lista.map(c => c.dias || 0));
-  el.innerHTML = mostrar.length ? mostrar.map(c => c.dias == null
-    ? `<div class="hb" data-t="${esc(c.nome)} · ${esc(c.vendedor)} · sem registro de embarque">
-         <div class="rot">${esc(c.nome)}</div><div class="trk"></div><div class="num">–</div></div>`
-    : `<div class="hb" data-t="${esc(c.nome)} · ${esc(c.vendedor)} · último embarque ${fmtData(c.ultimo)} · ${fmt(c.dias)} dias sem embarcar">
-         <div class="rot">${esc(c.nome)}</div>
-         <div class="trk"><div class="fill" style="width:${(100*c.dias/max).toFixed(2)}%"></div></div>
-         <div class="num">${tempoSemEmbarque(c.ultimo, c.dias)}</div></div>`).join('')
+  const cab = `<div class="emb-ln emb-cab"><div>Cliente</div><div>CNPJ</div><div>Vendedor</div><div class="c">Último Embarque</div><div></div><div class="n">Sem embarcar</div></div>`;
+  el.innerHTML = mostrar.length ? cab + mostrar.map(c =>
+    `<div class="emb-ln" data-t="${esc(c.nome)} · ${esc(c.vendedor)} · ${c.ultimo ? 'último embarque ' + fmtData(c.ultimo) + ' · ' + fmt(c.dias) + ' dias sem embarcar' : 'sem registro de embarque'}">
+       <div class="rot">${esc(c.nome)}</div><div class="cnpj">${esc(c.cnpj || '–')}</div><div>${esc(c.vendedor)}</div>
+       <div class="c">${c.ultimo ? fmtData(c.ultimo) : '–'}</div>
+       <div class="trk">${c.dias == null ? '' : `<div class="fill" style="width:${(100*c.dias/max).toFixed(2)}%"></div>`}</div>
+       <div class="num">${c.dias == null ? '–' : tempoSemEmbarque(c.ultimo, c.dias)}</div></div>`).join('')
     : '<div class="vazio">Nenhum cliente nesta faixa.</div>';
+  EMB_ATUAL = { faixa: g.rot, lista };
   const b = $('maisEmb');
   b.classList.toggle('hidden', !(lista.length > lim));
   b.textContent = el.dataset.tudo ? 'Mostrar top ' + lim : `Ver todos (${fmt(lista.length)})`;
 }
+/* Exportar Excel: todos os clientes da faixa selecionada (biblioteca SheetJS carregada só no clique) */
+function carregarXLSX(){
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise((ok, falha) => { const sc = document.createElement('script');
+    sc.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'; sc.onload = () => ok(window.XLSX); sc.onerror = () => falha(new Error('Não foi possível carregar o gerador de Excel'));
+    document.head.appendChild(sc); });
+}
+const serialExcel = iso => { const [y, m, d] = iso.split('-').map(Number); return (Date.UTC(y, m - 1, d) - Date.UTC(1899, 11, 30)) / 86400000; };
+$('btnExpEmb').onclick = async () => {
+  const b = $('btnExpEmb'), txt = b.textContent; b.disabled = true; b.textContent = 'Gerando…';
+  try{
+    const X = await carregarXLSX();
+    const linhas = EMB_ATUAL.lista.map(c => ({ 'Cliente': c.nome, 'CNPJ': c.cnpj || '', 'Vendedor': c.vendedor,
+      'Último Embarque': c.ultimo ? serialExcel(c.ultimo) : '', 'Dias sem embarcar': c.dias ?? '',
+      'Tempo sem embarque': c.dias == null ? 'Nunca embarcou' : tempoSemEmbarque(c.ultimo, c.dias), 'Faixa': EMB_ATUAL.faixa }));
+    const ws = X.utils.json_to_sheet(linhas);
+    for (let r = 1; r <= linhas.length; r++){ const cel = ws[X.utils.encode_cell({ r, c: 3 })]; if (cel && cel.t === 'n') cel.z = 'dd/mm/yyyy'; }   // data como data do Excel
+    ws['!cols'] = [{wch:55},{wch:20},{wch:22},{wch:15},{wch:17},{wch:26},{wch:18}];
+    const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, 'Clientes sem embarque');
+    const hj = new Date(), d = `${String(hj.getDate()).padStart(2,'0')}-${String(hj.getMonth()+1).padStart(2,'0')}-${hj.getFullYear()}`;
+    const blob = new Blob([X.write(wb, { bookType: 'xlsx', type: 'array' })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Clientes sem embarque - ${EMB_ATUAL.faixa} - ${d}.xlsx`;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    b.textContent = txt;
+  }catch(e){ console.error(e); b.textContent = 'Falha ao exportar — tente de novo'; setTimeout(() => b.textContent = txt, 4000); }
+  b.disabled = false;
+};
 $('faixasEmb').onclick = e => { const b = e.target.closest('[data-faixa]'); if (!b) return; faixaEmb = b.dataset.faixa; delete $('gEmb').dataset.tudo; quadroEmbarque(); };
 
 function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativo que não se aplica ao card
@@ -1161,7 +1230,8 @@ function renderizar(){
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
-  if (veLucro()) quadroLucro(de, ate);   // lucro líquido só aparece para a Diretoria
+  if (ehDiretoria()) quadroLucro(de, ate);   // Gross Profit da Diretoria
+  if (ehVendedor()) quadroLC();             // vendedor: Lucro e Comissão (Atual / Previsto)
   renderListas();
 }
 /* ---------- Período das listas: mês escolhido; no modo histórico o campo Mês é ignorado
@@ -1172,7 +1242,7 @@ function periodos(){
 const faixaDe = (d, rs) => d ? rs.find(([de, ate]) => d >= de && d <= ate) : null;
 const termoPeriodo = () => modoAnual() ? `em ${[ANO_ATUAL, ...anosComp].join(', ')}` : 'no mês';
 const rotuloPeriodo = () => modoAnual() ? [ANO_ATUAL, ...anosComp].join(', ') : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
-function renderListas(){ quadroPerdas(); tabelaNovos(); quadroEmbarque(); tabelaFaturamento(); }
+function renderListas(){ quadroPerdas(); tabelaNovos(); quadroEmbarque(); }
 /* ---------- Faturamento Previsto (PROCESSOS EMBARCADOS + prazo de pagamento do cadastro) ----------
    base: importação (IM/IA) = Prev de Chegada; exportação (EM/EA) = Data de Embarque
    vencimento = base + prazo (prazo em branco ou 0 = vence na própria base)
@@ -1201,33 +1271,89 @@ function calcularFaturamento(rs){
 const textoPrazo = f => !f.cad ? 'Sem cadastro · vence ' + fmtData(f.venc)
   : !f.prazo ? 'À vista (prazo 0)'
   : `${f.prazo} dias · vence ${fmtData(f.venc)}`;
-function tabelaFaturamento(){
-  if (!veFaturamento()) return;
-  const rs = periodos(), ate = rs[0][1];
-  FAT = calcularFaturamento(rs);
-  avisoFiltro('avisoFat', ['vendedor','cliente','cia'], 'Faturamento Previsto vem dos processos embarcados: aqui valem só os filtros de vendedor, cliente e armador/cia');
-  const dir = acesso && acesso.perfil === 'diretoria';
-  $('cardFat').classList.toggle('sem-vend', !dir);
-  const filtros = [...document.querySelectorAll('#fatFiltros input')].filter(i => dir || i.dataset.col !== 'vendedor')
-    .map(i => [i.dataset.col, semAcento(i.value.trim())]).filter(f => f[1]);
-  const valor = (f, col) => col === 'chegada' ? fmtData(f.chegada) + (f.exp ? ' embarque ' + fmtData(f.embarque) : '') : col === 'prazo' ? textoPrazo(f) : f[col];
-  const linhas = FAT.previsto.filter(f => filtros.every(([col, q]) => semAcento(valor(f, col)).includes(q)));
-  $('notaFat').textContent = modoAnual()
-    ? `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) ${termoPeriodo()} e pagamento previsto dentro do mesmo ano`
-      + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento no ano seguinte ficam em Receitas Futuras` : '')
-    : `${fmt(FAT.previsto.length)} processos com chegada prevista (importação) ou embarque (exportação) no mês e pagamento previsto até ${fmtData(ate)}`
-      + (FAT.futuras.length ? ` · ${fmt(FAT.futuras.length)} com vencimento após o mês ficam em Receitas Futuras` : '');
-  $('tFat').innerHTML = linhas.length ? linhas.map(f =>
-    `<tr><td>${esc(f.num)}</td><td>${esc(f.cliente)}</td>${dir ? `<td>${esc(f.vendedor)}</td>` : ''}<td>${esc(f.cia || '–')}</td>`
-    + `<td class="c">${fmtData(f.chegada)}${f.exp ? `<div class="sub-cel">exportação · embarque ${fmtData(f.embarque)}</div>` : ''}</td>`
-    + `<td class="c">${esc(textoPrazo(f))}</td></tr>`).join('')
-    : `<tr><td colspan="${dir ? 6 : 5}" class="vazio">${filtros.length ? 'Nenhum processo encontrado.' : `Nenhum processo com faturamento previsto ${termoPeriodo()}.`}</td></tr>`;
+/* ---------- Lucro e Comissão do vendedor (relatório de comissão do UXComex) ----------
+   Atual: processos com Data de Recebimento dentro do mês
+   Previsto: processos ainda sem recebimento cuja base (chegada prevista na importação / embarque na exportação)
+     cai no mês, ou no mês anterior (pendentes), e cujo vencimento (base + prazo do cliente) vence até o fim do mês
+   Receitas Futuras: mesma base, mas vencimento depois do mês — mostradas à parte, fora do total
+   Comissão: o sistema registra como valor negativo; aqui é exibida com o sinal invertido (estorno aparece negativo) */
+let visLC = 'atual', LC = { atual: [], prev: [], fut: [] };
+const comissaoDe = c => -(Number(c.comissao_total) || 0);
+function calcularLC(){
+  const [de, ate] = limitesMes(mesSel.ano, mesSel.m);
+  const [deAnt] = limitesMes(mesSel.m ? mesSel.ano : mesSel.ano - 1, mesSel.m ? mesSel.m - 1 : 11);
+  const ok = (vend, cli) => naLista(filtroH.vendedor, vend || 'Sem vendedor') && naLista(filtroH.cliente, cli);
+  const porNum = new Map(COMIS.map(c => [c.numero_processo, c]));
+  const atual = COMIS.filter(c => { const d = c.data_recebimento && String(c.data_recebimento).slice(0,10); return d && d >= de && d <= ate && ok(c.vendedor, c.cliente); })
+    .map(c => ({ num: c.numero_processo, cliente: c.cliente, data: String(c.data_recebimento).slice(0,10), lucro: Number(c.total_processo) || 0, com: comissaoDe(c) }))
+    .sort((a, b) => a.data.localeCompare(b.data) || a.num.localeCompare(b.num));
+  const prazoDe = e => { const k1 = 'A:' + String(e.apelido_cliente || '').trim().toUpperCase(), k2 = 'N:' + String(e.cliente || '').trim().toUpperCase();
+    return PRAZOS.has(k1) ? { p: PRAZOS.get(k1), cad: true } : PRAZOS.has(k2) ? { p: PRAZOS.get(k2), cad: true } : { p: null, cad: false }; };
+  const prev = [], fut = [];
+  EMB.forEach(e => {
+    if (!ok(e.vendedor, e.cliente)) return;
+    const exp = ehExportacao(e.numero_processo), base = exp ? e.data_embarque : e.prev_chegada;
+    if (!base || base < deAnt || base > ate) return;
+    const c = porNum.get(e.numero_processo);
+    if (c && c.data_recebimento) return;                       // já recebido: está (ou esteve) no Atual
+    const { p, cad } = prazoDe(e), venc = somaDias(base, p || 0);
+    const pend = base < de;
+    if (pend && venc > ate) return;                            // mês anterior só entra se vence até o fim do mês
+    const o = { num: e.numero_processo, cliente: e.cliente, base, exp, pend, prazo: p, cad, venc,
+      lucro: c ? Number(c.total_processo) || 0 : null, com: c ? comissaoDe(c) : null };
+    (venc <= ate ? prev : fut).push(o);
+  });
+  const ord = (a, b) => a.venc.localeCompare(b.venc) || a.num.localeCompare(b.num);
+  prev.sort(ord); fut.sort(ord);
+  return { atual, prev, fut };
 }
-$('fatFiltros').addEventListener('input', ()=> M && tabelaFaturamento());
-$('fatFiltros').addEventListener('click', e => {
-  const b = e.target.closest('[data-limpa]'); if (!b) return;
-  const inp = $('fatFiltros').querySelector(`input[data-col="${b.dataset.limpa}"]`); inp.value = ''; inp.focus(); M && tabelaFaturamento();
-});
+const somaLC = L => L.reduce((t, x) => (t.l += x.lucro || 0, t.c += x.com || 0, t), { l: 0, c: 0 });
+const tdValor = v => v == null ? '<td class="n sub-cel">sem valor</td>' : `<td class="n${v < 0 ? ' neg' : ''}">${fmtBRL(v)}</td>`;
+function quadroLC(){
+  if (!ehVendedor()) return;
+  LC = calcularLC();
+  avisoFiltro('avisoLC', ['vendedor','cliente'], 'Lucro e Comissão: aqui valem só os filtros de vendedor e cliente');
+  const A = somaLC(LC.atual), P = somaLC(LC.prev), F = somaLC(LC.fut);
+  $('nLCa').textContent = fmt(LC.atual.length); $('nLCp').textContent = fmt(LC.prev.length);
+  const [, ate] = limitesMes(mesSel.ano, mesSel.m);
+  $('notaLC').textContent = `Relatório de comissão do vendedor (UXComex) · Lucro = Total Processo · Comissão = Comissão Total · previsto segue a regra do Faturamento Previsto (chegada/embarque + prazo do cliente até ${fmtData(ate)})`;
+  // gráfico: Atual x Previsto (lucro e comissão)
+  const CL = '#C21A2B', CC = '#F8B133';
+  const max = Math.max(1, A.l, P.l, A.c, P.c);
+  const barra = (v, cor, rot) => `<div class="b" data-t="${rot}: ${fmtBRL(v)}"><div class="v">${fmtCurto(v)}</div><div class="f" style="height:${(100 * Math.max(0, v) / max).toFixed(2)}%;background:${cor}"></div></div>`;
+  const grupo = (t, x) => `<div class="lc-grp"><div class="bars">${barra(x.l, CL, t + ' · Lucro')}${barra(x.c, CC, t + ' · Comissão')}</div><div class="g">${t}</div></div>`;
+  $('gLC').innerHTML = `<div>${'<div style="display:flex;gap:40px;align-items:flex-end">' + grupo('Atual (recebido)', A) + grupo('Previsto (a receber)', P) + grupo('Atual + Previsto', { l: A.l + P.l, c: A.c + P.c }) + '</div>'}
+    <div class="lc-leg"><span><i style="background:${CL}"></i>Lucro</span><span><i style="background:${CC}"></i>Comissão</span></div></div>`;
+  const ln = (r, v) => `<div class="ln"><span>${r}</span><b>${fmtBRL(v)}</b></div>`;
+  $('kLC').innerHTML = `<h3>Atual · ${fmt(LC.atual.length)} processos</h3>${ln('Lucro', A.l)}${ln('Comissão', A.c)}`
+    + `<h3>Previsto · ${fmt(LC.prev.length)} processos</h3>${ln('Lucro', P.l)}${ln('Comissão', P.c)}`
+    + `<h3>Total do mês (Atual + Previsto)</h3>${ln('Lucro', A.l + P.l)}${ln('Comissão', A.c + P.c)}`
+    + `<div class="fut">Receitas Futuras (fora do total) · ${fmt(LC.fut.length)} processos${ln('Lucro', F.l)}${ln('Comissão', F.c)}</div>`;
+  document.querySelectorAll('#visLC .faixa').forEach(b => b.classList.toggle('ativa', b.dataset.vis === visLC));
+  const q = semAcento($('buscaLC').value.trim());
+  const filtra = L => L.filter(x => !q || semAcento(x.num + ' ' + x.cliente).includes(q));
+  const linhaPrev = x => `<tr><td>${esc(x.num)}</td><td>${esc(x.cliente)}</td><td class="c">${fmtData(x.base)}<div class="sub-cel">${x.exp ? 'embarque (exportação)' : 'chegada prevista'}${x.pend ? ' · pendente do mês anterior' : ''}</div></td>`
+    + `<td class="c">${esc(textoPrazo(x))}</td>${tdValor(x.lucro)}${tdValor(x.com)}</tr>`;
+  const cabPrev = '<tr><th>Processo</th><th>Cliente</th><th class="c">Chegada / Embarque</th><th class="c">Prazo para pagamento</th><th class="n">Lucro</th><th class="n">Comissão</th></tr>';
+  if (visLC === 'atual'){
+    const L = filtra(LC.atual), S = somaLC(L);
+    $('hLC').innerHTML = '<tr><th>Processo</th><th>Cliente</th><th class="c">Data de Recebimento</th><th class="n">Lucro</th><th class="n">Comissão</th></tr>';
+    $('tLC').innerHTML = L.length ? L.map(x => `<tr><td>${esc(x.num)}</td><td>${esc(x.cliente)}</td><td class="c">${fmtData(x.data)}</td>${tdValor(x.lucro)}${tdValor(x.com)}</tr>`).join('')
+      : '<tr><td colspan="5" class="vazio">Nenhum processo recebido no mês.</td></tr>';
+    $('fLC').innerHTML = L.length ? `<tr><td colspan="3">Total (${fmt(L.length)} processos)</td><td class="n">${fmtBRL(S.l)}</td><td class="n">${fmtBRL(S.c)}</td></tr>` : '';
+    $('futLC').innerHTML = '';
+  } else {
+    const L = filtra(LC.prev), S = somaLC(L), Fu = filtra(LC.fut), SF = somaLC(Fu);
+    $('hLC').innerHTML = cabPrev;
+    $('tLC').innerHTML = L.length ? L.map(linhaPrev).join('') : '<tr><td colspan="6" class="vazio">Nenhum processo previsto para receber no mês.</td></tr>';
+    $('fLC').innerHTML = L.length ? `<tr><td colspan="4">Total previsto (${fmt(L.length)} processos)</td><td class="n">${fmtBRL(S.l)}</td><td class="n">${fmtBRL(S.c)}</td></tr>` : '';
+    $('futLC').innerHTML = Fu.length ? `<h3>Receitas Futuras</h3><div class="nota">Chegada/embarque no mês, mas o vencimento cai depois de ${fmtData(ate)} · não entram no total do mês</div>`
+      + `<div class="tbl-wrap"><table><thead>${cabPrev}</thead><tbody>${Fu.map(linhaPrev).join('')}</tbody>`
+      + `<tfoot><tr><td colspan="4">Total Receitas Futuras (${fmt(Fu.length)} processos)</td><td class="n">${fmtBRL(SF.l)}</td><td class="n">${fmtBRL(SF.c)}</td></tr></tfoot></table></div>` : '';
+  }
+}
+$('visLC').addEventListener('click', e => { const b = e.target.closest('[data-vis]'); if (!b) return; visLC = b.dataset.vis; M && quadroLC(); });
+$('buscaLC').oninput = () => M && quadroLC();
 /* ---------- Perdas: propostas do mês com ao menos 1 rota Cancelada ou Reprovada ----------
    cada proposta conta 1; motivo da proposta = motivo mais frequente entre as suas rotas perdidas (em branco = "Não informado") */
 const STATUS_PERDA = new Set(['CANCELADA','REPROVADA']);
@@ -1312,7 +1438,6 @@ const modoAnual = () => anosComp.length > 0;
 function aplicarModo(){
   if (M){ renderizarTitulo(); renderListas(); }
   $('fMes').disabled = modoAnual();
-  $('cardFat').classList.toggle('hidden', modoAnual());
   $('cardNovos').classList.toggle('hidden', modoAnual());     // no modo anual os novos clientes ficam no gráfico (lupa = lista agrupada por mês)          // Faturamento Previsto só na visão do mês
   $('fMes').title = modoAnual() ? 'No modo histórico o mês é ignorado: gráficos e listas cobrem os anos selecionados' : '';
   document.body.classList.toggle('modo-anual', modoAnual());
