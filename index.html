@@ -76,7 +76,7 @@
   #gVend .vb .fill{background:#00A2E8}
   #gCliente .hb .fill{background:#16A34A}
   #gAgente .hb .fill{background:#7C3AED}
-  body.sem-lucro #cardLucro{display:none!important}
+  body.sem-lucro #cardLucro,body.sem-lucro .so-lucro{display:none!important}   /* novos gráficos de lucro: usar a classe so-lucro */
   body.sem-fat #cardFat{display:none!important}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
@@ -582,7 +582,7 @@
       </div>
       <div class="card card-reserva" id="cardProsp"><h2>Clientes em Prospecção</h2><div class="nota">Lista em construção</div><div class="reserva-vazia">Em breve</div></div>
     </div>
-    <div class="so-mes" id="linha6">
+    <div class="so-mes so-lucro" id="linha6">
     <div class="card" id="cardLucro">
       <h2>Lucro Operacional por Vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div><div class="aviso-f hidden" id="avisoLucro"></div>
       <div class="lucro-wrap"><div class="vbars lucro-bars" id="gLucro"></div><div class="lucro-tot" id="tLucro"></div></div>
@@ -888,16 +888,19 @@ document.addEventListener('fullscreenchange', atualizarBtnTela);
 document.addEventListener('webkitfullscreenchange', atualizarBtnTela);
 $('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrarLogin(); };
 
+// REGRA: tudo que envolve lucro (gráficos, totais, listas — atuais e futuros) só aparece para o perfil Diretoria.
+// Marketing vê o mesmo que a Diretoria, menos lucro (o banco também bloqueia com_lucro para esse perfil).
 const ehDiretoria = () => !!(acesso && acesso.perfil === 'diretoria');
+const veLucro = ehDiretoria;
 const veFaturamento = () => !!(acesso && acesso.vendedor_chave === 'ROBERTO');   // Faturamento Previsto: só Roberto e as insides vinculadas a ele
 async function abrirApp(){
   const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave').maybeSingle();
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
   acesso = data;
-  document.body.classList.toggle('sem-lucro', !ehDiretoria());
+  document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
   document.body.classList.toggle('sem-fat', !veFaturamento());   // vendedores não veem o quadro de lucro líquido
   $('uNome').textContent = data.nome;
-  $('uPerfil').textContent = data.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
+  $('uPerfil').textContent = { diretoria:'Diretoria', marketing:'Marketing' }[data.perfil] || 'Vendedor';
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
@@ -1158,7 +1161,7 @@ function renderizar(){
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
-  if (ehDiretoria()) quadroLucro(de, ate);   // lucro líquido só aparece para a Diretoria
+  if (veLucro()) quadroLucro(de, ate);   // lucro líquido só aparece para a Diretoria
   renderListas();
 }
 /* ---------- Período das listas: mês escolhido; no modo histórico o campo Mês é ignorado
@@ -1341,7 +1344,7 @@ const HIST = [
   { id:'novos',  titulo:'Clientes Ganhos no Mês',             val: m => m.novosClientes.length },
   { id:'lead',   titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
   { id:'venc',   titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
-  { id:'lucro',  titulo:'Lucro Operacional por Vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
+  { id:'lucro',  lucro:true, titulo:'Lucro Operacional por Vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
 ];
 
 function serieAno(ano){
@@ -1413,7 +1416,7 @@ function renderHistorico(){
   const largCard = Math.max(320, Math.round((gl - 16 * (cols - 1)) / cols - 34)), altCard = largCard > 500 ? 260 : 210;
   $('legenda').innerHTML = `<span><i style="background:${COR_ATUAL}"></i>${ANO_ATUAL}</span>` +
     anosComp.map((a, i) => `<span><i style="background:${corComp(i)}"></i>${a}</span>`).join('');
-  $('gridHist').innerHTML = HIST.filter(def => def.id !== 'lucro' || ehDiretoria()).map(def => {
+  $('gridHist').innerHTML = HIST.filter(def => !def.lucro || veLucro()).map(def => {
     const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
       : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
     let dedicado = '';
