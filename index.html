@@ -1009,7 +1009,9 @@ $('subVisao').addEventListener('click', async e => {
 async function buscarTudo(tabela, colunas, filtro){
   const passo = 1000; let ini = 0, todas = [];
   while (true){
-    let q = sb.from(tabela).select(colunas).order('id').range(ini, ini+passo-1);
+    // com_comissao não tem coluna id: a chave é (vendedor_chave, numero_processo)
+    let q = sb.from(tabela).select(colunas).order(tabela === 'com_comissao' ? 'numero_processo' : 'id').range(ini, ini+passo-1);
+    if (tabela === 'com_comissao') q = q.order('vendedor_chave');
     if (filtro) q = q.eq(tabela === 'com_comissao' ? 'vendedor_chave' : 'vendedor_grupo', filtro);
     const { data, error } = await q;
     if (error) throw error;
