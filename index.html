@@ -76,13 +76,16 @@
   #gVend .vb .fill{background:#00A2E8}
   #gCliente .hb .fill{background:#16A34A}
   #gAgente .hb .fill{background:#7C3AED}
-  #gridAgente>.card{grid-column:1/-1}
   body.sem-lucro #cardLucro{display:none!important}
   body.sem-fat #cardFat{display:none!important}
-  body.sem-lucro #gridAgente>#cardAgente{grid-column:1/-1}
   .hb .num{text-align:right;font-variant-numeric:tabular-nums;color:#000;font-weight:600}
   /* barras verticais */
   .grid2>.card{min-width:0}
+  body.modo-anual .so-mes{display:none!important}   /* no modo de comparação anual só ficam as listas */
+  #blocoLinhas .grid2>.card{margin:0}
+  #linha6>.card,#linha7>.card,#cardFat{margin:0 0 16px}
+  .card-reserva{display:flex;flex-direction:column}
+  .reserva-vazia{flex:1;min-height:160px;margin-top:12px;border:2px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:14px;letter-spacing:.3px}
   .vbars{display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding-bottom:4px}
   .vb{flex:1 0 56px;display:flex;flex-direction:column;align-items:center;border-radius:4px;padding-top:2px}
   .vb:hover{background:var(--soft)}
@@ -212,18 +215,6 @@
   main{padding-left:clamp(16px,1.6vw,40px);padding-right:clamp(16px,1.6vw,40px)}
   .vb .col{height:clamp(180px,22vh,380px)}
   @media (min-width:1600px){
-    #blocoMes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
-    #blocoMes>.grid2{display:contents}
-    #blocoMes>.kpis,#cardLucro{grid-column:1/-1;margin:0!important}
-    #blocoMes>.kpis{order:-1}
-    #cardLucro{order:1;grid-column:1/4!important}
-    #gridAgente>#cardAgente{order:1;grid-column:auto;margin:0}
-    #blocoMes>.grid2>.card{margin:0}
-    #blocoListas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-    #blocoListas>.grid2{display:contents}
-    #blocoListas>.grid2>.card,#cardEmb{margin:0!important}
-    #cardEmb{order:1}
-    #cardFat{order:2;grid-column:1/-1;margin:0!important}
     .gridH{grid-template-columns:repeat(3,minmax(0,1fr))}
   }
   @media (min-width:1600px) and (max-width:1999px){#blocoMes .vbars .rot{font-size:10px}}
@@ -551,7 +542,7 @@
       </div>
     <div class="titulo-mes" id="tituloMes"></div>
     <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
-    <div id="blocoMes">
+    <div id="blocoMes" class="so-mes">
     <div class="kpis">
       <div class="kpi"><button class="lupa" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
       <div class="kpi"><div class="lbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
@@ -559,49 +550,52 @@
       <div class="kpi"><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
       <div class="kpi"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
-
-    <div class="grid2">
-      <div class="card"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Status das rotas</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
-      <div class="card"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
     </div>
-    <div class="card" style="margin-bottom:16px" id="cardLucro">
-      <h2>Lucro líquido por vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div><div class="aviso-f hidden" id="avisoLucro"></div>
-      <div class="lucro-wrap"><div class="vbars lucro-bars" id="gLucro"></div><div class="lucro-tot" id="tLucro"></div></div>
+    <div id="blocoLinhas">   <!-- ordem definida pelo Will: 1 Status|Cliente · 2 Vendedor|Inside · 3 Recusas|Motivos · 4 Agente|Transportador · 5 Ganhos|Prospecção · 6 Lucro · 7 Sem embarque -->
+    <div class="grid2 so-mes" id="linha1">
+      <div class="card"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Status</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
+      <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
-    <div class="grid2">
-      <div class="card"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por inside sales</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
-      <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
+    <div class="grid2 so-mes" id="linha2">
+      <div class="card"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
+      <div class="card"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Inside</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
     </div>
-    <div class="grid2" id="gridAgente">
-      <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Propostas por agente internacional</h2><div class="nota">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
-    </div>
-
-    </div>
-    <div id="blocoListas">
     <div class="grid2" id="gridPerdas">
       <div class="card" id="cardPerdasCli"><button class="lupa" type="button" data-det="perdasCli" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
-        <h2>Top 10 Clientes por Qtd. de Perdas</h2><div class="nota" id="notaPerdasCli"></div>
+        <h2>Clientes com Maior Recusa de Proposta no Mês</h2><div class="nota" id="notaPerdasCli"></div>
         <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Empresa</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
       </div>
       <div class="card" id="cardPerdasMot"><button class="lupa" type="button" data-det="perdasMot" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
-        <h2>Motivos Gerais das Perdas (Todos os Clientes)</h2><div class="nota" id="notaPerdasMot"></div>
+        <h2>Motivos do Não Fechamento</h2><div class="nota" id="notaPerdasMot"></div>
         <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Motivo</th><th class="n">Qtd.</th><th class="n">%</th></tr></thead><tbody id="tPerdasMot"></tbody></table></div>
       </div>
     </div>
-    <div class="grid2">
+    <div class="grid2 so-mes" id="gridAgente">
+      <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Agente Internacional</h2><div class="nota">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
+      <div class="card card-reserva" id="cardTransp"><h2>Total por Transportador</h2><div class="nota">Gráfico em construção</div><div class="reserva-vazia">Em breve</div></div>
+    </div>
+    <div class="grid2 so-mes" id="linha5">
       <div class="card" id="cardNovos">
-        <div class="card-head"><div><h2>Novos clientes</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div><div class="aviso-f hidden" id="avisoNovos"></div></div></div>
+        <div class="card-head"><div><h2>Clientes Ganhos no Mês</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div><div class="aviso-f hidden" id="avisoNovos"></div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
         <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Cliente Ganho em</th><th class="c">Tempo de prospecção</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
+      <div class="card card-reserva" id="cardProsp"><h2>Clientes em Prospecção</h2><div class="nota">Lista em construção</div><div class="reserva-vazia">Em breve</div></div>
+    </div>
+    <div class="so-mes" id="linha6">
+    <div class="card" id="cardLucro">
+      <h2>Lucro Operacional por Vendedor</h2><div class="nota" id="notaLucro">Processos com Data de Recebimento no mês · soma da coluna Lucro Líquido</div><div class="aviso-f hidden" id="avisoLucro"></div>
+      <div class="lucro-wrap"><div class="vbars lucro-bars" id="gLucro"></div><div class="lucro-tot" id="tLucro"></div></div>
+    </div>
+    </div>
+    <div id="linha7">
       <div class="card" id="cardEmb">
         <h2>Clientes sem embarque</h2><div class="nota" id="notaEmb">Dias sem embarcar na data da extração da lista de clientes · cada cliente aparece em uma única faixa</div><div class="aviso-f hidden" id="avisoEmb"></div>
         <div class="faixas" id="faixasEmb"></div>
         <div class="hbars" id="gEmb"></div><button class="btn ghost small mais hidden" id="maisEmb" type="button"></button>
       </div>
     </div>
-
-    <div class="card" style="margin-top:16px" id="cardFat">
+    <div class="card so-mes" id="cardFat">
       <div class="card-head"><div><h2>Faturamento Previsto</h2><div class="nota" id="notaFat"></div><div class="aviso-f hidden" id="avisoFat"></div></div></div>
       <div class="tbl-wrap com-filtro"><table><thead><tr><th>Referência</th><th>Empresa</th><th class="col-vend">Vendedor</th><th>Armador</th><th>Previsão de chegada</th><th>Prazo para pagamento</th></tr><tr class="filtros" id="fatFiltros"><th class="flt"><div class="fcol"><input data-col="num" aria-label="Filtrar Referência" autocomplete="off"><button type="button" data-limpa="num" aria-label="Limpar filtro Referência">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cliente" aria-label="Filtrar Empresa" autocomplete="off"><button type="button" data-limpa="cliente" aria-label="Limpar filtro Empresa">x</button></div></th><th class="flt col-vend"><div class="fcol"><input data-col="vendedor" aria-label="Filtrar Vendedor" autocomplete="off"><button type="button" data-limpa="vendedor" aria-label="Limpar filtro Vendedor">x</button></div></th><th class="flt"><div class="fcol"><input data-col="cia" aria-label="Filtrar Armador" autocomplete="off"><button type="button" data-limpa="cia" aria-label="Limpar filtro Armador">x</button></div></th><th class="flt"><div class="fcol"><input data-col="chegada" aria-label="Filtrar Previsão de chegada" autocomplete="off"><button type="button" data-limpa="chegada" aria-label="Limpar filtro Previsão de chegada">x</button></div></th><th class="flt"><div class="fcol"><input data-col="prazo" aria-label="Filtrar Prazo para pagamento" autocomplete="off"><button type="button" data-limpa="prazo" aria-label="Limpar filtro Prazo para pagamento">x</button></div></th></tr></thead><tbody id="tFat"></tbody></table></div>
     </div>
@@ -1247,19 +1241,21 @@ function calcularPerdas(rs){
     rotas.push(o);
     (porProp.get(o.num) || porProp.set(o.num, []).get(o.num)).push(o);
   }
+  // proposta "recusada" = TODAS as rotas Canceladas/Reprovadas (basta 1 rota com outro status, ex. Aprovada, para não contar)
+  const comOutra = new Set(ROTAS.filter(r => porProp.has(r.numero_proposta) && !ehPerda(r)).map(r => r.numero_proposta));
   const props = [...porProp.values()].map(rs => {
     const cont = new Map(); rs.forEach(x => cont.set(x.motivo, (cont.get(x.motivo) || 0) + 1));
     const motivo = [...cont.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))[0][0];
-    return { num: rs[0].num, cliente: rs[0].cliente, motivo };
+    return { num: rs[0].num, cliente: rs[0].cliente, motivo, recusada: !comOutra.has(rs[0].num) };
   });
-  return { rotas, props };
+  return { rotas, props, rotasRecusadas: rotas.filter(o => !comOutra.has(o.num)) };
 }
 function quadroPerdas(){
   PERDAS = calcularPerdas(periodos());
-  const P = PERDAS.props, tot = P.length;
-  const porCli = new Map(); P.forEach(p => (porCli.get(p.cliente) || porCli.set(p.cliente, []).get(p.cliente)).push(p));
+  const P = PERDAS.props, tot = P.length, R = P.filter(p => p.recusada);
+  const porCli = new Map(); R.forEach(p => (porCli.get(p.cliente) || porCli.set(p.cliente, []).get(p.cliente)).push(p));
   const top = [...porCli.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'pt-BR')).slice(0, 10);
-  $('notaPerdasCli').textContent = `${fmt(tot)} propostas perdidas (rota Cancelada ou Reprovada) ${termoPeriodo()} em ${fmt(porCli.size)} clientes · motivo principal = mais frequente entre as propostas do cliente`;
+  $('notaPerdasCli').textContent = `${fmt(R.length)} propostas recusadas ${termoPeriodo()} em ${fmt(porCli.size)} clientes · conta só a proposta com todas as rotas Canceladas ou Reprovadas · motivo principal = mais frequente entre as propostas do cliente`;
   $('tPerdasCli').innerHTML = top.length ? top.map(([cli, ps]) => {
     const c = new Map(); ps.forEach(p => c.set(p.motivo, (c.get(p.motivo) || 0) + 1));
     const [mot, n] = [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))[0];
@@ -1275,7 +1271,7 @@ function quadroPerdas(){
 document.addEventListener('click', e => {
   const tr = e.target.closest && e.target.closest('[data-perda-cli],[data-perda-mot]'); if (!tr) return;
   const rot = rotuloPeriodo();
-  if (tr.dataset.perdaCli != null) abrirDetalhe('perdasCli', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaCli);
+  if (tr.dataset.perdaCli != null) abrirDetalhe('perdasCli', [{ rotulo: rot, linhas: PERDAS.rotasRecusadas }], rot, tr.dataset.perdaCli);
   else abrirDetalhe('perdasMot', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaMot);
 });
 function tabelaNovos(){
@@ -1316,7 +1312,7 @@ function aplicarModo(){
   $('cardFat').classList.toggle('hidden', modoAnual());
   $('cardNovos').classList.toggle('hidden', modoAnual());     // no modo anual os novos clientes ficam no gráfico (lupa = lista agrupada por mês)          // Faturamento Previsto só na visão do mês
   $('fMes').title = modoAnual() ? 'No modo histórico o mês é ignorado: gráficos e listas cobrem os anos selecionados' : '';
-  $('blocoMes').classList.toggle('hidden', modoAnual());
+  document.body.classList.toggle('modo-anual', modoAnual());
   $('blocoAnual').classList.toggle('hidden', !modoAnual());
   $('legenda').classList.toggle('hidden', !modoAnual());
   if (modoAnual()) renderHistorico(); else renderFiltrosH();
@@ -1337,15 +1333,15 @@ const valorDim = (def, m) => def.dedicado && (selCard[def.id] || []).length ? se
 
 const HIST = [
   { id:'prop',   titulo:'Propostas criadas',          val: m => m.totalPropostas },
-  { id:'status', titulo:'Rotas por status',           dim:'porStatusRota' },
-  { id:'vend',   titulo:'Propostas por vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
-  { id:'inside', titulo:'Propostas por inside sales', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
-  { id:'cli',    titulo:'Propostas por cliente',      dim:'porCliente', dedicado:'empresa' },
-  { id:'agente', titulo:'Propostas por agente internacional', dim:'porAgente', dedicado:'agente' },
+  { id:'status', titulo:'Total por Status',           dim:'porStatusRota' },
+  { id:'cli',    titulo:'Total por Cliente',      dim:'porCliente', dedicado:'empresa' },
+  { id:'vend',   titulo:'Total por Vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
+  { id:'inside', titulo:'Total por Inside', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
+  { id:'agente', titulo:'Total por Agente Internacional', dim:'porAgente', dedicado:'agente' },
+  { id:'novos',  titulo:'Clientes Ganhos no Mês',             val: m => m.novosClientes.length },
   { id:'lead',   titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
   { id:'venc',   titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
-  { id:'novos',  titulo:'Novos clientes',             val: m => m.novosClientes.length },
-  { id:'lucro',  titulo:'Lucro líquido por vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
+  { id:'lucro',  titulo:'Lucro Operacional por Vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
 ];
 
 function serieAno(ano){
@@ -1838,8 +1834,8 @@ const DETS = {
   novosAno: { titulo:'Novos clientes — prospectos que viraram clientes da casa', sub:'pela Data de Ativação do Prospecto · tempo de prospecção = do início da prospecção (criação do cadastro) até o cliente ganho',
               cols:['cliNome','vendedor','criacaoCli','ativacao','diasProsp'], unidade:['cliente','clientes'], semPropostas:true, agrupar: d => d.inicio ? d.inicio.slice(0,7) : '',
               ordem: (a, b) => String(b.inicio || '').localeCompare(String(a.inicio || '')) || String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR') },
-  perdasCli:{ titulo:'Perdas por cliente — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.cliente], rotulo:'empresa', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
-  perdasMot:{ titulo:'Motivos das perdas — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
+  perdasCli:{ titulo:'Clientes com Maior Recusa de Proposta no Mês — rotas recusadas', sub:'propostas com todas as rotas Canceladas ou Reprovadas, criadas no período', dim: d => [d.cliente], rotulo:'empresa', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
+  perdasMot:{ titulo:'Motivos do Não Fechamento — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
   criadas:  { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
   prop:     { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
   aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada', cols:['num','cliente','vendedor','inside','criacao','aprovacao','lead'], ordem: ORD.leadAsc },
@@ -1931,7 +1927,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('.lupa'); if (!b || b.dataset.exp) return;
   if (b.dataset.det){                                   // aba Mês atual
     const perdas = b.dataset.det.startsWith('perdas'), rot = perdas ? rotuloPeriodo() : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
-    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: perdas ? PERDAS.rotas : M.detalhe }], rot);
+    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: perdas ? (b.dataset.det === 'perdasCli' ? PERDAS.rotasRecusadas : PERDAS.rotas) : M.detalhe }], rot);
   }
 });
 
