@@ -289,6 +289,21 @@
   header.brand-header .quem{display:flex;align-items:center;gap:8px}
   header.brand-header .acoes{display:flex;gap:8px}
   header.brand-header .tag{background:#fff;color:var(--vermelho)}
+  .menu-op{position:relative}
+  #btnOpcoes{display:inline-flex;align-items:center;gap:7px}
+  .ico-menu{display:inline-flex;flex-direction:column;gap:3px;width:14px}
+  .ico-menu i{display:block;height:2px;border-radius:2px;background:currentColor}
+  .menu{position:absolute;right:0;top:calc(100% + 6px);min-width:210px;background:#fff;border:2px solid var(--dourado);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22);padding:6px;z-index:200;display:flex;flex-direction:column;gap:2px}
+  .menu.hidden,.menu .hidden{display:none}
+  .menu .mi{background:none;border:0;border-radius:6px;padding:8px 10px;text-align:left;font:inherit;font-size:12.5px;font-weight:700;color:var(--vermelho);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%}
+  .menu .mi:hover,.menu .mi:focus-visible{background:#FFF6E3;outline:none}
+  .menu .seta{transition:transform .15s}
+  .menu .mi[aria-expanded="true"] .seta{transform:rotate(90deg)}
+  .menu .sub{display:flex;flex-direction:column;gap:1px;margin:2px 0 4px 10px;padding-left:8px;border-left:2px solid var(--dourado)}
+  .menu .sub .mi{font-weight:600;color:#000}
+  .menu .sub .mi[aria-checked="true"]{color:var(--vermelho);font-weight:700}
+  .menu .sub .mi[aria-checked="true"]::after{content:'✓'}
+  .menu .mi-grupo{border-bottom:1px solid #eee;padding-bottom:4px;margin-bottom:2px}
   .hbtn{background:#fff;color:var(--vermelho);border:2px solid var(--dourado);border-radius:8px;padding:7px 13px;font-size:12px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .12s}
   .hbtn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.24)}
   nav.abas{background:#fff;border-bottom:3px solid var(--vermelho);display:flex;gap:4px;padding:0 20px;margin:0;position:sticky;top:0;z-index:50}
@@ -543,11 +558,26 @@
       <div class="filtros" id="subtitulo"><span id="upd">Carregando…</span></div>
     </div>
     <div class="user">
-      <div class="quem"><span class="nome" id="uNome"></span><span class="tag" id="uPerfil"></span></div>
+      <div class="quem"><span class="nome" id="uNome"></span><span class="tag" id="uPerfil"></span>
+        <div class="menu-op">
+          <button class="hbtn" id="btnOpcoes" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menuOpcoes"><span class="ico-menu" aria-hidden="true"><i></i><i></i><i></i></span>Opções</button>
+          <div class="menu hidden" id="menuOpcoes" role="menu">
+            <div class="mi-grupo hidden" id="grpVisao">
+              <button class="mi" id="btnVisao" type="button" role="menuitem" aria-expanded="false">Visualizar como <span class="seta">›</span></button>
+              <div class="sub hidden" id="subVisao" role="menu">
+                <button class="mi" type="button" role="menuitemradio" data-visao="diretoria">Diretoria (geral)</button>
+                <button class="mi" type="button" role="menuitemradio" data-visao="ROBERTO">Roberto Soares</button>
+                <button class="mi" type="button" role="menuitemradio" data-visao="MARCOS">Marcos Juhas</button>
+                <button class="mi" type="button" role="menuitemradio" data-visao="JESSICA">Jessica Ribas</button>
+              </div>
+            </div>
+            <button class="mi" id="btnSenha" type="button" role="menuitem">Alterar senha</button>
+            <button class="mi" id="btnSair" type="button" role="menuitem">Sair</button>
+          </div>
+        </div>
+      </div>
       <div class="acoes">
         <button class="hbtn hidden" id="btnTela" type="button" aria-pressed="false">⛶ Tela cheia</button>
-        <button class="hbtn" id="btnSenha" type="button">Trocar senha</button>
-        <button class="hbtn" id="btnSair" type="button">Sair</button>
       </div>
     </div>
   </header>
@@ -688,10 +718,10 @@
   </div>
 </div>
 
-<!-- MODAL TROCAR SENHA -->
+<!-- MODAL ALTERAR SENHA -->
 <div class="modal-bg hidden" id="modalSenha">
   <form class="modal" id="formSenha">
-    <h3>Trocar senha</h3>
+    <h3>Alterar senha</h3>
     <div class="field"><label for="s0">Senha atual</label><input id="s0" type="password" required autocomplete="current-password"></div>
     <div class="field"><label for="s1">Nova senha (mín. 8 caracteres)</label><input id="s1" type="password" minlength="8" required autocomplete="new-password"></div>
     <div class="field"><label for="s2">Confirmar nova senha</label><input id="s2" type="password" minlength="8" required autocomplete="new-password">
@@ -919,7 +949,7 @@ $('btnTela').onclick = () => {
 function atualizarBtnTela(){ const on = !!elTelaCheia(); $('btnTela').textContent = on ? '✕ Sair da tela cheia' : '⛶ Tela cheia'; $('btnTela').setAttribute('aria-pressed', on); }
 document.addEventListener('fullscreenchange', atualizarBtnTela);
 document.addEventListener('webkitfullscreenchange', atualizarBtnTela);
-$('btnSair').onclick = async ()=>{ await sb.auth.signOut(); acesso=null; mostrarLogin(); };
+$('btnSair').onclick = async ()=>{ fecharMenu(); await sb.auth.signOut(); acesso=null; acessoReal=null; mostrarLogin(); };
 
 // REGRA: tudo que envolve lucro (gráficos, totais, listas — atuais e futuros) só aparece para o perfil Diretoria.
 // Marketing vê o mesmo que a Diretoria, menos lucro (o banco também bloqueia com_lucro para esse perfil).
@@ -928,25 +958,59 @@ const ehDiretoria = () => !!(acesso && acesso.perfil === 'diretoria');
 const ehVendedor = () => !!(acesso && acesso.perfil === 'vendedor');
 // vendedores (e insides do grupo) veem o lucro do próprio grupo, vindo das planilhas COMISSÃO <VENDEDOR> <ano> (coluna Total Processo)
 const veLucro = () => ehDiretoria() || ehVendedor();
+// Perfil Projetos (Willians, Gisele, Maciel): vê o Board como a Diretoria ou exatamente como um dos vendedores
+// (o banco libera tudo para Projetos; o recorte do vendedor escolhido é feito na busca dos dados)
+let acessoReal = null;
+const ehProjetos = () => !!(acessoReal && acessoReal.perfil === 'projetos');
+const NOMES_VISAO = { diretoria:'Diretoria', ROBERTO:'Roberto', MARCOS:'Marcos', JESSICA:'Jessica' };
+function lerVisao(){ try { const v = localStorage.getItem('x5v_visao'); return NOMES_VISAO[v] ? v : 'diretoria'; } catch(e){ return 'diretoria'; } }
+function aplicarVisao(){
+  const v = visaoAtual;
+  document.querySelectorAll('#subVisao [data-visao]').forEach(b => b.setAttribute('aria-checked', b.dataset.visao === v));
+  acesso = !ehProjetos() ? acessoReal
+    : v === 'diretoria' ? { ...acessoReal, perfil: 'diretoria', vendedor_chave: null }
+    : { ...acessoReal, perfil: 'vendedor', vendedor_chave: v };
+  document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
+  $('cardLucro').classList.toggle('hidden', ehVendedor());   // vendedor: o quadro de lucro vira "Lucro e Comissão"
+  $('cardLC').classList.toggle('hidden', !ehVendedor());
+  $('uPerfil').textContent = ehProjetos() ? 'Projetos · ' + NOMES_VISAO[v]
+    : ({ diretoria:'Diretoria', marketing:'Marketing', inside:'Inside' }[acessoReal.perfil] || 'Vendedor');
+}
 async function abrirApp(){
   const { data, error } = await sb.from('com_acessos').select('nome,perfil,vendedor_chave').maybeSingle();
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
-  acesso = data;
-  document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
-  $('cardLucro').classList.toggle('hidden', ehVendedor());   // vendedor: o quadro de lucro vira "Lucro e Comissão"
-  $('cardLC').classList.toggle('hidden', !ehVendedor());   // vendedores não veem o quadro de lucro líquido
+  acessoReal = data;
+  $('grpVisao').classList.toggle('hidden', !ehProjetos());
+  visaoAtual = ehProjetos() ? lerVisao() : 'diretoria';
+  aplicarVisao();
   $('uNome').textContent = data.nome;
-  $('uPerfil').textContent = { diretoria:'Diretoria', marketing:'Marketing', inside:'Inside' }[data.perfil] || 'Vendedor';
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
+let visaoAtual = 'diretoria';
+// menu Opções (todos os perfis): Alterar senha, Sair · Projetos: Visualizar como
+function fecharMenu(){ $('menuOpcoes').classList.add('hidden'); $('btnOpcoes').setAttribute('aria-expanded', 'false'); }
+$('btnOpcoes').onclick = e => { e.stopPropagation(); const abrir = $('menuOpcoes').classList.contains('hidden');
+  $('menuOpcoes').classList.toggle('hidden', !abrir); $('btnOpcoes').setAttribute('aria-expanded', abrir); };
+$('menuOpcoes').addEventListener('click', e => e.stopPropagation());
+document.addEventListener('click', fecharMenu);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMenu(); });
+$('btnVisao').onclick = () => { const ab = $('subVisao').classList.toggle('hidden') === false; $('btnVisao').setAttribute('aria-expanded', ab); };
+$('subVisao').addEventListener('click', async e => {
+  const b = e.target.closest('[data-visao]'); if (!b) return;
+  fecharMenu();
+  if (b.dataset.visao === visaoAtual) return;
+  visaoAtual = b.dataset.visao;
+  try { localStorage.setItem('x5v_visao', visaoAtual); } catch(err){}
+  aplicarVisao(); await carregarDados();
+});
 
 /* ---------- Dados ---------- */
 async function buscarTudo(tabela, colunas, filtro){
   const passo = 1000; let ini = 0, todas = [];
   while (true){
     let q = sb.from(tabela).select(colunas).order('id').range(ini, ini+passo-1);
-    if (filtro) q = q.eq('vendedor_grupo', filtro);
+    if (filtro) q = q.eq(tabela === 'com_comissao' ? 'vendedor_chave' : 'vendedor_grupo', filtro);
     const { data, error } = await q;
     if (error) throw error;
     todas = todas.concat(data);
@@ -973,7 +1037,8 @@ async function buscarEmbarcados(filtro){       // só o necessário para o mês 
 async function carregarDados(){
   $('carregando').classList.remove('hidden');
   try{
-    const filtro = '';            // o filtro de vendedor agora é o filtro geral (no navegador); o banco já limita cada vendedor ao seu grupo
+    // o banco já limita cada vendedor ao seu grupo; no perfil Projetos vendo como vendedor, o recorte é feito aqui
+    const filtro = ehProjetos() && acesso.vendedor_chave ? acesso.vendedor_chave : '';
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
       buscarTudo('com_propostas_rotas','numero_proposta,status,motivo,complemento_motivo,cliente,vendedor,emissor,produto,origem,destino,agente_internacional,cia_armador_coloader,data_criacao,data_aprovacao,data_validade', filtro),
       buscarTudo('com_clientes','nome_completo,cnpj,vendedor,data_criacao,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
@@ -2087,7 +2152,7 @@ $('expFechar').onclick = fecharExpandido;
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && expAberto) fecharExpandido(); });
 window.addEventListener('resize', () => { if (expAberto) desenharExpandido(); });
 
-/* ---------- Trocar senha ---------- */
+/* ---------- Alterar senha ---------- */
 // os 3 campos são obrigatórios; "Salvar" só libera com tudo preenchido e as duas novas senhas iguais
 function validarTrocaSenha(){
   const a = $('s0').value, n = $('s1').value, c = $('s2').value;
@@ -2096,7 +2161,7 @@ function validarTrocaSenha(){
   $('btnSalvaSenha').disabled = !(a && n.length >= 8 && c && !difere);
 }
 ['s0','s1','s2'].forEach(id => $(id).addEventListener('input', validarTrocaSenha));
-$('btnSenha').onclick = ()=>{ $('msgSenha').textContent=''; $('msgSenha').className='msg'; $('formSenha').reset(); validarTrocaSenha(); $('modalSenha').classList.remove('hidden'); setTimeout(()=>$('s0').focus(), 0); };
+$('btnSenha').onclick = ()=>{ fecharMenu(); $('msgSenha').textContent=''; $('msgSenha').className='msg'; $('formSenha').reset(); validarTrocaSenha(); $('modalSenha').classList.remove('hidden'); setTimeout(()=>$('s0').focus(), 0); };
 $('btnCancelaSenha').onclick = ()=> $('modalSenha').classList.add('hidden');
 $('formSenha').addEventListener('submit', async e=>{
   e.preventDefault();
@@ -2110,7 +2175,7 @@ $('formSenha').addEventListener('submit', async e=>{
   if (!conf || conf.error){ m.className='msg err'; m.textContent='Senha atual incorreta.'; b.disabled = false; return; }
   if ($('s0').value === $('s1').value){ m.className='msg err'; m.textContent='A nova senha deve ser diferente da atual.'; b.disabled = false; return; }
   const { error } = await sb.auth.updateUser({ password:$('s1').value });
-  if (error){ m.className='msg err'; m.textContent='Não foi possível trocar a senha: '+error.message; b.disabled = false; return; }
+  if (error){ m.className='msg err'; m.textContent='Não foi possível alterar a senha: '+error.message; b.disabled = false; return; }
   m.className='msg ok'; m.textContent='Senha alterada.';
   setTimeout(()=>$('modalSenha').classList.add('hidden'), 1200);
 });
