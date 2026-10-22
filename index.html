@@ -223,17 +223,47 @@
   .linha-filtros #comboFiltros{display:contents}
   .linha-filtros{align-items:end}
   .linha-filtros .campo-f{justify-content:flex-end;height:100%}
+  .linha-filtros .campo-base{order:-2}
   .linha-filtros .campo-mes{order:-1}
+  .sel-base{width:100%;height:32px;padding:0 10px;border:1px solid #d8d8d8;border-radius:6px;font:inherit;font-size:12px;background:#fff;cursor:pointer}
+  .sel-base:focus{outline:none;border-color:var(--gold)}
+  .sel-base:disabled{background:var(--soft);color:var(--muted)}
   .linha-filtros .campo-comp{order:1}
   .linha-filtros .campo-apl{order:2;align-self:end}
-  .linha-filtros .limpar-wrap{order:3}
-  .linha-filtros #fMes{width:100%;height:32px;padding:0 10px;border:1px solid #d8d8d8;border-radius:6px;font:inherit;font-size:12px;background:#fff}
-  .linha-filtros #fMes:disabled{background:var(--soft);color:var(--muted)}
+  .linha-filtros .limpar-wrap{order:0}   /* Limpar filtros logo depois de Armador / Coloader / Cia aérea */
+  .mes-pick{position:relative;display:flex;align-items:center}
+  .mes-pick #fMesTxt{width:100%;height:32px;padding:0 34px 0 10px;border:1px solid #d8d8d8;border-radius:6px;font:inherit;font-size:12px;background:#fff;letter-spacing:.3px}
+  .mes-pick #fMesTxt:focus{outline:none;border-color:var(--gold)}
+  .mes-pick #fMesTxt.invalido{border-color:#DC2626}
+  .mes-pick #fMesTxt:disabled{background:var(--soft);color:var(--muted)}
+  .mes-cal{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:26px;height:26px;border:0;background:none;padding:3px;cursor:pointer;color:#000}
+  .mes-cal svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8}
+  .mes-cal:disabled{cursor:not-allowed;opacity:.4}
+  .mes-pop{position:absolute;left:0;top:calc(100% + 4px);z-index:60;background:#fff;border:1px solid #cfcfcf;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.18);padding:8px;width:230px}
+  .mes-pop.hidden{display:none}
+  .mes-pop-top{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .mes-pop-top select{flex:1;height:26px;border:1px solid #bdbdbd;border-radius:4px;font:inherit;font-size:12px;font-weight:700;padding:0 4px;background:#fff}
+  .mes-seta{width:24px;height:24px;border-radius:50%;border:0;background:#4b4b4b;color:#fff;font-size:15px;line-height:1;cursor:pointer;flex:none}
+  .mes-seta:disabled{opacity:.3;cursor:default}
+  .mes-grade{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+  .mes-grade button{height:30px;border:1px solid #ddd;border-radius:4px;background:#f3f3f3;font:inherit;font-size:12px;cursor:pointer}
+  .mes-grade button:hover:not(:disabled){border-color:var(--gold);background:#FFF6E3}
+  .mes-grade button.ativo{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+  .mes-grade button:disabled{color:#bbb;cursor:default;background:#fafafa}
   .linha-filtros .multi{min-width:0}
   .linha-filtros .msel-btn{height:32px}
   .linha-filtros .campo-f .msel{margin-bottom:0}
   .linha-filtros .multi-btn{height:32px;padding:0 30px 0 10px;border-radius:6px;font-size:12px}
-  .linha-filtros #btnAplicar{height:32px;padding:0 22px;align-self:flex-start}
+  /* Comparar Ano Atual com: campo em vermelho (como o Aplicar) e Aplicar dentro da lista */
+  #fCompBtn{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+  #fCompBtn::after{border-color:#fff}
+  #fCompBtn:hover,#fCompBtn[aria-expanded="true"]{filter:brightness(.92)}
+  .comp-apl{border-top:1px solid var(--line);margin-top:4px;padding:8px 2px 2px}
+  .comp-apl #btnAplicar{width:100%;height:32px}
+  #fCompLista label{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:#000}   /* checkbox ao lado do ano */
+  /* Comparar: função diferente dos filtros → encostado à direita, ocupando 2 colunas e mais alto */
+  .linha-filtros .campo-comp{grid-column:-3 / -1}
+  .linha-filtros #fCompBtn{height:40px;font-size:14px;padding:0 36px 0 14px}
   .aviso-f{font-size:11px;color:var(--muted);background:var(--soft);border-radius:6px;padding:4px 8px;margin-bottom:6px}
 
   @media (max-width:900px){.gridH{grid-template-columns:1fr}}
@@ -590,12 +620,25 @@
           <div class="legenda hidden" id="legenda"></div>
         </div>
         <div class="combo-filtros linha-filtros">   <!-- Mês → filtros → Comparar com → Aplicar, numa única grade -->
-          <div class="campo-f campo-mes"><label class="rot-f" for="fMes">Mês</label><input type="month" id="fMes"></div>
+          <div class="campo-f campo-base"><label class="rot-f" for="fBase">Analisar por Data de:</label>
+            <select id="fBase" class="sel-base" aria-label="Analisar por Data de">
+              <option value="criacao" selected>Data Criação Proposta</option><option value="aprovacao">Data Aprovação</option>
+              <option value="si">Data Criação SI</option><option value="embarque">Data Embarque</option></select></div>
+          <div class="campo-f campo-mes"><label class="rot-f" for="fMesTxt">Mês</label>
+            <div class="mes-pick" id="mesPick"><input type="hidden" id="fMes">
+              <input type="text" id="fMesTxt" inputmode="numeric" autocomplete="off" placeholder="mm/aaaa" maxlength="7" aria-label="Mês (mm/aaaa)">
+              <button type="button" class="mes-cal" id="btnMesCal" aria-label="Abrir calendário" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></button>
+              <div class="mes-pop hidden" id="mesPop" role="dialog" aria-label="Escolher mês">
+                <div class="mes-pop-top"><button type="button" class="mes-seta" id="mesAnt" aria-label="Mês anterior">‹</button>
+                  <select id="mesSelM" aria-label="Mês"></select><select id="mesSelA" aria-label="Ano"></select>
+                  <button type="button" class="mes-seta" id="mesProx" aria-label="Próximo mês">›</button></div>
+                <div class="mes-grade" id="mesGrade"></div>
+              </div></div></div>
           <div id="comboFiltros"></div>
           <div class="campo-f campo-comp"><label class="rot-f" for="fCompBtn">Comparar Ano Atual com</label>
             <div class="multi" id="fComparar"><button type="button" class="multi-btn" id="fCompBtn" aria-haspopup="true" aria-expanded="false">Sem comparação</button>
-              <div class="multi-painel hidden" id="fCompPainel" role="group" aria-label="Anos para comparar"></div></div></div>
-          <div class="campo-f campo-apl"><span class="rot-f" aria-hidden="true">&nbsp;</span><button class="btn" id="btnAplicar" type="button">Aplicar</button></div>
+              <div class="multi-painel hidden" id="fCompPainel" role="group" aria-label="Anos para comparar"><div id="fCompLista"></div>
+                <div class="comp-apl"><button class="btn" id="btnAplicar" type="button">Aplicar</button></div></div></div></div>
         </div>
       </div>
     <div class="titulo-mes" id="tituloMes"></div>
@@ -638,7 +681,11 @@
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
         <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Cliente Ganho em</th><th class="c">Tempo de prospecção</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
-      <div class="card card-reserva" id="cardProsp"><h2>Clientes em Prospecção</h2><div class="nota">Lista em construção</div><div class="reserva-vazia">Em breve</div></div>
+      <div class="card" id="cardProsp">
+        <div class="card-head"><div><h2>Clientes em Prospecção</h2><div class="nota" id="notaProsp">Prospectos ativos (planilha CLIENTES PROSPECTOS)</div><div class="aviso-f hidden" id="avisoProsp"></div></div></div>
+        <input class="busca" id="buscaProsp" placeholder="Buscar empresa ou CNPJ…">
+        <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>CNPJ</th><th>Vendedor</th><th class="c">Cadastro</th><th class="c">Início Prospecção</th><th class="c">Limite Prospecção</th></tr></thead><tbody id="tProsp"></tbody></table></div>
+      </div>
     </div>
     <div class="so-mes so-lucro" id="linha6">
     <div class="card" id="cardLucro">
@@ -745,6 +792,24 @@ const diasEntre = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.pars
 function contar(mapa, chave) { mapa.set(chave, (mapa.get(chave) || 0) + 1); }
 function ordenar(mapa) { return [...mapa.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR')); }
 
+/* Base de data do período (filtro "Analisar por Data de"):
+   criacao   → data de criação da proposta (padrão)
+   aprovacao → data de aprovação de cada rota: a proposta entra só com as rotas aprovadas no período
+   si        → data de criação do processo (SI) ligado à proposta (vínculo do relatório Tempo de Trânsito)
+   embarque  → data de embarque do processo ligado à proposta
+   Para si/embarque: PROC_PROP = Map(numero_proposta → { si: [datas], embarque: [datas] }) */
+const dentro = (d, de, ate) => !!d && (!de || d >= de) && (!ate || d <= ate);
+function selecionarPeriodo(props, de, ate) {
+  const base = typeof BASE_DATA !== 'undefined' ? BASE_DATA : 'criacao';
+  if (base === 'aprovacao')
+    return props.map(p => { const rs = p.rotas.filter(r => dentro(dia(r.data_aprovacao), de, ate)); return rs.length ? { ...p, rotas: rs } : null; }).filter(Boolean);
+  if (base === 'si' || base === 'embarque') {
+    const mapa = typeof PROC_PROP !== 'undefined' ? PROC_PROP : new Map();
+    return props.filter(p => { const v = mapa.get(p.num); return !!v && v[base].some(d => dentro(d, de, ate)); });
+  }
+  return props.filter(p => dentro(p.criacao, de, ate));
+}
+
 function calcularMetricas(rotas, clientes, de, ate, hoje) {
   // 1) agrupa rotas por proposta
   const props = new Map();
@@ -753,8 +818,8 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     if (!p) { p = { num: r.numero_proposta, criacao: dia(r.data_criacao), cliente: r.cliente, vendedor: r.vendedor, emissor: r.emissor, rotas: [] }; props.set(r.numero_proposta, p); }
     p.rotas.push(r);
   }
-  // 2) filtro de período pela data de criação da referência
-  const lista = [...props.values()].filter(p => p.criacao && (!de || p.criacao >= de) && (!ate || p.criacao <= ate));
+  // 2) filtro de período pela data escolhida em "Analisar por Data de" (padrão: criação da proposta)
+  const lista = selecionarPeriodo([...props.values()], de, ate);
 
   const porCliente = new Map(), porAgente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map();
   let multiRota = 0, totalRotas = 0, aprovadasN = 0;
@@ -858,6 +923,10 @@ const limitesMes = (ano, m) => { const ult = new Date(ano, m + 1, 0).getDate(), 
 const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 let mesSel = { ano: new Date().getFullYear(), m: new Date().getMonth() };   // mês exibido (padrão: mês vigente)
 let acesso = null, ROTAS = [], CLIENTES = [], LUCRO = [], EMB = [], PRAZOS = new Map(), M = null, COMIS = [];
+// "Analisar por Data de": base de data das métricas (padrão criação da proposta) e processos ligados às propostas (carregados só quando preciso)
+let BASE_DATA = 'criacao', PROC_PROP = new Map(), PROC_CARREGADO = false;
+let PROSP = [];   // Clientes em Prospecção (com_prospectos, só ativos)
+const BASES_DATA = { criacao:'propostas criadas', aprovacao:'rotas aprovadas', si:'propostas com processo (SI) criado', embarque:'propostas com processo embarcado' };
 
 /* ---------- Autenticação ---------- */
 let emRecuperacao = false;
@@ -962,6 +1031,7 @@ const veLucro = () => ehDiretoria() || ehVendedor();
 // (o banco libera tudo para Projetos; o recorte do vendedor escolhido é feito na busca dos dados)
 let acessoReal = null;
 const ehProjetos = () => !!(acessoReal && acessoReal.perfil === 'projetos');
+const veExportar = () => !!(acessoReal && ['marketing','projetos'].includes(acessoReal.perfil));
 const NOMES_VISAO = { diretoria:'Diretoria', ROBERTO:'Roberto', MARCOS:'Marcos', JESSICA:'Jessica' };
 function lerVisao(){ try { const v = localStorage.getItem('x5v_visao'); return NOMES_VISAO[v] ? v : 'diretoria'; } catch(e){ return 'diretoria'; } }
 function aplicarVisao(){
@@ -973,7 +1043,8 @@ function aplicarVisao(){
   document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
   $('cardLucro').classList.toggle('hidden', ehVendedor());   // vendedor: o quadro de lucro vira "Lucro e Comissão"
   $('cardLC').classList.toggle('hidden', !ehVendedor());
-  $('uPerfil').textContent = ehProjetos() ? 'Projetos · ' + NOMES_VISAO[v]
+  $('btnExpEmb').classList.toggle('hidden', !veExportar());   // Exportar Excel: só Marketing e Projetos (perfil real do usuário)
+  $('uPerfil').textContent = ehProjetos() ? (v === 'diretoria' ? 'Projetos' : 'Projetos · ' + NOMES_VISAO[v])   // Projetos na visão geral: sem "Diretoria" ao lado
     : ({ diretoria:'Diretoria', marketing:'Marketing', inside:'Inside' }[acessoReal.perfil] || 'Vendedor');
 }
 async function abrirApp(){
@@ -983,7 +1054,7 @@ async function abrirApp(){
   $('grpVisao').classList.toggle('hidden', !ehProjetos());
   visaoAtual = ehProjetos() ? lerVisao() : 'diretoria';
   aplicarVisao();
-  $('uNome').textContent = data.nome;
+  $('uNome').textContent = String(data.nome || '').toLocaleUpperCase('pt-BR');   // nomes sempre em maiúsculas
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
@@ -1010,7 +1081,7 @@ async function buscarTudo(tabela, colunas, filtro){
   const passo = 1000; let ini = 0, todas = [];
   while (true){
     // com_comissao não tem coluna id: a chave é (vendedor_chave, numero_processo)
-    let q = sb.from(tabela).select(colunas).order(tabela === 'com_comissao' ? 'numero_processo' : 'id').range(ini, ini+passo-1);
+    let q = sb.from(tabela).select(colunas).order(tabela === 'com_comissao' || tabela === 'com_processos' ? 'numero_processo' : 'id').range(ini, ini+passo-1);
     if (tabela === 'com_comissao') q = q.order('vendedor_chave');
     if (filtro) q = q.eq(tabela === 'com_comissao' ? 'vendedor_chave' : 'vendedor_grupo', filtro);
     const { data, error } = await q;
@@ -1041,6 +1112,8 @@ async function carregarDados(){
   try{
     // o banco já limita cada vendedor ao seu grupo; no perfil Projetos vendo como vendedor, o recorte é feito aqui
     const filtro = ehProjetos() && acesso.vendedor_chave ? acesso.vendedor_chave : '';
+    PROSP = await buscarTudo('com_prospectos','nome_completo,apelido,cnpj,vendedor,data_criacao,inicio_prospeccao,data_limite_prospeccao,ativo', filtro)
+      .then(L => L.filter(x => x.ativo !== false)).catch(e => { console.error('prospectos', e); return []; });   // opcional
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
       buscarTudo('com_propostas_rotas','numero_proposta,status,motivo,complemento_motivo,cliente,vendedor,emissor,produto,origem,destino,agente_internacional,cia_armador_coloader,data_criacao,data_aprovacao,data_validade', filtro),
       buscarTudo('com_clientes','nome_completo,cnpj,vendedor,data_criacao,data_ativacao_prospecto,ativo_em_dias,ultimo_embarque,dias_sem_embarcar', filtro),
@@ -1240,6 +1313,7 @@ function carregarXLSX(){
 }
 const serialExcel = iso => { const [y, m, d] = iso.split('-').map(Number); return (Date.UTC(y, m - 1, d) - Date.UTC(1899, 11, 30)) / 86400000; };
 $('btnExpEmb').onclick = async () => {
+  if (!veExportar()) return;
   const b = $('btnExpEmb'), txt = b.textContent; b.disabled = true; b.textContent = 'Gerando…';
   try{
     const X = await carregarXLSX();
@@ -1268,7 +1342,7 @@ function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativ
 function renderizarTitulo(){
   const vigente = mesSel.ano === new Date().getFullYear() && mesSel.m === new Date().getMonth();
   $('tituloMes').innerHTML = modoAnual() ? `Visão anual de <b>${ANO_ATUAL}</b> comparada com <b>${anosComp.join(', ')}</b> — mês a mês`
-    : `Resultados de <b>${MESES_LONGOS[mesSel.m]}/${mesSel.ano}</b> — propostas criadas no ${vigente ? 'mês vigente' : 'mês selecionado'}`;
+    : `Resultados de <b>${MESES_LONGOS[mesSel.m]}/${mesSel.ano}</b> — ${BASES_DATA[BASE_DATA]} no ${vigente ? 'mês vigente' : 'mês selecionado'}`;
 }
 function renderizar(){
   const [de, ate] = limitesMes(mesSel.ano, mesSel.m);
@@ -1309,7 +1383,7 @@ function periodos(){
 const faixaDe = (d, rs) => d ? rs.find(([de, ate]) => d >= de && d <= ate) : null;
 const termoPeriodo = () => modoAnual() ? `em ${[ANO_ATUAL, ...anosComp].join(', ')}` : 'no mês';
 const rotuloPeriodo = () => modoAnual() ? [ANO_ATUAL, ...anosComp].join(', ') : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
-function renderListas(){ quadroPerdas(); tabelaNovos(); quadroEmbarque(); }
+function renderListas(){ quadroPerdas(); tabelaNovos(); tabelaProsp(); quadroEmbarque(); }
 /* ---------- Faturamento Previsto (PROCESSOS EMBARCADOS + prazo de pagamento do cadastro) ----------
    base: importação (IM/IA) = Prev de Chegada; exportação (EM/EA) = Data de Embarque
    vencimento = base + prazo (prazo em branco ou 0 = vence na própria base)
@@ -1426,11 +1500,34 @@ $('buscaLC').oninput = () => M && quadroLC();
 const STATUS_PERDA = new Set(['CANCELADA','REPROVADA']);
 const ehPerda = r => STATUS_PERDA.has(String(r.status || '').trim().toUpperCase());
 let PERDAS = { rotas: [], props: [] };
+// rota dentro do período conforme a base de data escolhida
+function rotaNaFaixa(r, rs){
+  if (BASE_DATA === 'aprovacao') return !!faixaDe(r.data_aprovacao && String(r.data_aprovacao).slice(0,10), rs);
+  if (BASE_DATA === 'si' || BASE_DATA === 'embarque'){ const v = PROC_PROP.get(r.numero_proposta); return !!v && v[BASE_DATA].some(d => faixaDe(d, rs)); }
+  return !!faixaDe(r.data_criacao && String(r.data_criacao).slice(0,10), rs);
+}
+async function carregarProcessos(){
+  if (PROC_CARREGADO) return;
+  const L = await buscarTudo('com_processos', 'numero_processo,numero_proposta,data_criacao_si,data_embarque', '');
+  const m = new Map();
+  L.forEach(x => { if (!x.numero_proposta) return; const v = m.get(x.numero_proposta) || m.set(x.numero_proposta, { si: [], embarque: [] }).get(x.numero_proposta);
+    if (x.data_criacao_si) v.si.push(String(x.data_criacao_si).slice(0,10)); if (x.data_embarque) v.embarque.push(String(x.data_embarque).slice(0,10)); });
+  PROC_PROP = m; PROC_CARREGADO = true;
+}
+$('fBase').onchange = async () => {
+  const v = $('fBase').value;
+  if (v === 'si' || v === 'embarque'){
+    $('carregando').classList.remove('hidden');
+    try { await carregarProcessos(); } catch(e){ console.error('processos', e); $('fBase').value = BASE_DATA; $('carregando').classList.add('hidden'); return; }
+    $('carregando').classList.add('hidden');
+  }
+  BASE_DATA = v; cacheAnos = {}; for (const k in cacheAnoDet) delete cacheAnoDet[k];
+  if (ROTAS.length) aoFiltrar();
+};
 function calcularPerdas(rs){
   const rotas = [], porProp = new Map();
   for (const r of rotasFiltradas()){
-    const d = r.data_criacao && String(r.data_criacao).slice(0,10);
-    if (!faixaDe(d, rs) || !ehPerda(r)) continue;
+    if (!ehPerda(r) || !rotaNaFaixa(r, rs)) continue;
     const o = { num: r.numero_proposta, cliente: r.cliente || 'Sem cliente', vendedor: r.vendedor || 'Sem vendedor', inside: r.emissor || 'Sem emissor',
       status: r.status, motivo: (r.motivo && String(r.motivo).trim()) || 'Não informado', compl: r.complemento_motivo || '',
       rota: `${r.origem || '–'} → ${r.destino || '–'}`, criacao: r.data_criacao };
@@ -1470,6 +1567,19 @@ document.addEventListener('click', e => {
   if (tr.dataset.perdaCli != null) abrirDetalhe('perdasCli', [{ rotulo: rot, linhas: PERDAS.rotasRecusadas }], rot, tr.dataset.perdaCli);
   else abrirDetalhe('perdasMot', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaMot);
 });
+function tabelaProsp(){
+  avisoFiltro('avisoProsp', ['vendedor','cliente'], 'Clientes em Prospecção: aqui valem só os filtros de vendedor e empresa (a lista é a situação atual, não depende do mês)');
+  const q = semAcento($('buscaProsp').value.trim()), hj = hojeISO();
+  const base = PROSP.filter(c => naLista(filtroH.vendedor, c.vendedor || 'Sem vendedor') && naLista(filtroH.cliente, c.nome_completo));
+  const linhas = base.filter(c => !q || semAcento(`${c.nome_completo || ''} ${c.apelido || ''} ${c.cnpj || ''}`).includes(q))
+    .sort((a, b) => String(b.inicio_prospeccao || '').localeCompare(String(a.inicio_prospeccao || '')) || String(b.data_criacao || '').localeCompare(String(a.data_criacao || '')));
+  $('notaProsp').textContent = `${fmt(base.length)} prospectos ativos · fonte: planilha CLIENTES PROSPECTOS (situação atual, independe do mês)`;
+  $('tProsp').innerHTML = linhas.length ? linhas.map(c => { const lim = c.data_limite_prospeccao && String(c.data_limite_prospeccao).slice(0,10);
+    return `<tr><td>${esc(c.nome_completo || c.apelido)}</td><td style="white-space:nowrap">${esc(c.cnpj || '–')}</td><td>${esc(c.vendedor || 'Sem vendedor')}</td><td class="c">${fmtData(c.data_criacao && String(c.data_criacao).slice(0,10))}</td>`
+      + `<td class="c">${fmtData(c.inicio_prospeccao && String(c.inicio_prospeccao).slice(0,10))}</td><td class="c"${lim && lim < hj ? ' style="color:#DC2626;font-weight:700" title="Prazo de prospecção vencido"' : ''}>${fmtData(lim)}</td></tr>`; }).join('')
+    : `<tr><td colspan="6" class="vazio">${q ? 'Nenhum prospecto encontrado.' : 'Nenhum prospecto ativo.'}</td></tr>`;
+}
+$('buscaProsp').oninput = () => M && tabelaProsp();
 function tabelaNovos(){
   avisoFiltro('avisoNovos', ['vendedor','cliente'], 'Novos clientes: aqui valem só os filtros de vendedor e cliente');
   const q = $('buscaNovos').value.trim().toUpperCase();
@@ -1495,6 +1605,57 @@ window.addEventListener('resize', () => { const antes = document.documentElement
   if (document.documentElement.style.zoom !== antes && M){ renderizar(); if (modoAnual()) renderHistorico(); } });
 // seletor de mês (padrão: mês vigente; não passa do mês atual)
 (() => { const hj = new Date(), v = `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}`; $('fMes').value = v; $('fMes').max = v; $('fMes').min = '2024-01'; })();
+/* campo Mês: mm/aaaa digitado (só números; a barra entra sozinha) ou escolhido no calendário (lista de mês e ano + grade de meses) */
+const MESES_CURTOS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const isoParaTxt = v => v ? v.slice(5,7) + '/' + v.slice(0,4) : '';
+let mesPopAno = null;
+function definirMes(iso){                       // iso = 'aaaa-mm', já validado
+  $('fMesTxt').value = isoParaTxt(iso); $('fMesTxt').classList.remove('invalido');
+  if ($('fMes').value !== iso){ $('fMes').value = iso; $('fMes').onchange(); }
+}
+function mesValido(iso){ return /^\d{4}-(0[1-9]|1[0-2])$/.test(iso) && iso >= $('fMes').min && iso <= $('fMes').max; }
+function desenharMesPop(){
+  const min = $('fMes').min, max = $('fMes').max, atual = $('fMes').value, a = mesPopAno;
+  const anoMin = +min.slice(0,4), anoMax = +max.slice(0,4);
+  $('mesSelA').innerHTML = Array.from({ length: anoMax - anoMin + 1 }, (_, i) => anoMin + i).map(y => `<option value="${y}"${y === a ? ' selected' : ''}>${y}</option>`).join('');
+  const mSel = a === +atual.slice(0,4) ? +atual.slice(5,7) - 1 : -1;
+  $('mesSelM').innerHTML = MESES_CURTOS.map((n, i) => { const iso = `${a}-${String(i+1).padStart(2,'0')}`;
+    return `<option value="${i}"${i === mSel ? ' selected' : ''}${iso < min || iso > max ? ' disabled' : ''}>${n}</option>`; }).join('') + (mSel < 0 ? '<option value="" selected hidden>Mês</option>' : '');
+  $('mesGrade').innerHTML = MESES_CURTOS.map((n, i) => { const iso = `${a}-${String(i+1).padStart(2,'0')}`;
+    return `<button type="button" data-mes="${iso}"${iso === atual ? ' class="ativo"' : ''}${iso < min || iso > max ? ' disabled' : ''}>${n}</button>`; }).join('');
+  const [ma, mm] = atual.split('-').map(Number), ant = mm === 1 ? `${ma-1}-12` : `${ma}-${String(mm-1).padStart(2,'0')}`, prox = mm === 12 ? `${ma+1}-01` : `${ma}-${String(mm+1).padStart(2,'0')}`;
+  $('mesAnt').disabled = ant < min; $('mesProx').disabled = prox > max;
+  $('mesAnt').dataset.mes = ant; $('mesProx').dataset.mes = prox;
+}
+function abrirMesPop(abrir){
+  if (abrir && $('fMesTxt').disabled) return;
+  $('mesPop').classList.toggle('hidden', !abrir); $('btnMesCal').setAttribute('aria-expanded', abrir);
+  if (abrir){ mesPopAno = +$('fMes').value.slice(0,4); desenharMesPop(); }
+}
+$('btnMesCal').onclick = e => { e.stopPropagation(); abrirMesPop($('mesPop').classList.contains('hidden')); };
+$('mesPop').addEventListener('click', e => {
+  e.stopPropagation();
+  const b = e.target.closest('[data-mes]'); if (!b || b.disabled) return;
+  definirMes(b.dataset.mes);
+  if (b.closest('#mesGrade')) abrirMesPop(false); else { mesPopAno = +b.dataset.mes.slice(0,4); desenharMesPop(); }
+});
+$('mesSelA').onchange = () => { mesPopAno = +$('mesSelA').value; desenharMesPop(); };
+$('mesSelM').onchange = () => { const iso = `${mesPopAno}-${String(+$('mesSelM').value + 1).padStart(2,'0')}`; if (mesValido(iso)){ definirMes(iso); desenharMesPop(); } };
+document.addEventListener('click', e => { if (!e.target.closest || !e.target.closest('#mesPick')) abrirMesPop(false); });
+$('fMesTxt').addEventListener('input', () => {
+  const d = $('fMesTxt').value.replace(/\D/g, '').slice(0, 6);
+  $('fMesTxt').value = d.length > 2 ? d.slice(0,2) + '/' + d.slice(2) : d;
+  $('fMesTxt').classList.remove('invalido');
+  if (d.length === 6){ const iso = d.slice(2) + '-' + d.slice(0,2); if (mesValido(iso)) definirMes(iso); else $('fMesTxt').classList.add('invalido'); }
+});
+const confirmarMesTxt = () => {
+  const d = $('fMesTxt').value.replace(/\D/g, ''), iso = d.length === 6 ? d.slice(2) + '-' + d.slice(0,2) : '';
+  if (mesValido(iso)) definirMes(iso); else { $('fMesTxt').value = isoParaTxt($('fMes').value); $('fMesTxt').classList.remove('invalido'); }
+};
+$('fMesTxt').addEventListener('blur', confirmarMesTxt);
+$('fMesTxt').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); confirmarMesTxt(); } if (e.key === 'Escape') abrirMesPop(false); });
+$('fMesTxt').title = 'Digite o mês e o ano só com números (ex.: 092026) ou escolha no calendário';
+$('fMesTxt').value = isoParaTxt($('fMes').value);
 $('fMes').onchange = () => {
   const [a, m] = ($('fMes').value || '').split('-').map(Number);
   if (!a || !m) return;
@@ -1504,9 +1665,9 @@ $('fMes').onchange = () => {
 const modoAnual = () => anosComp.length > 0;
 function aplicarModo(){
   if (M){ renderizarTitulo(); renderListas(); }
-  $('fMes').disabled = modoAnual();
+  $('fMesTxt').disabled = $('btnMesCal').disabled = modoAnual(); if (modoAnual()) abrirMesPop(false);
   $('cardNovos').classList.toggle('hidden', modoAnual());     // no modo anual os novos clientes ficam no gráfico (lupa = lista agrupada por mês)          // Faturamento Previsto só na visão do mês
-  $('fMes').title = modoAnual() ? 'No modo histórico o mês é ignorado: gráficos e listas cobrem os anos selecionados' : '';
+  $('fMesTxt').title = modoAnual() ? 'No modo histórico o mês é ignorado: gráficos e listas cobrem os anos selecionados' : 'Digite o mês e o ano só com números (ex.: 092026) ou escolha no calendário';
   document.body.classList.toggle('modo-anual', modoAnual());
   $('blocoAnual').classList.toggle('hidden', !modoAnual());
   $('legenda').classList.toggle('hidden', !modoAnual());
@@ -1559,7 +1720,7 @@ function prepararHistorico(){
   const anos = [...new Set([...ROTAS.map(r => r.data_criacao && +r.data_criacao.slice(0,4)), ...LUCRO.map(l => l.data_recebimento && +String(l.data_recebimento).slice(0,4))])]
     .filter(a => a && a < ANO_ATUAL).sort((a,b) => b - a);
   anosComp = anosComp.filter(a => anos.includes(a));
-  $('fCompPainel').innerHTML = anos.length ? anos.map(a => `<label><input type="checkbox" value="${a}"${anosComp.includes(a) ? ' checked' : ''}>${a}<i></i></label>`).join('')
+  $('fCompLista').innerHTML = anos.length ? anos.map(a => `<label><input type="checkbox" value="${a}"${anosComp.includes(a) ? ' checked' : ''}>${a}<i></i></label>`).join('')
     : '<div class="vazio">Nenhum ano anterior com dados</div>';
   marcarCoresComp(); rotuloComp();
   aplicarModo();
