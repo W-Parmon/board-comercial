@@ -16,6 +16,18 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Century Gothic','Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
   .hidden{display:none!important}
+  body.modo-proc .no-proc{display:none!important}
+  body:not(.modo-proc) .so-proc{display:none!important}
+  .portos{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:10px}
+  .portos h3{font-size:13px;color:var(--red);margin:0 0 8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+  .portos table{width:100%;border-collapse:collapse;font-size:13px}
+  .portos th{font-size:10.5px;color:var(--muted);text-transform:uppercase;font-weight:700;text-align:left;padding:6px 6px;border-bottom:2px solid var(--gold)}
+  .portos th.n,.portos td.n{text-align:right}
+  .portos td{padding:7px 6px;border-bottom:1px solid #eee}
+  .portos td.n{color:var(--red);font-weight:700;font-variant-numeric:tabular-nums}
+  .portos td.pos{width:22px;color:var(--muted)}
+  .portos .vazio{padding:10px 6px}
+  @media (max-width:700px){.portos{grid-template-columns:1fr}}
   button{font-family:inherit;cursor:pointer}
   input,select{font-family:inherit;font-size:14px}
 
@@ -55,6 +67,7 @@
   .upd{font-size:12px;color:var(--muted);margin-left:auto;padding-bottom:8px}
 
   .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:16px}
+  @media (min-width:1101px){body.modo-proc .kpis{grid-template-columns:repeat(4,1fr)}}
   .kpi{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:16px}
   .kpi .lbl{font-size:12px;color:var(--muted)}
   .kpi .val{font-size:30px;font-weight:700;color:var(--red);margin-top:4px;line-height:1.1}
@@ -595,7 +608,8 @@
             <div class="mi-grupo hidden" id="grpVisao">
               <button class="mi" id="btnVisao" type="button" role="menuitem" aria-expanded="false">Visualizar como <span class="seta">›</span></button>
               <div class="sub hidden" id="subVisao" role="menu">
-                <button class="mi" type="button" role="menuitemradio" data-visao="diretoria">Diretoria (geral)</button>
+                <button class="mi" type="button" role="menuitemradio" data-visao="geral">Geral</button>
+                <button class="mi" type="button" role="menuitemradio" data-visao="diretoria">Diretoria</button>
                 <button class="mi" type="button" role="menuitemradio" data-visao="ROBERTO">Roberto Soares</button>
                 <button class="mi" type="button" role="menuitemradio" data-visao="MARCOS">Marcos Juhas</button>
                 <button class="mi" type="button" role="menuitemradio" data-visao="JESSICA">Jessica Ribas</button>
@@ -620,10 +634,6 @@
           <div class="legenda hidden" id="legenda"></div>
         </div>
         <div class="combo-filtros linha-filtros">   <!-- Mês → filtros → Comparar com → Aplicar, numa única grade -->
-          <div class="campo-f campo-base"><label class="rot-f" for="fBase">Analisar por Data de:</label>
-            <select id="fBase" class="sel-base" aria-label="Analisar por Data de">
-              <option value="criacao" selected>Data Criação Proposta</option><option value="aprovacao">Data Aprovação</option>
-              <option value="si">Data Criação SI</option><option value="embarque">Data Embarque</option></select></div>
           <div class="campo-f campo-mes"><label class="rot-f" for="fMesTxt">Mês</label>
             <div class="mes-pick" id="mesPick"><input type="hidden" id="fMes">
               <input type="text" id="fMesTxt" inputmode="numeric" autocomplete="off" placeholder="mm/aaaa" maxlength="7" aria-label="Mês (mm/aaaa)">
@@ -645,21 +655,24 @@
     <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
     <div id="blocoMes" class="so-mes">
     <div class="kpis">
-      <div class="kpi"><button class="lupa" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
-      <div class="kpi"><div class="lbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
-      <div class="kpi"><button class="lupa" type="button" data-det="aprovadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas aprovadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">com pelo menos 1 rota aprovada</div></div>
-      <div class="kpi"><div class="lbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
-      <div class="kpi"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
+      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
+      <div class="kpi"><div class="lbl" id="kRotasLbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
+      <div class="kpi"><button class="lupa no-proc" type="button" data-det="aprovadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">Propostas aprovadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">com pelo menos 1 rota aprovada</div></div>
+      <div class="kpi"><div class="lbl" id="kLeadLbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
+      <div class="kpi no-proc"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
     </div>
     <div id="blocoLinhas">   <!-- ordem definida pelo Will: 1 Status|Cliente · 2 Vendedor|Inside · 3 Recusas|Motivos · 4 Agente|Transportador · 5 Ganhos|Prospecção · 6 Lucro · 7 Sem embarque -->
     <div class="grid2 so-mes" id="linha1">
-      <div class="card"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Status</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
+      <div class="card card-reserva so-proc" id="cardReservaDir"><h2>Nova métrica</h2><div class="nota">Espaço reservado</div><div class="reserva-vazia">Em breve</div></div>
+      <div class="card no-proc"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Status</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
       <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
     <div class="grid2 so-mes" id="linha2">
-      <div class="card"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
-      <div class="card"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Inside</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
+      <div class="card so-proc" id="cardPortosOrig"><h2>Portos de Origem</h2><div class="nota" id="notaPortosOrig"></div><div class="portos" id="gPortosOrig"></div></div>
+      <div class="card so-proc" id="cardPortosDest"><h2>Portos de Destino</h2><div class="nota" id="notaPortosDest"></div><div class="portos" id="gPortosDest"></div></div>
+      <div class="card no-proc"><button class="lupa" type="button" data-det="vendedor" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Vendedor</h2><div class="nota">Propostas únicas</div><div class="vbars" id="gVend"></div></div>
+      <div class="card no-proc"><button class="lupa" type="button" data-det="inside" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Inside</h2><div class="nota">Conforme a coluna Emissor</div><div class="hbars" id="gInside"></div><button class="btn ghost small mais hidden" id="maisInside" type="button"></button></div>
     </div>
     <div class="grid2" id="gridPerdas">
       <div class="card" id="cardPerdasCli"><button class="lupa" type="button" data-det="perdasCli" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
@@ -1031,20 +1044,24 @@ const veLucro = () => ehDiretoria() || ehVendedor();
 // (o banco libera tudo para Projetos; o recorte do vendedor escolhido é feito na busca dos dados)
 let acessoReal = null;
 const ehProjetos = () => !!(acessoReal && acessoReal.perfil === 'projetos');
+// Diretoria (e Projetos em "Visualizar como: Diretoria"): indicadores por PROCESSOS (com_processos); demais perfis seguem por propostas
+const modoProc = () => !!(acessoReal && (acessoReal.perfil === 'diretoria' || (acessoReal.perfil === 'projetos' && visaoAtual === 'diretoria')));
+let PROCS = [];
 const veExportar = () => !!(acessoReal && ['marketing','projetos'].includes(acessoReal.perfil));
-const NOMES_VISAO = { diretoria:'Diretoria', ROBERTO:'Roberto', MARCOS:'Marcos', JESSICA:'Jessica' };
-function lerVisao(){ try { const v = localStorage.getItem('x5v_visao'); return NOMES_VISAO[v] ? v : 'diretoria'; } catch(e){ return 'diretoria'; } }
+const NOMES_VISAO = { geral:'Geral', diretoria:'Diretoria', ROBERTO:'Roberto', MARCOS:'Marcos', JESSICA:'Jessica' };
+function lerVisao(){ try { const v = localStorage.getItem('x5v_visao2'); return NOMES_VISAO[v] ? v : 'geral'; } catch(e){ return 'geral'; } }
 function aplicarVisao(){
   const v = visaoAtual;
   document.querySelectorAll('#subVisao [data-visao]').forEach(b => b.setAttribute('aria-checked', b.dataset.visao === v));
   acesso = !ehProjetos() ? acessoReal
-    : v === 'diretoria' ? { ...acessoReal, perfil: 'diretoria', vendedor_chave: null }
+    : (v === 'geral' || v === 'diretoria') ? { ...acessoReal, perfil: 'diretoria', vendedor_chave: null }
     : { ...acessoReal, perfil: 'vendedor', vendedor_chave: v };
   document.body.classList.toggle('sem-lucro', !veLucro());   // esconde todo elemento .so-lucro
   $('cardLucro').classList.toggle('hidden', ehVendedor());   // vendedor: o quadro de lucro vira "Lucro e Comissão"
   $('cardLC').classList.toggle('hidden', !ehVendedor());
   $('btnExpEmb').classList.toggle('hidden', !veExportar());   // Exportar Excel: só Marketing e Projetos (perfil real do usuário)
-  $('uPerfil').textContent = ehProjetos() ? (v === 'diretoria' ? 'Projetos' : 'Projetos · ' + NOMES_VISAO[v])   // Projetos na visão geral: sem "Diretoria" ao lado
+  document.body.classList.toggle('modo-proc', modoProc());   // Diretoria: indicadores por processos
+  $('uPerfil').textContent = ehProjetos() ? (v === 'geral' ? 'Projetos' : 'Projetos · ' + NOMES_VISAO[v])   // Projetos na visão geral: sem nome ao lado
     : ({ diretoria:'Diretoria', marketing:'Marketing', inside:'Inside' }[acessoReal.perfil] || 'Vendedor');
 }
 async function abrirApp(){
@@ -1052,13 +1069,13 @@ async function abrirApp(){
   if (error || !data){ await sb.auth.signOut(); mostrarLogin('Seu usuário não tem acesso ao Board Comercial.'); return; }
   acessoReal = data;
   $('grpVisao').classList.toggle('hidden', !ehProjetos());
-  visaoAtual = ehProjetos() ? lerVisao() : 'diretoria';
+  visaoAtual = ehProjetos() ? lerVisao() : 'geral';
   aplicarVisao();
   $('uNome').textContent = String(data.nome || '').toLocaleUpperCase('pt-BR');   // nomes sempre em maiúsculas
   $('login').classList.add('hidden'); $('app').classList.remove('hidden');
   await Promise.all([carregarDados(), mostrarAtualizacao()]);
 }
-let visaoAtual = 'diretoria';
+let visaoAtual = 'geral';
 // menu Opções (todos os perfis): Alterar senha, Sair · Projetos: Visualizar como
 function fecharMenu(){ $('menuOpcoes').classList.add('hidden'); $('btnOpcoes').setAttribute('aria-expanded', 'false'); }
 $('btnOpcoes').onclick = e => { e.stopPropagation(); const abrir = $('menuOpcoes').classList.contains('hidden');
@@ -1072,7 +1089,7 @@ $('subVisao').addEventListener('click', async e => {
   fecharMenu();
   if (b.dataset.visao === visaoAtual) return;
   visaoAtual = b.dataset.visao;
-  try { localStorage.setItem('x5v_visao', visaoAtual); } catch(err){}
+  try { localStorage.setItem('x5v_visao2', visaoAtual); } catch(err){}
   aplicarVisao(); await carregarDados();
 });
 
@@ -1112,6 +1129,8 @@ async function carregarDados(){
   try{
     // o banco já limita cada vendedor ao seu grupo; no perfil Projetos vendo como vendedor, o recorte é feito aqui
     const filtro = ehProjetos() && acesso.vendedor_chave ? acesso.vendedor_chave : '';
+    PROCS = modoProc() ? await buscarTudo('com_processos','numero_processo,data_criacao_si,data_embarque,produto,cliente,vendedor,origem,destino,armador,cia,teus,cancelado','')
+      .then(L => L.filter(p => p.data_criacao_si)).catch(e => { console.error('processos', e); return []; }) : [];
     PROSP = await buscarTudo('com_prospectos','nome_completo,apelido,cnpj,vendedor,data_criacao,inicio_prospeccao,data_limite_prospeccao,ativo', filtro)
       .then(L => L.filter(x => x.ativo !== false)).catch(e => { console.error('prospectos', e); return []; });   // opcional
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
@@ -1339,10 +1358,37 @@ function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativ
   const ignora = FILTROS_H.some(F => temF(F.id) && !aceitos.includes(F.id));
   el.textContent = ignora ? texto : ''; el.classList.toggle('hidden', !ignora);
 }
+/* ---------- Diretoria: métricas por processos ----------
+   SIs Criadas = processos com Data de Criação no mês (inclui os que depois foram cancelados)
+   Processos Embarcados = processos não cancelados com Data de Embarque no mês
+   Processos Cancelados = processos cancelados com Data de Criação no mês
+   Total de Teus = soma da coluna Teus (UXComex) dos processos embarcados no mês
+   Filtros que valem: vendedor, empresa, produto, origem, destino, armador/cia */
+const ehMaritimo = p => /mar[ií]tim/i.test(p.produto || ''), ehAereo = p => /a[ée]re/i.test(p.produto || '');
+function procFiltrados(){
+  return PROCS.filter(p => naLista(filtroH.vendedor, p.vendedor || 'Sem vendedor') && naLista(filtroH.cliente, p.cliente) && naLista(filtroH.produto, p.produto || 'Sem produto')
+    && naLista(filtroH.origem, p.origem || 'Sem origem') && naLista(filtroH.destino, p.destino || 'Sem destino') && naLista(filtroH.cia, p.cia || p.armador || 'Sem armador/cia'));
+}
+function metricasProc(de, ate, L){
+  L = L || procFiltrados();
+  const em = d => d && String(d).slice(0,10) >= de && String(d).slice(0,10) <= ate;
+  const criados = L.filter(p => em(p.data_criacao_si)), emb = L.filter(p => !p.cancelado && em(p.data_embarque));
+  const top = (lista, campo) => { const m = new Map(); lista.forEach(p => { const k = p[campo] || 'Não informado'; m.set(k, (m.get(k) || 0) + 1); });
+    return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR')).slice(0, 5); };
+  return { sis: criados.length, canc: criados.filter(p => p.cancelado).length, emb: emb.length, teus: emb.reduce((t, p) => t + (Number(p.teus) || 0), 0),
+    origMar: top(emb.filter(ehMaritimo), 'origem'), origAer: top(emb.filter(ehAereo), 'origem'),
+    destMar: top(emb.filter(ehMaritimo), 'destino'), destAer: top(emb.filter(ehAereo), 'destino') };
+}
+function tabelaPortos(titulo, rotulo, pares){
+  return `<div><h3>${titulo}</h3><table><thead><tr><th>#</th><th>${rotulo}</th><th class="n">Embarques</th></tr></thead><tbody>`
+    + (pares.length ? pares.map(([k, v], i) => `<tr><td class="pos">${i + 1}</td><td>${esc(k)}</td><td class="n">${fmt(v)}</td></tr>`).join('')
+      : '<tr><td colspan="3" class="vazio">Sem embarques no mês.</td></tr>') + '</tbody></table></div>';
+}
+const ROT_KPI = { kPropLbl:['Propostas criadas','SIs Criadas'], kRotasLbl:['Rotas criadas','Processos Embarcados'], kAprovLbl:['Propostas aprovadas','Processos Cancelados'], kLeadLbl:['Lead time médio','Total de Teus'] };
 function renderizarTitulo(){
   const vigente = mesSel.ano === new Date().getFullYear() && mesSel.m === new Date().getMonth();
   $('tituloMes').innerHTML = modoAnual() ? `Visão anual de <b>${ANO_ATUAL}</b> comparada com <b>${anosComp.join(', ')}</b> — mês a mês`
-    : `Resultados de <b>${MESES_LONGOS[mesSel.m]}/${mesSel.ano}</b> — ${BASES_DATA[BASE_DATA]} no ${vigente ? 'mês vigente' : 'mês selecionado'}`;
+    : `Resultados de <b>${MESES_LONGOS[mesSel.m]}/${mesSel.ano}</b> — ${modoProc() ? 'processos' : BASES_DATA[BASE_DATA]} no ${vigente ? 'mês vigente' : 'mês selecionado'}`;
 }
 function renderizar(){
   const [de, ate] = limitesMes(mesSel.ano, mesSel.m);
@@ -1365,6 +1411,17 @@ function renderizar(){
   $('kLead').textContent = M.leadTimeMedio == null ? '–' : M.leadTimeMedio.toFixed(1).replace('.',',') + ' dias';
   $('kLeadSub').textContent = 'Tempo médio da Criação até a Aprovação da proposta';
   $('kVenc').textContent = fmt(M.vencidas.length);
+  Object.entries(ROT_KPI).forEach(([id, r]) => $(id).textContent = r[modoProc() ? 1 : 0]);
+  if (modoProc()){
+    const P = metricasProc(de, ate), PA = metricasProc(deA, ateA);
+    $('kProp').textContent = fmt(P.sis);   $('kPropSub').textContent = variacao(P.sis, PA.sis);
+    $('kRotas').textContent = fmt(P.emb);  $('kRotasSub').textContent = variacao(P.emb, PA.emb);
+    $('kAprov').textContent = fmt(P.canc); $('kAprovSub').textContent = variacao(P.canc, PA.canc);
+    $('kLead').textContent = fmt(P.teus);  $('kLeadSub').textContent = variacao(P.teus, PA.teus) + ' · processos embarcados';
+    $('notaPortosOrig').textContent = $('notaPortosDest').textContent = 'Processos embarcados no mês (data de embarque)';
+    $('gPortosOrig').innerHTML = tabelaPortos('Top 5 Origens | Marítimo', 'Porto', P.origMar) + tabelaPortos('Top 5 Origens | Aéreo', 'Aeroporto', P.origAer);
+    $('gPortosDest').innerHTML = tabelaPortos('Top 5 Destinos | Marítimo', 'Porto', P.destMar) + tabelaPortos('Top 5 Destinos | Aéreo', 'Aeroporto', P.destAer);
+  }
 
   pizza($('gStatus'), M.porStatusRota, M.totalRotas);
   colunas($('gVend'), M.porVendedor, M.totalPropostas);
@@ -1514,16 +1571,6 @@ async function carregarProcessos(){
     if (x.data_criacao_si) v.si.push(String(x.data_criacao_si).slice(0,10)); if (x.data_embarque) v.embarque.push(String(x.data_embarque).slice(0,10)); });
   PROC_PROP = m; PROC_CARREGADO = true;
 }
-$('fBase').onchange = async () => {
-  const v = $('fBase').value;
-  if (v === 'si' || v === 'embarque'){
-    $('carregando').classList.remove('hidden');
-    try { await carregarProcessos(); } catch(e){ console.error('processos', e); $('fBase').value = BASE_DATA; $('carregando').classList.add('hidden'); return; }
-    $('carregando').classList.add('hidden');
-  }
-  BASE_DATA = v; cacheAnos = {}; for (const k in cacheAnoDet) delete cacheAnoDet[k];
-  if (ROTAS.length) aoFiltrar();
-};
 function calcularPerdas(rs){
   const rotas = [], porProp = new Map();
   for (const r of rotasFiltradas()){
@@ -1688,28 +1735,33 @@ const selCard = {};   // filtro dedicado dos gráficos por vendedor / inside / c
 const valorDim = (def, m) => def.dedicado && (selCard[def.id] || []).length ? selCard[def.id].reduce((t, k) => t + (m[def.dim + 'Map'].get(k) || 0), 0) : def.total ? def.total(m) : def.dim === 'porStatusRota' ? (temF('status') ? filtroH.status.reduce((t, k) => t + (m.porStatusRotaMap.get(k) || 0), 0) : m.totalRotas) : m.totalPropostas;
 
 const HIST = [
-  { id:'prop',   titulo:'Propostas criadas',          val: m => m.totalPropostas },
-  { id:'status', titulo:'Total por Status',           dim:'porStatusRota' },
+  { id:'sis',    proc:true, titulo:'SIs Criadas',            val: m => m.proc.sis },
+  { id:'emb',    proc:true, titulo:'Processos Embarcados',   val: m => m.proc.emb },
+  { id:'canc',   proc:true, titulo:'Processos Cancelados',   val: m => m.proc.canc, menorMelhor:true },
+  { id:'teus',   proc:true, titulo:'Total de Teus',          val: m => m.proc.teus },
+  { id:'prop',   semProc:true, titulo:'Propostas criadas',          val: m => m.totalPropostas },
+  { id:'status', semProc:true, titulo:'Total por Status',           dim:'porStatusRota' },
   { id:'cli',    titulo:'Total por Cliente',      dim:'porCliente', dedicado:'empresa' },
-  { id:'vend',   titulo:'Total por Vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
-  { id:'inside', titulo:'Total por Inside', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
+  { id:'vend',   semProc:true, titulo:'Total por Vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
+  { id:'inside', semProc:true, titulo:'Total por Inside', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
   { id:'agente', titulo:'Total por Agente Internacional', dim:'porAgente', dedicado:'agente' },
   { id:'novos',  titulo:'Clientes Ganhos no Mês',             val: m => m.novosClientes.length },
-  { id:'lead',   titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
-  { id:'venc',   titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
+  { id:'lead',   semProc:true, titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
+  { id:'venc',   semProc:true, titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
   { id:'lucro',  lucro:true, titulo:'Lucro Operacional por Vendedor (R$)', dim:'lucroVend', total: m => m.lucroTotal, moeda:true, area:true, dedicado:'vendedor' },
 ];
 
 function serieAno(ano){
-  const ch = ano + '#' + chaveFiltro();
+  const ch = ano + '#' + chaveFiltro() + (modoProc() ? '#proc' : '');
   if (cacheAnos[ch]) return cacheAnos[ch];
-  const hoje = hojeISO(), rotas = rotasFiltradas(), clis = clientesFiltrados();
+  const hoje = hojeISO(), rotas = rotasFiltradas(), clis = clientesFiltrados(), procs = modoProc() ? procFiltrados() : [];
   const s = MESES.map((_, i) => {
     if (ano === ANO_ATUAL && i > MES_ATUAL) return null;          // meses futuros
     const [de, ate] = limitesMes(ano, i);
     const m = calcularMetricas(rotas, clis, de, ate, hoje);
     const lc = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto, cliente: filtroH.cliente }); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
     ['porStatusRota','porVendedor','porEmissor','porCliente','porAgente','lucroVend'].forEach(k => m[k + 'Map'] = new Map(m[k]));
+    if (modoProc()) m.proc = metricasProc(de, ate, procs);
     return m;
   });
   return (cacheAnos[ch] = s);
@@ -1769,7 +1821,7 @@ function renderHistorico(){
   const largCard = Math.max(320, Math.round((gl - 16 * (cols - 1)) / cols - 34)), altCard = largCard > 500 ? 260 : 210;
   $('legenda').innerHTML = `<span><i style="background:${COR_ATUAL}"></i>${ANO_ATUAL}</span>` +
     anosComp.map((a, i) => `<span><i style="background:${corComp(i)}"></i>${a}</span>`).join('');
-  $('gridHist').innerHTML = HIST.filter(def => !def.lucro || veLucro()).map(def => {
+  $('gridHist').innerHTML = HIST.filter(def => (!def.lucro || veLucro()) && (def.proc ? modoProc() : !(def.semProc && modoProc()))).map(def => {
     const seletor = def.id === 'lucro' && FILTROS_H.some(F => !['vendedor','agente','cia','produto'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Lucro vem dos processos: aqui valem só os filtros de vendedor, produto, agente e armador/cia</div>'
       : def.id === 'novos' && FILTROS_H.some(F => !['vendedor','cliente'].includes(F.id) && temF(F.id)) ? '<div class="aviso-f">Novos clientes: só valem os filtros de vendedor e cliente</div>' : '';
     let dedicado = '';
