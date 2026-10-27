@@ -536,6 +536,11 @@
   .det-ctrl:not(:has(select:not(.hidden))){display:none}
   .det-rodape{font-size:12px;color:var(--cinza);padding:10px 22px 16px}
   @media (max-width:600px){.det{max-height:94vh}.det-tbl{margin:0 10px}.det-top,.det-ctrl,.det-rodape{padding-left:12px;padding-right:12px}}
+  .kpi .kvals{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .kpi .kvals .km{display:inline-flex;flex-direction:column;line-height:1.1}
+  .kpi .kvals .km b{font:inherit}
+  .kpi .kvals .km small{font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;margin-top:3px;color:var(--cinza)}
+  .kpi .kvals .az{color:#1D4ED8} .kpi .kvals .az small{color:#1D4ED8} .kpi .kvals .vd{color:#15803D} .kpi .kvals .vd small{color:#15803D}
 </style>
 </head>
 <body>
@@ -655,9 +660,9 @@
     <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
     <div id="blocoMes" class="so-mes">
     <div class="kpis">
-      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val" id="kProp">–</div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
+      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val kvals"><span class="km"><span id="kProp">–</span></span><span class="km az no-proc"><b id="kPropAnd">–</b><small>Em Andamento</small></span><span class="km vd no-proc"><b id="kPropApr">–</b><small>Aprovadas</small></span></div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
       <div class="kpi"><div class="lbl" id="kRotasLbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
-      <div class="kpi"><button class="lupa no-proc" type="button" data-det="aprovadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">Propostas aprovadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">com pelo menos 1 rota aprovada</div></div>
+      <div class="kpi"><button class="lupa no-proc" type="button" data-det="sis" title="Ver processos" aria-label="Ver processos criados no mês"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">SIs Criadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">processos pela Data de Criação da SI</div></div>
       <div class="kpi"><div class="lbl" id="kLeadLbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
       <div class="kpi no-proc"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
@@ -686,7 +691,7 @@
     </div>
     <div class="grid2 so-mes" id="gridAgente">
       <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Agente Internacional</h2><div class="nota">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
-      <div class="card card-reserva" id="cardTransp"><h2>Total por Transportador</h2><div class="nota">Gráfico em construção</div><div class="reserva-vazia">Em breve</div></div>
+      <div class="card" id="cardTransp"><button class="lupa" type="button" data-det="transp" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Transportador</h2><div class="nota">Propostas únicas por Armador, Coloader ou Cia Aérea · proposta com rotas de transportadores diferentes conta em cada um</div><div class="hbars" id="gTransp"></div><button class="btn ghost small mais hidden" id="maisTransp" type="button"></button></div>
     </div>
     <div class="grid2 so-mes" id="linha5">
       <div class="card" id="cardNovos">
@@ -823,6 +828,7 @@ function selecionarPeriodo(props, de, ate) {
   return props.filter(p => dentro(p.criacao, de, ate));
 }
 
+const STATUS_FORA_SIT = new Set(['CANCELADA','EM ESTUDO','ESTUDO DE VIABILIDADE']);
 function calcularMetricas(rotas, clientes, de, ate, hoje) {
   // 1) agrupa rotas por proposta
   const props = new Map();
@@ -834,8 +840,8 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
   // 2) filtro de período pela data escolhida em "Analisar por Data de" (padrão: criação da proposta)
   const lista = selecionarPeriodo([...props.values()], de, ate);
 
-  const porCliente = new Map(), porAgente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map();
-  let multiRota = 0, totalRotas = 0, aprovadasN = 0;
+  const porCliente = new Map(), porAgente = new Map(), porVendedor = new Map(), porEmissor = new Map(), porStatusRota = new Map(), porTransp = new Map();
+  let multiRota = 0, totalRotas = 0, aprovadasN = 0, emAndamento = 0, aprovadasSit = 0;
   const detalhe = [];   // uma linha por proposta, para as telas de detalhamento
   const leadTimes = []; let leadIgnorados = 0;
   const vencidas = [];
@@ -844,6 +850,7 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     contar(porCliente, p.cliente || 'Sem cliente');
     contar(porVendedor, p.vendedor || 'Sem vendedor');
     new Set(p.rotas.map(r => r.agente_internacional || 'Sem agente')).forEach(a => contar(porAgente, a));   // proposta conta 1x por agente
+    new Set(p.rotas.map(r => r.cia_armador_coloader || 'Sem transportador')).forEach(t => contar(porTransp, t));   // armador / coloader / cia aérea: 1x por transportador
     contar(porEmissor, p.emissor || 'Sem emissor');
     if (p.rotas.length >= 2) multiRota++;
     totalRotas += p.rotas.length;
@@ -851,6 +858,10 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
 
     const aprovadas = p.rotas.filter(r => norm(r.status) === 'APROVADA');
     if (aprovadas.length) aprovadasN++;
+    // situação da proposta (regra do Will): ignora rotas Cancelada / Em Estudo / Estudo de Viabilidade;
+    // sobrou rota → Aprovada se alguma for APROVADA, senão Em andamento; não sobrou nenhuma → não conta
+    const validas = p.rotas.filter(r => !STATUS_FORA_SIT.has(norm(r.status)));
+    if (validas.length){ if (validas.some(r => norm(r.status) === 'APROVADA')) aprovadasSit++; else emAndamento++; }
     const vals = p.rotas.map(r => dia(r.data_validade)).filter(Boolean).sort();
     const det = { num: p.num, cliente: p.cliente || 'Sem cliente', vendedor: p.vendedor || 'Sem vendedor', inside: p.emissor || 'Sem emissor',
       statusLista: [...new Set(p.rotas.map(r => r.status || 'Sem status'))],
@@ -893,10 +904,12 @@ function calcularMetricas(rotas, clientes, de, ate, hoje) {
     totalPropostas: lista.length,
     totalRotas,
     aprovadas: aprovadasN,
+    emAndamento, aprovadasSit,
     detalhe: detalhe.sort((a, b) => (a.criacao < b.criacao ? 1 : a.criacao > b.criacao ? -1 : 0)),
     multiRota,
     porCliente: ordenar(porCliente),
     porAgente: ordenar(porAgente),
+    porTransp: ordenar(porTransp),
     porVendedor: ordenar(porVendedor),
     porEmissor: ordenar(porEmissor),
     porStatusRota: ordenar(porStatusRota),
@@ -1129,8 +1142,8 @@ async function carregarDados(){
   try{
     // o banco já limita cada vendedor ao seu grupo; no perfil Projetos vendo como vendedor, o recorte é feito aqui
     const filtro = ehProjetos() && acesso.vendedor_chave ? acesso.vendedor_chave : '';
-    PROCS = modoProc() ? await buscarTudo('com_processos','numero_processo,data_criacao_si,data_embarque,produto,cliente,vendedor,origem,destino,armador,cia,teus,cancelado','')
-      .then(L => L.filter(p => p.data_criacao_si)).catch(e => { console.error('processos', e); return []; }) : [];
+    PROCS = await buscarTudo('com_processos','numero_processo,numero_proposta,data_criacao_si,data_embarque,produto,cliente,vendedor,origem,destino,armador,cia,teus,cancelado,agente_internacional', filtro)
+      .then(L => L.filter(p => p.data_criacao_si)).catch(e => { console.error('processos', e); return []; });
     PROSP = await buscarTudo('com_prospectos','nome_completo,apelido,cnpj,vendedor,data_criacao,inicio_prospeccao,data_limite_prospeccao,ativo', filtro)
       .then(L => L.filter(x => x.ativo !== false)).catch(e => { console.error('prospectos', e); return []; });   // opcional
     [ROTAS, CLIENTES, LUCRO, EMB, PRAZOS] = await Promise.all([
@@ -1263,6 +1276,7 @@ function alternar(elId, botao){ const el=$(elId); if (el.dataset.tudo) delete el
 $('maisInside').onclick = ()=>alternar('gInside');
 $('maisCliente').onclick = ()=>alternar('gCliente');
 $('maisAgente').onclick = ()=>alternar('gAgente');
+$('maisTransp').onclick = ()=>alternar('gTransp');
 $('maisEmb').onclick = ()=>{ const el=$('gEmb'); if (el.dataset.tudo) delete el.dataset.tudo; else el.dataset.tudo='1'; quadroEmbarque(); };
 
 /* ---------- Clientes sem embarque ---------- */
@@ -1384,7 +1398,7 @@ function tabelaPortos(titulo, rotulo, pares){
     + (pares.length ? pares.map(([k, v], i) => `<tr><td class="pos">${i + 1}</td><td>${esc(k)}</td><td class="n">${fmt(v)}</td></tr>`).join('')
       : '<tr><td colspan="3" class="vazio">Sem embarques no mês.</td></tr>') + '</tbody></table></div>';
 }
-const ROT_KPI = { kPropLbl:['Propostas criadas','SIs Criadas'], kRotasLbl:['Rotas criadas','Processos Embarcados'], kAprovLbl:['Propostas aprovadas','Processos Cancelados'], kLeadLbl:['Lead time médio','Total de Teus'] };
+const ROT_KPI = { kPropLbl:['Propostas criadas','SIs Criadas'], kRotasLbl:['Rotas criadas','Processos Embarcados'], kAprovLbl:['SIs Criadas','Processos Cancelados'], kLeadLbl:['Lead time médio','Total de Teus'] };
 function renderizarTitulo(){
   const vigente = mesSel.ano === new Date().getFullYear() && mesSel.m === new Date().getMonth();
   $('tituloMes').innerHTML = modoAnual() ? `Visão anual de <b>${ANO_ATUAL}</b> comparada com <b>${anosComp.join(', ')}</b> — mês a mês`
@@ -1406,8 +1420,10 @@ function renderizar(){
   $('kPropSub').textContent = variacao(M.totalPropostas, A.totalPropostas);
   $('kRotas').textContent = fmt(M.totalRotas);
   $('kRotasSub').textContent = variacao(M.totalRotas, A.totalRotas);
-  $('kAprov').textContent = fmt(M.aprovadas);
-  $('kAprovSub').textContent = variacao(M.aprovadas, A.aprovadas);
+  const PS = metricasProc(de, ate), PSA = metricasProc(deA, ateA);           // SIs criadas (Data Criação SI) — todas as visões
+  $('kAprov').textContent = fmt(PS.sis);
+  $('kAprovSub').textContent = variacao(PS.sis, PSA.sis);
+  $('kPropAnd').textContent = fmt(M.emAndamento); $('kPropApr').textContent = fmt(M.aprovadasSit);
   $('kLead').textContent = M.leadTimeMedio == null ? '–' : M.leadTimeMedio.toFixed(1).replace('.',',') + ' dias';
   $('kLeadSub').textContent = 'Tempo médio da Criação até a Aprovação da proposta';
   $('kVenc').textContent = fmt(M.vencidas.length);
@@ -1428,6 +1444,7 @@ function renderizar(){
   barras($('gInside'), M.porEmissor, M.totalPropostas, 10, 'maisInside');
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
+  barras($('gTransp'), M.porTransp, M.totalPropostas, 10, 'maisTransp');
   if (ehDiretoria()) quadroLucro(de, ate);   // Gross Profit da Diretoria
   if (ehVendedor()) quadroLC();             // vendedor: Lucro e Comissão (Atual / Previsto)
   renderListas();
@@ -1577,7 +1594,7 @@ function calcularPerdas(rs){
     if (!ehPerda(r) || !rotaNaFaixa(r, rs)) continue;
     const o = { num: r.numero_proposta, cliente: r.cliente || 'Sem cliente', vendedor: r.vendedor || 'Sem vendedor', inside: r.emissor || 'Sem emissor',
       status: r.status, motivo: (r.motivo && String(r.motivo).trim()) || 'Não informado', compl: r.complemento_motivo || '',
-      rota: `${r.origem || '–'} → ${r.destino || '–'}`, criacao: r.data_criacao };
+      rota: `${r.origem || '–'} → ${r.destino || '–'}`, criacao: r.data_criacao, produto: r.produto || 'Sem modalidade' };
     rotas.push(o);
     (porProp.get(o.num) || porProp.set(o.num, []).get(o.num)).push(o);
   }
@@ -2209,6 +2226,12 @@ const COLS_DET = {
   vendedor: { rot:'Vendedor',           txt: d => d.vendedor },
   inside:   { rot:'Inside',             txt: d => d.inside },
   agente:   { rot:'Agente Internacional', txt: d => (d.agenteLista || []).join(' / ') || 'Sem agente' },
+  modal:    { rot:'Modalidade',         txt: d => d.produtoLista ? d.produtoLista.join(' / ') : (d.produto || 'Sem modalidade') },
+  proc:     { rot:'Número Processo',    txt: d => d.proc },
+  criacaoSI:{ rot:'Data Criação Processo', txt: d => fmtData(d.criacao), c:true },
+  transp:   { rot:'Transportador',      txt: d => (d.ciaLista || []).map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t).join(' / ') },
+  origem:   { rot:'Origem',             txt: d => (d.origemLista || []).join(' / ') },
+  destino:  { rot:'Destino',            txt: d => (d.destinoLista || []).join(' / ') },
   status:   { rot:'Status',             txt: d => d.statusLista.join(' / ') },
   criacao:  { rot:'Data Criação',       txt: d => fmtData(d.criacao), c:true },
   validade: { rot:'Data Vencimento',    txt: d => fmtData(d.validade), c:true },
@@ -2225,7 +2248,7 @@ const COLS_DET = {
   diasProsp:{ rot:'Tempo de prospecção', txt: d => d.diasProsp == null ? '–' : tempoSemEmbarque(d.criacao, d.diasProsp), c:true },   // até 31 dias em dias; acima, em anos/meses/dias
   diasVenc: { rot:'Dias Vencidos',      txt: d => { const n = diasVencidos(d); return n == null ? '–' : `${fmt(n)} dia${n === 1 ? '' : 's'}`; }, c:true },
 };
-const COLS_DET_PADRAO = ['num','cliente','vendedor','inside','status','criacao','validade'];
+const COLS_DET_PADRAO = ['num','cliente','modal','vendedor','inside','status','criacao','validade'];
 function diasVencidos(d){ if (!d.validade) return null; const n = Math.round((new Date(hojeISO() + 'T12:00:00') - new Date(d.validade.slice(0,10) + 'T12:00:00')) / 864e5); return n > 0 ? n : null; }
 const porCriacaoDesc = (a, b) => String(b.criacao || '').localeCompare(String(a.criacao || ''));
 const alfa = campo => (a, b) => String(a[campo] || '').localeCompare(String(b[campo] || ''), 'pt-BR', { sensitivity:'base' }) || porCriacaoDesc(a, b);
@@ -2236,17 +2259,17 @@ const ORD = {
   vencDesc: (a, b) => { const x = diasVencidos(a), y = diasVencidos(b); return nulosNoFim(x, y) || (y ?? 0) - (x ?? 0) || porCriacaoDesc(a, b); },  // vencida há mais tempo primeiro
   vendedor: alfa('vendedor'), inside: alfa('inside'), cliente: alfa('cliente'),
 };
-const COLS_STATUS = ['num','cliente','vendedor','inside','status'];
-const COLS_PERDAS = ['num','cliente','vendedor','inside','statusRota','motivo','compl','rota','criacao'];
+const COLS_STATUS = ['num','cliente','modal','vendedor','inside','status'];
+const COLS_PERDAS = ['num','cliente','modal','vendedor','inside','statusRota','motivo','compl','rota','criacao'];
 const DETS = {
   novosAno: { titulo:'Novos clientes — prospectos que viraram clientes da casa', sub:'pela Data de Ativação do Prospecto · tempo de prospecção = do início da prospecção (criação do cadastro) até o cliente ganho',
               cols:['cliNome','vendedor','criacaoCli','ativacao','diasProsp'], unidade:['cliente','clientes'], semPropostas:true, agrupar: d => d.inicio ? d.inicio.slice(0,7) : '',
               ordem: (a, b) => String(b.inicio || '').localeCompare(String(a.inicio || '')) || String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR') },
   perdasCli:{ titulo:'Clientes com Maior Recusa de Proposta no Mês — rotas recusadas', sub:'propostas com todas as rotas Canceladas ou Reprovadas, criadas no período', dim: d => [d.cliente], rotulo:'empresa', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
   perdasMot:{ titulo:'Motivos do Não Fechamento — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
-  criadas:  { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
-  prop:     { titulo:'Propostas criadas', filtro: d => true, ordem: ORD.criacao },
-  aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada', cols:['num','cliente','vendedor','inside','criacao','aprovacao','lead'], ordem: ORD.leadAsc },
+  criadas:  { titulo:'Propostas criadas', filtro: d => true, cols:['num','cliente','modal','vendedor','inside','status','criacao','aprovacao','lead'], ordem: ORD.criacao },
+  prop:     { titulo:'Propostas criadas', filtro: d => true, cols:['num','cliente','modal','vendedor','inside','status','criacao','aprovacao','lead'], ordem: ORD.criacao },
+  aprovadas:{ titulo:'Propostas aprovadas', filtro: d => d.aprovada, sub:'com pelo menos 1 rota aprovada', cols:['num','cliente','modal','vendedor','inside','criacao','aprovacao','lead'], ordem: ORD.leadAsc },
   vencidas: { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada', cols:[...COLS_DET_PADRAO, 'diasVenc'], ordem: ORD.vencDesc },
   venc:     { titulo:'Propostas vencidas', filtro: d => d.vencida, sub:'validade expirada e nenhuma rota aprovada', cols:[...COLS_DET_PADRAO, 'diasVenc'], ordem: ORD.vencDesc },
   multi:    { titulo:'Propostas com 2+ rotas', filtro: d => d.rotas >= 2 },
@@ -2255,9 +2278,19 @@ const DETS = {
   vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
   inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside', ordem: ORD.inside },
   cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
-  agente:   { titulo:'Propostas por agente internacional', dim: d => d.agenteLista, rotulo:'agente', cols:['num','cliente','agente','vendedor','status','criacao','validade'], ordem: ORD.cliente },
+  agente:   { titulo:'Propostas por agente internacional', dim: d => d.agenteLista, rotulo:'agente', cols:['num','cliente','modal','agente','vendedor','status','criacao','validade'], ordem: ORD.cliente },
   cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
+  sis:      { titulo:'SIs criadas', sub:'processos pela Data de Criação da SI · Número da Proposta em branco = processo sem proposta vinculada', cols:['num','criacaoSI','proc','modal','cliente','agente','transp','origem','destino'], unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
+  transp:   { titulo:'Propostas por transportador', sub:'Armador, Coloader ou Cia Aérea das rotas', dim: d => (d.ciaLista || []).map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t), rotulo:'transportador', cols:['num','cliente','modal','transp','origem','destino'], ordem: ORD.cliente },
 };
+// SIs criadas no mês (Data Criação SI), com os filtros do Board
+function linhasSIs(){
+  const [de, ate] = limitesMes(mesSel.ano, mesSel.m);
+  return procFiltrados().filter(p => { const d = String(p.data_criacao_si || '').slice(0,10); return d >= de && d <= ate; }).map(p => ({
+    num: p.numero_proposta || '', proc: p.numero_processo, criacao: String(p.data_criacao_si).slice(0,10), cliente: p.cliente || 'Sem cliente', vendedor: p.vendedor || 'Sem vendedor',
+    produtoLista: [p.produto || 'Sem modalidade'], agenteLista: [p.agente_internacional || 'Sem agente'], ciaLista: [p.armador || p.cia || 'Sem armador/cia'],
+    origemLista: [p.origem || 'Sem origem'], destinoLista: [p.destino || 'Sem destino'], cancelado: !!p.cancelado }));
+}
 let detEstado = null;
 const cacheAnoDet = {};
 function detalheAno(ano){
@@ -2335,7 +2368,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('.lupa'); if (!b || b.dataset.exp) return;
   if (b.dataset.det){                                   // aba Mês atual
     const perdas = b.dataset.det.startsWith('perdas'), rot = perdas ? rotuloPeriodo() : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
-    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: perdas ? (b.dataset.det === 'perdasCli' ? PERDAS.rotasRecusadas : PERDAS.rotas) : M.detalhe }], rot);
+    abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: b.dataset.det === 'sis' ? linhasSIs() : perdas ? (b.dataset.det === 'perdasCli' ? PERDAS.rotasRecusadas : PERDAS.rotas) : M.detalhe }], rot);
   }
 });
 
