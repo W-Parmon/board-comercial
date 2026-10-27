@@ -539,7 +539,8 @@
   .kpi .kvals{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
   .kpi .kvals .km{display:inline-flex;flex-direction:column;line-height:1.1}
   .kpi .kvals .km b{font:inherit}
-  .kpi .kvals .km small{font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;margin-top:3px;color:var(--cinza)}
+  .kpi .kvals .km small{font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;margin-top:3px;color:var(--cinza)}
+  .kpi .kvals .vm small{color:var(--vermelho)}
   .kpi .kvals .az{color:#1D4ED8} .kpi .kvals .az small{color:#1D4ED8} .kpi .kvals .vd{color:#15803D} .kpi .kvals .vd small{color:#15803D}
 </style>
 </head>
@@ -660,7 +661,7 @@
     <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
     <div id="blocoMes" class="so-mes">
     <div class="kpis">
-      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val kvals"><span class="km"><span id="kProp">–</span></span><span class="km az no-proc"><b id="kPropAnd">–</b><small>Em Andamento</small></span><span class="km vd no-proc"><b id="kPropApr">–</b><small>Aprovadas</small></span></div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
+      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val kvals"><span class="km vm"><span id="kProp">–</span><small class="no-proc">Criadas</small></span><span class="km az no-proc"><b id="kPropAnd">–</b><small>Em Andamento</small></span><span class="km vd no-proc"><b id="kPropApr">–</b><small>Aprovadas</small></span></div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
       <div class="kpi"><div class="lbl" id="kRotasLbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
       <div class="kpi"><button class="lupa no-proc" type="button" data-det="sis" title="Ver processos" aria-label="Ver processos criados no mês"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">SIs Criadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">processos pela Data de Criação da SI</div></div>
       <div class="kpi"><div class="lbl" id="kLeadLbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
@@ -682,7 +683,7 @@
     <div class="grid2" id="gridPerdas">
       <div class="card" id="cardPerdasCli"><button class="lupa" type="button" data-det="perdasCli" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
         <h2>Clientes com Maior Recusa de Proposta no Mês</h2><div class="nota" id="notaPerdasCli"></div>
-        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Empresa</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
+        <div class="tbl-wrap tab-perdas"><table><thead><tr><th>Cliente</th><th class="n">Qtd.</th><th>Motivo principal</th></tr></thead><tbody id="tPerdasCli"></tbody></table></div>
       </div>
       <div class="card" id="cardPerdasMot"><button class="lupa" type="button" data-det="perdasMot" title="Ver rotas perdidas" aria-label="Ver rotas perdidas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button>
         <h2>Motivos do Não Fechamento</h2><div class="nota" id="notaPerdasMot"></div>
@@ -697,12 +698,12 @@
       <div class="card" id="cardNovos">
         <div class="card-head"><div><h2>Clientes Ganhos no Mês</h2><div class="nota" id="notaNovos">Prospectos ativados no mês</div><div class="aviso-f hidden" id="avisoNovos"></div></div></div>
         <input class="busca" id="buscaNovos" placeholder="Buscar cliente…">
-        <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Cliente Ganho em</th><th class="c">Tempo de prospecção</th></tr></thead><tbody id="tNovos"></tbody></table></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Cliente</th><th>Vendedor</th><th class="c">Início Prospecção</th><th class="c">Cliente Ganho em</th><th class="c">Tempo de prospecção</th></tr></thead><tbody id="tNovos"></tbody></table></div>
       </div>
       <div class="card" id="cardProsp">
         <div class="card-head"><div><h2>Clientes em Prospecção</h2><div class="nota" id="notaProsp">Prospectos ativos (planilha CLIENTES PROSPECTOS)</div><div class="aviso-f hidden" id="avisoProsp"></div></div></div>
-        <input class="busca" id="buscaProsp" placeholder="Buscar empresa ou CNPJ…">
-        <div class="tbl-wrap"><table><thead><tr><th>Empresa</th><th>CNPJ</th><th>Vendedor</th><th class="c">Cadastro</th><th class="c">Início Prospecção</th><th class="c">Limite Prospecção</th></tr></thead><tbody id="tProsp"></tbody></table></div>
+        <input class="busca" id="buscaProsp" placeholder="Buscar cliente ou CNPJ…">
+        <div class="tbl-wrap"><table><thead><tr><th>Cliente</th><th>CNPJ</th><th>Vendedor</th><th class="c">Cadastro</th><th class="c">Início Prospecção</th><th class="c">Limite Prospecção</th></tr></thead><tbody id="tProsp"></tbody></table></div>
       </div>
     </div>
     <div class="so-mes so-lucro" id="linha6">
@@ -1377,7 +1378,7 @@ function avisoFiltro(id, aceitos, texto){        // avisa quando há filtro ativ
    Processos Embarcados = processos não cancelados com Data de Embarque no mês
    Processos Cancelados = processos cancelados com Data de Criação no mês
    Total de Teus = soma da coluna Teus (UXComex) dos processos embarcados no mês
-   Filtros que valem: vendedor, empresa, produto, origem, destino, armador/cia */
+   Filtros que valem: vendedor, cliente, produto, origem, destino, armador/cia */
 const ehMaritimo = p => /mar[ií]tim/i.test(p.produto || ''), ehAereo = p => /a[ée]re/i.test(p.produto || '');
 function procFiltrados(){
   return PROCS.filter(p => naLista(filtroH.vendedor, p.vendedor || 'Sem vendedor') && naLista(filtroH.cliente, p.cliente) && naLista(filtroH.produto, p.produto || 'Sem produto')
@@ -1632,7 +1633,7 @@ document.addEventListener('click', e => {
   else abrirDetalhe('perdasMot', [{ rotulo: rot, linhas: PERDAS.rotas }], rot, tr.dataset.perdaMot);
 });
 function tabelaProsp(){
-  avisoFiltro('avisoProsp', ['vendedor','cliente'], 'Clientes em Prospecção: aqui valem só os filtros de vendedor e empresa (a lista é a situação atual, não depende do mês)');
+  avisoFiltro('avisoProsp', ['vendedor','cliente'], 'Clientes em Prospecção: aqui valem só os filtros de vendedor e cliente (a lista é a situação atual, não depende do mês)');
   const q = semAcento($('buscaProsp').value.trim()), hj = hojeISO();
   const base = PROSP.filter(c => naLista(filtroH.vendedor, c.vendedor || 'Sem vendedor') && naLista(filtroH.cliente, c.nome_completo));
   const linhas = base.filter(c => !q || semAcento(`${c.nome_completo || ''} ${c.apelido || ''} ${c.cnpj || ''}`).includes(q))
@@ -1758,7 +1759,7 @@ const HIST = [
   { id:'teus',   proc:true, titulo:'Total de Teus',          val: m => m.proc.teus },
   { id:'prop',   semProc:true, titulo:'Propostas criadas',          val: m => m.totalPropostas },
   { id:'status', semProc:true, titulo:'Total por Status',           dim:'porStatusRota' },
-  { id:'cli',    titulo:'Total por Cliente',      dim:'porCliente', dedicado:'empresa' },
+  { id:'cli',    titulo:'Total por Cliente',      dim:'porCliente', dedicado:'cliente' },
   { id:'vend',   semProc:true, titulo:'Total por Vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
   { id:'inside', semProc:true, titulo:'Total por Inside', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
   { id:'agente', titulo:'Total por Agente Internacional', dim:'porAgente', dedicado:'agente' },
@@ -1924,7 +1925,7 @@ const FILTROS_H = [
   { id:'status',   rot:'Status da rota', val: d => d.statusLista },
   { id:'vendedor', rot:'Vendedor',       val: d => [d.vendedor] },
   { id:'inside',   rot:'Inside sales',   val: d => [d.inside] },
-  { id:'cliente',  rot:'Empresa',        val: d => [d.cliente] },
+  { id:'cliente',  rot:'Cliente',        val: d => [d.cliente] },
   { id:'origem',   rot:'Origem',         val: d => d.origemLista },
   { id:'destino',  rot:'Destino',        val: d => d.destinoLista },
   { id:'produto',  rot:'Produto (modalidade)', val: d => d.produtoLista },
@@ -2221,14 +2222,14 @@ function grafico(a, comps, def){
 /* ---------- Detalhamento (lupa) ---------- */
 // colunas das listas detalhadas (padrão: COLS_DET_PADRAO; cada DETS pode trocar com cols:[...])
 const COLS_DET = {
-  num:      { rot:'Número da Proposta', txt: d => d.num },
-  cliente:  { rot:'Empresa',            txt: d => d.cliente },
+  num:      { rot:'Proposta', txt: d => d.num },
+  cliente:  { rot:'Cliente',            txt: d => d.cliente },
   vendedor: { rot:'Vendedor',           txt: d => d.vendedor },
   inside:   { rot:'Inside',             txt: d => d.inside },
   agente:   { rot:'Agente Internacional', txt: d => (d.agenteLista || []).join(' / ') || 'Sem agente' },
   modal:    { rot:'Modalidade',         txt: d => d.produtoLista ? d.produtoLista.join(' / ') : (d.produto || 'Sem modalidade') },
-  proc:     { rot:'Número Processo',    txt: d => d.proc },
-  criacaoSI:{ rot:'Data Criação Processo', txt: d => fmtData(d.criacao), c:true },
+  proc:     { rot:'Processo',    txt: d => d.proc },
+  criacaoSI:{ rot:'Abertura SI', txt: d => fmtData(d.criacao), c:true },
   transp:   { rot:'Transportador',      txt: d => (d.ciaLista || []).map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t).join(' / ') },
   origem:   { rot:'Origem',             txt: d => (d.origemLista || []).join(' / ') },
   destino:  { rot:'Destino',            txt: d => (d.destinoLista || []).join(' / ') },
@@ -2241,7 +2242,7 @@ const COLS_DET = {
   motivo:   { rot:'Motivo',             txt: d => d.motivo },
   compl:    { rot:'Complemento',        txt: d => d.compl || '–' },
   rota:     { rot:'Origem → Destino',   txt: d => d.rota },
-  cliNome:  { rot:'Empresa',            txt: d => d.nome || 'Sem nome' },
+  cliNome:  { rot:'Cliente',            txt: d => d.nome || 'Sem nome' },
   mesAtiv:  { rot:'Mês em que o cliente foi ganho', txt: d => d.inicio ? MESES_LONGOS[+d.inicio.slice(5,7) - 1] : '–', c:true },
   criacaoCli:{ rot:'Início Prospecção',   txt: d => fmtData(d.criacao), c:true },
   ativacao: { rot:'Cliente Ganho em',      txt: d => fmtData(d.inicio), c:true },
@@ -2265,7 +2266,7 @@ const DETS = {
   novosAno: { titulo:'Novos clientes — prospectos que viraram clientes da casa', sub:'pela Data de Ativação do Prospecto · tempo de prospecção = do início da prospecção (criação do cadastro) até o cliente ganho',
               cols:['cliNome','vendedor','criacaoCli','ativacao','diasProsp'], unidade:['cliente','clientes'], semPropostas:true, agrupar: d => d.inicio ? d.inicio.slice(0,7) : '',
               ordem: (a, b) => String(b.inicio || '').localeCompare(String(a.inicio || '')) || String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR') },
-  perdasCli:{ titulo:'Clientes com Maior Recusa de Proposta no Mês — rotas recusadas', sub:'propostas com todas as rotas Canceladas ou Reprovadas, criadas no período', dim: d => [d.cliente], rotulo:'empresa', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
+  perdasCli:{ titulo:'Clientes com Maior Recusa de Proposta no Mês — rotas recusadas', sub:'propostas com todas as rotas Canceladas ou Reprovadas, criadas no período', dim: d => [d.cliente], rotulo:'cliente', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: alfa('cliente') },
   perdasMot:{ titulo:'Motivos do Não Fechamento — rotas perdidas', sub:'rotas Canceladas ou Reprovadas das propostas criadas no período', dim: d => [d.motivo], rotulo:'motivo', cols: COLS_PERDAS, unidade:['rota perdida','rotas perdidas'], ordem: (a, b) => a.motivo.localeCompare(b.motivo, 'pt-BR') || porCriacaoDesc(a, b) },
   criadas:  { titulo:'Propostas criadas', filtro: d => true, cols:['num','cliente','modal','vendedor','inside','status','criacao','aprovacao','lead'], ordem: ORD.criacao },
   prop:     { titulo:'Propostas criadas', filtro: d => true, cols:['num','cliente','modal','vendedor','inside','status','criacao','aprovacao','lead'], ordem: ORD.criacao },
@@ -2277,10 +2278,10 @@ const DETS = {
   vendedor: { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
   vend:     { titulo:'Propostas por vendedor', dim: d => [d.vendedor], rotulo:'vendedor', ordem: ORD.vendedor },
   inside:   { titulo:'Propostas por inside sales', dim: d => [d.inside], rotulo:'inside', ordem: ORD.inside },
-  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
+  cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
   agente:   { titulo:'Propostas por agente internacional', dim: d => d.agenteLista, rotulo:'agente', cols:['num','cliente','modal','agente','vendedor','status','criacao','validade'], ordem: ORD.cliente },
-  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'empresa', ordem: ORD.cliente },
-  sis:      { titulo:'SIs criadas', sub:'processos pela Data de Criação da SI · Número da Proposta em branco = processo sem proposta vinculada', cols:['num','criacaoSI','proc','modal','cliente','agente','transp','origem','destino'], unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
+  cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
+  sis:      { titulo:'SIs criadas', sub:'processos pela data de Abertura da SI · Proposta em branco = processo sem proposta vinculada', cols:['num','criacaoSI','proc','modal','cliente','agente','transp','origem','destino'], unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
   transp:   { titulo:'Propostas por transportador', sub:'Armador, Coloader ou Cia Aérea das rotas', dim: d => (d.ciaLista || []).map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t), rotulo:'transportador', cols:['num','cliente','modal','transp','origem','destino'], ordem: ORD.cliente },
 };
 // SIs criadas no mês (Data Criação SI), com os filtros do Board
