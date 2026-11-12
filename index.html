@@ -661,9 +661,9 @@
     <div id="blocoAnual" class="hidden"><div class="gridH" id="gridHist"></div></div>
     <div id="blocoMes" class="so-mes">
     <div class="kpis">
-      <div class="kpi"><button class="lupa no-proc" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val kvals"><span class="km vm"><span id="kProp">–</span><small class="no-proc">Criadas</small></span><span class="km az no-proc"><b id="kPropAnd">–</b><small>Em Andamento</small></span><span class="km vd no-proc"><b id="kPropApr">–</b><small>Aprovadas</small></span></div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="criadas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kPropLbl">Propostas criadas</div><div class="val kvals"><span class="km vm"><span id="kProp">–</span><small class="no-proc">Criadas</small></span><span class="km az no-proc"><b id="kPropAnd">–</b><small>Em Andamento</small></span><span class="km vd no-proc"><b id="kPropApr">–</b><small>Aprovadas</small></span></div><div class="sub" id="kPropSub">cada referência contada uma vez</div></div>
       <div class="kpi"><div class="lbl" id="kRotasLbl">Rotas criadas</div><div class="val" id="kRotas">–</div><div class="sub" id="kRotasSub">todas as rotas lançadas no mês, qualquer status</div></div>
-      <div class="kpi"><button class="lupa no-proc" type="button" data-det="sis" title="Ver processos" aria-label="Ver processos criados no mês"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">SIs Criadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">processos pela Data de Criação da SI</div></div>
+      <div class="kpi"><button class="lupa" type="button" data-det="sis" title="Ver processos" aria-label="Ver processos criados no mês"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl" id="kAprovLbl">SIs Criadas</div><div class="val" id="kAprov">–</div><div class="sub" id="kAprovSub">processos pela Data de Criação da SI</div></div>
       <div class="kpi"><div class="lbl" id="kLeadLbl">Lead time médio</div><div class="val" id="kLead">–</div><div class="sub" id="kLeadSub">Tempo médio da Criação até a Aprovação da proposta</div></div>
       <div class="kpi no-proc"><button class="lupa" type="button" data-det="vencidas" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><div class="lbl">Propostas vencidas</div><div class="val" id="kVenc">–</div><div class="sub">validade expirada, sem rota aprovada</div></div>
     </div>
@@ -672,7 +672,7 @@
     <div class="grid2 so-mes" id="linha1">
       <div class="card card-reserva so-proc" id="cardReservaDir"><h2>Nova métrica</h2><div class="nota">Espaço reservado</div><div class="reserva-vazia">Em breve</div></div>
       <div class="card no-proc"><button class="lupa" type="button" data-det="status" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Status</h2><div class="nota">Todas as rotas contam — uma proposta com 2 rotas soma 2</div><div class="pizza" id="gStatus"></div></div>
-      <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Cliente</h2><div class="nota">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
+      <div class="card"><button class="lupa" type="button" data-det="cliente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Cliente</h2><div class="nota" id="notaCliente">Propostas únicas</div><div class="hbars" id="gCliente"></div><button class="btn ghost small mais hidden" id="maisCliente" type="button"></button></div>
     </div>
     <div class="grid2 so-mes" id="linha2">
       <div class="card so-proc" id="cardPortosOrig"><h2>Portos de Origem</h2><div class="nota" id="notaPortosOrig"></div><div class="portos" id="gPortosOrig"></div></div>
@@ -691,8 +691,8 @@
       </div>
     </div>
     <div class="grid2 so-mes" id="gridAgente">
-      <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Agente Internacional</h2><div class="nota">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
-      <div class="card" id="cardTransp"><button class="lupa" type="button" data-det="transp" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Transportador</h2><div class="nota">Propostas únicas por Armador, Coloader ou Cia Aérea · proposta com rotas de transportadores diferentes conta em cada um</div><div class="hbars" id="gTransp"></div><button class="btn ghost small mais hidden" id="maisTransp" type="button"></button></div>
+      <div class="card" id="cardAgente"><button class="lupa" type="button" data-det="agente" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Agente Internacional</h2><div class="nota" id="notaAgente">Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente</div><div class="hbars" id="gAgente"></div><button class="btn ghost small mais hidden" id="maisAgente" type="button"></button></div>
+      <div class="card" id="cardTransp"><button class="lupa" type="button" data-det="transp" title="Ver propostas" aria-label="Ver propostas"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></button><h2>Total por Transportador</h2><div class="nota" id="notaTransp">Propostas únicas por Armador, Coloader ou Cia Aérea · proposta com rotas de transportadores diferentes conta em cada um</div><div class="hbars" id="gTransp"></div><button class="btn ghost small mais hidden" id="maisTransp" type="button"></button></div>
     </div>
     <div class="grid2 so-mes" id="linha5">
       <div class="card" id="cardNovos">
@@ -1387,17 +1387,20 @@ function procFiltrados(){
 function metricasProc(de, ate, L){
   L = L || procFiltrados();
   const em = d => d && String(d).slice(0,10) >= de && String(d).slice(0,10) <= ate;
-  const criados = L.filter(p => em(p.data_criacao_si)), emb = L.filter(p => !p.cancelado && em(p.data_embarque));
+  const criados = L.filter(p => em(p.data_criacao_si)), emb = L.filter(p => !p.cancelado && em(p.data_embarque));   // Embarcados: Data de Embarque; o resto: SIs criadas
+  const porCampo = f => { const m = new Map(); criados.forEach(p => { const k = f(p); m.set(k, (m.get(k) || 0) + 1); }); return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR')); };
   const top = (lista, campo) => { const m = new Map(); lista.forEach(p => { const k = p[campo] || 'Não informado'; m.set(k, (m.get(k) || 0) + 1); });
     return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR')).slice(0, 5); };
-  return { sis: criados.length, canc: criados.filter(p => p.cancelado).length, emb: emb.length, teus: emb.reduce((t, p) => t + (Number(p.teus) || 0), 0),
-    origMar: top(emb.filter(ehMaritimo), 'origem'), origAer: top(emb.filter(ehAereo), 'origem'),
-    destMar: top(emb.filter(ehMaritimo), 'destino'), destAer: top(emb.filter(ehAereo), 'destino') };
+  return { sis: criados.length, canc: criados.filter(p => p.cancelado).length, emb: emb.length, teus: criados.reduce((t, p) => t + (Number(p.teus) || 0), 0),
+    origMar: top(criados.filter(ehMaritimo), 'origem'), origAer: top(criados.filter(ehAereo), 'origem'),
+    destMar: top(criados.filter(ehMaritimo), 'destino'), destAer: top(criados.filter(ehAereo), 'destino'),
+    porCliente: porCampo(p => p.cliente || 'Sem cliente'), porAgente: porCampo(p => p.agente_internacional || 'Sem agente'),
+    porTransp: porCampo(p => p.armador || p.cia || 'Sem transportador') };
 }
 function tabelaPortos(titulo, rotulo, pares){
-  return `<div><h3>${titulo}</h3><table><thead><tr><th>#</th><th>${rotulo}</th><th class="n">Embarques</th></tr></thead><tbody>`
+  return `<div><h3>${titulo}</h3><table><thead><tr><th>#</th><th>${rotulo}</th><th class="n">SIs</th></tr></thead><tbody>`
     + (pares.length ? pares.map(([k, v], i) => `<tr><td class="pos">${i + 1}</td><td>${esc(k)}</td><td class="n">${fmt(v)}</td></tr>`).join('')
-      : '<tr><td colspan="3" class="vazio">Sem embarques no mês.</td></tr>') + '</tbody></table></div>';
+      : '<tr><td colspan="3" class="vazio">Sem SIs criadas no mês.</td></tr>') + '</tbody></table></div>';
 }
 const ROT_KPI = { kPropLbl:['Propostas criadas','SIs Criadas'], kRotasLbl:['Rotas criadas','Processos Embarcados'], kAprovLbl:['SIs Criadas','Processos Cancelados'], kLeadLbl:['Lead time médio','Total de Teus'] };
 function renderizarTitulo(){
@@ -1434,8 +1437,8 @@ function renderizar(){
     $('kProp').textContent = fmt(P.sis);   $('kPropSub').textContent = variacao(P.sis, PA.sis);
     $('kRotas').textContent = fmt(P.emb);  $('kRotasSub').textContent = variacao(P.emb, PA.emb);
     $('kAprov').textContent = fmt(P.canc); $('kAprovSub').textContent = variacao(P.canc, PA.canc);
-    $('kLead').textContent = fmt(P.teus);  $('kLeadSub').textContent = variacao(P.teus, PA.teus) + ' · processos embarcados';
-    $('notaPortosOrig').textContent = $('notaPortosDest').textContent = 'Processos embarcados no mês (data de embarque)';
+    $('kLead').textContent = fmt(P.teus);  $('kLeadSub').textContent = variacao(P.teus, PA.teus) + ' · SIs criadas no mês';
+    $('notaPortosOrig').textContent = $('notaPortosDest').textContent = 'SIs criadas no mês (data de Abertura da SI)';
     $('gPortosOrig').innerHTML = tabelaPortos('Top 5 Origens | Marítimo', 'Porto', P.origMar) + tabelaPortos('Top 5 Origens | Aéreo', 'Aeroporto', P.origAer);
     $('gPortosDest').innerHTML = tabelaPortos('Top 5 Destinos | Marítimo', 'Porto', P.destMar) + tabelaPortos('Top 5 Destinos | Aéreo', 'Aeroporto', P.destAer);
   }
@@ -1446,6 +1449,15 @@ function renderizar(){
   barras($('gCliente'), M.porCliente, M.totalPropostas, 10, 'maisCliente');
   barras($('gAgente'), M.porAgente, M.totalPropostas, 10, 'maisAgente');
   barras($('gTransp'), M.porTransp, M.totalPropostas, 10, 'maisTransp');
+  if (modoProc()){                                   // Diretoria: contagem por SIs criadas no mês
+    const P2 = metricasProc(de, ate);
+    barras($('gCliente'), P2.porCliente, P2.sis, 10, 'maisCliente');
+    barras($('gAgente'), P2.porAgente, P2.sis, 10, 'maisAgente');
+    barras($('gTransp'), P2.porTransp, P2.sis, 10, 'maisTransp');
+  }
+  $('notaCliente').textContent = modoProc() ? 'SIs criadas no mês (data de Abertura da SI)' : 'Propostas únicas';
+  $('notaAgente').textContent = modoProc() ? 'SIs criadas no mês (data de Abertura da SI)' : 'Propostas únicas · proposta com rotas de agentes diferentes conta em cada agente';
+  $('notaTransp').textContent = modoProc() ? 'SIs criadas no mês por Armador, Coloader ou Cia Aérea (data de Abertura da SI)' : 'Propostas únicas por Armador, Coloader ou Cia Aérea · proposta com rotas de transportadores diferentes conta em cada um';
   if (ehDiretoria()) quadroLucro(de, ate);   // Gross Profit da Diretoria
   if (ehVendedor()) quadroLC();             // vendedor: Lucro e Comissão (Atual / Previsto)
   renderListas();
@@ -1756,13 +1768,16 @@ const HIST = [
   { id:'sis',    proc:true, titulo:'SIs Criadas',            val: m => m.proc.sis },
   { id:'emb',    proc:true, titulo:'Processos Embarcados',   val: m => m.proc.emb },
   { id:'canc',   proc:true, titulo:'Processos Cancelados',   val: m => m.proc.canc, menorMelhor:true },
-  { id:'teus',   proc:true, titulo:'Total de Teus',          val: m => m.proc.teus },
+  { id:'teus',   proc:true, titulo:'Total de Teus (SIs criadas)', val: m => m.proc.teus },
   { id:'prop',   semProc:true, titulo:'Propostas criadas',          val: m => m.totalPropostas },
   { id:'status', semProc:true, titulo:'Total por Status',           dim:'porStatusRota' },
-  { id:'cli',    titulo:'Total por Cliente',      dim:'porCliente', dedicado:'cliente' },
+  { id:'cli',    semProc:true, titulo:'Total por Cliente',      dim:'porCliente', dedicado:'cliente' },
+  { id:'pCli',   proc:true, titulo:'Total por Cliente (SIs criadas)', dim:'pCli', total: m => m.proc.sis, dedicado:'cliente' },
   { id:'vend',   semProc:true, titulo:'Total por Vendedor',     dim:'porVendedor', dedicado:'vendedor', horizontal:true },
   { id:'inside', semProc:true, titulo:'Total por Inside', dim:'porEmissor', dedicado:'inside sales', horizontal:true },
-  { id:'agente', titulo:'Total por Agente Internacional', dim:'porAgente', dedicado:'agente' },
+  { id:'agente', semProc:true, titulo:'Total por Agente Internacional', dim:'porAgente', dedicado:'agente' },
+  { id:'pAgente', proc:true, titulo:'Total por Agente Internacional (SIs criadas)', dim:'pAgente', total: m => m.proc.sis, dedicado:'agente' },
+  { id:'pTransp', proc:true, titulo:'Total por Transportador (SIs criadas)', dim:'pTransp', total: m => m.proc.sis, dedicado:'transportador' },
   { id:'novos',  titulo:'Clientes Ganhos no Mês',             val: m => m.novosClientes.length },
   { id:'lead',   semProc:true, titulo:'Lead time médio (dias)',     val: m => m.leadTimeMedio, media:true, menorMelhor:true },
   { id:'venc',   semProc:true, titulo:'Propostas vencidas',         val: m => m.vencidas.length, menorMelhor:true },
@@ -1779,7 +1794,8 @@ function serieAno(ano){
     const m = calcularMetricas(rotas, clis, de, ate, hoje);
     const lc = lucroPeriodo(de, ate, { vendedor: filtroH.vendedor, agente: filtroH.agente, cia: filtroH.cia, produto: filtroH.produto, cliente: filtroH.cliente }); m.lucroTotal = lc.total; m.lucroVend = lc.pares;
     ['porStatusRota','porVendedor','porEmissor','porCliente','porAgente','lucroVend'].forEach(k => m[k + 'Map'] = new Map(m[k]));
-    if (modoProc()) m.proc = metricasProc(de, ate, procs);
+    if (modoProc()){ m.proc = metricasProc(de, ate, procs); m.pCli = m.proc.porCliente; m.pAgente = m.proc.porAgente; m.pTransp = m.proc.porTransp;
+      ['pCli','pAgente','pTransp'].forEach(k => m[k + 'Map'] = new Map(m[k])); }
     return m;
   });
   return (cacheAnos[ch] = s);
@@ -2261,6 +2277,7 @@ const ORD = {
   vendedor: alfa('vendedor'), inside: alfa('inside'), cliente: alfa('cliente'),
 };
 const COLS_STATUS = ['num','cliente','modal','vendedor','inside','status'];
+const COLS_SIS = ['num','criacaoSI','proc','modal','cliente','agente','transp','origem','destino'];
 const COLS_PERDAS = ['num','cliente','modal','vendedor','inside','statusRota','motivo','compl','rota','criacao'];
 const DETS = {
   novosAno: { titulo:'Novos clientes — prospectos que viraram clientes da casa', sub:'pela Data de Ativação do Prospecto · tempo de prospecção = do início da prospecção (criação do cadastro) até o cliente ganho',
@@ -2281,7 +2298,11 @@ const DETS = {
   cliente:  { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
   agente:   { titulo:'Propostas por agente internacional', dim: d => d.agenteLista, rotulo:'agente', cols:['num','cliente','modal','agente','vendedor','status','criacao','validade'], ordem: ORD.cliente },
   cli:      { titulo:'Propostas por cliente', dim: d => [d.cliente], rotulo:'cliente', ordem: ORD.cliente },
-  sis:      { titulo:'SIs criadas', sub:'processos pela data de Abertura da SI · Proposta em branco = processo sem proposta vinculada', cols:['num','criacaoSI','proc','modal','cliente','agente','transp','origem','destino'], unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
+  sis:      { titulo:'SIs criadas', sub:'processos pela data de Abertura da SI · Proposta em branco = processo sem proposta vinculada', cols: COLS_SIS, unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
+  pCanc:    { titulo:'Processos cancelados', sub:'SIs criadas no mês e canceladas', filtro: d => d.cancelado, cols: COLS_SIS, unidade:['processo','processos'], semPropostas:true, ordem: porCriacaoDesc },
+  pCli:     { titulo:'SIs criadas por cliente', sub:'data de Abertura da SI', dim: d => [d.cliente], rotulo:'cliente', cols: COLS_SIS, unidade:['processo','processos'], semPropostas:true, ordem: ORD.cliente },
+  pAgente:  { titulo:'SIs criadas por agente internacional', sub:'data de Abertura da SI', dim: d => d.agenteLista, rotulo:'agente', cols: COLS_SIS, unidade:['processo','processos'], semPropostas:true, ordem: ORD.cliente },
+  pTransp:  { titulo:'SIs criadas por transportador', sub:'Armador, Coloader ou Cia Aérea · data de Abertura da SI', dim: d => d.ciaLista.map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t), rotulo:'transportador', cols: COLS_SIS, unidade:['processo','processos'], semPropostas:true, ordem: ORD.cliente },
   transp:   { titulo:'Propostas por transportador', sub:'Armador, Coloader ou Cia Aérea das rotas', dim: d => (d.ciaLista || []).map(t => t === 'Sem armador/cia' ? 'Sem transportador' : t), rotulo:'transportador', cols:['num','cliente','modal','transp','origem','destino'], ordem: ORD.cliente },
 };
 // SIs criadas no mês (Data Criação SI), com os filtros do Board
@@ -2369,6 +2390,8 @@ document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('.lupa'); if (!b || b.dataset.exp) return;
   if (b.dataset.det){                                   // aba Mês atual
     const perdas = b.dataset.det.startsWith('perdas'), rot = perdas ? rotuloPeriodo() : `${MESES_LONGOS[mesSel.m]}/${mesSel.ano}`;
+    const chaveP = modoProc() ? ({ criadas:'sis', sis:'pCanc', cliente:'pCli', agente:'pAgente', transp:'pTransp' })[b.dataset.det] : null;   // Diretoria: listas de processos
+    if (chaveP){ abrirDetalhe(chaveP, [{ rotulo: rot, linhas: linhasSIs() }], rot); return; }
     abrirDetalhe(b.dataset.det, [{ rotulo: rot, linhas: b.dataset.det === 'sis' ? linhasSIs() : perdas ? (b.dataset.det === 'perdasCli' ? PERDAS.rotasRecusadas : PERDAS.rotas) : M.detalhe }], rot);
   }
 });
